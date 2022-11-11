@@ -1,0 +1,72 @@
+{{> adminlayout}}
+
+  <body id="reportsPage">
+    {{> adminnavbar}}
+    
+    <div class="w-100 text-center p-3 text-white bg-info">
+		<h5>USERS</h5>
+	</div>
+    <!-- Users start -->
+    <div class="container">
+      <div class="row">
+        <table style="font-size: 0.8rem;" class="text-center table tm-table-small tm-product-table mt-2">
+          <thead>
+            <tr>
+              <th scope="col">NO</th>
+              <th scope="col">USER NAME</th>
+              <th scope="col">USER EMAIL</th>
+              <th scope="col">USER STATUS</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each users}}
+            <tr>
+              <th scope="row">{{@index}}</th>
+              <td>{{this.userFName}} {{this.userLName}}</td>
+              <td>{{this.userEmail}}</td>
+              {{#if this.isBanned}}
+              <td class="text-danger">Block</td>
+              <td>
+                <a class="btn btn-success block-btn" href="/admin_panel/admin_user/active?userEmail={{this.userEmail}}">Avtive</a>
+              </td>
+              {{else}}
+              <td class="text-success">Active</td>
+              <td>
+                <a class="btn btn-danger block-btn" onclick="return confirm('Do you want to block the user {{this.userFName}} {{this.userLName}} ?')" href="/admin_panel/admin_user/block?userEmail={{this.userEmail}}">Block</a>
+              </td>
+              {{/if}}
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- Users end -->
+
+    <footer class="tm-footer row tm-mt-small">
+            <div class="col-12 font-weight-light">
+                <p class="text-center text-white mb-0 px-4 small">
+                    Copyright &copy; <b>2022</b> All rights reserved. 
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="/javascripts/jquery-3.3.1.min.js"></script>
+    <!-- https://jquery.com/download/ -->
+    <script src="/javascripts/moment.min.js"></script>
+    <!-- https://momentjs.com/ -->
+    <script src="/javascripts/Chart.min.js"></script>
+    <!-- http://www.chartjs.org/docs/latest/ -->
+    <script src="/javascripts/bootstrap.min.js"></script>
+    <!-- https://getbootstrap.com/ -->
+    <script src="/javascripts/tooplate-scripts.js"></script>
+    <script>
+      $(function() {
+        $(".tm-product-name").on("click", function() {
+          window.location.href = "edit-product.html";
+        });
+      });
+    </script>
+  </body>

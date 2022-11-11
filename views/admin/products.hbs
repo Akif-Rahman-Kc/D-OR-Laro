@@ -1,0 +1,75 @@
+{{> adminlayout}}
+
+  <body id="reportsPage">
+    {{> adminnavbar}}
+    
+    <div class="w-100 text-center p-3 text-white bg-info">
+		<h5>PRODUCTS</h5>
+	</div>
+    <!-- Product start -->
+        <div class="container">
+            <a href="/admin_panel/admin_add_product" class="w-25 m-3 btn btn-success block-btn font-weight-bold">ADD PRODUCT</a>
+        </div>
+        <table style="font-size: 0.8rem;" class="container text-center table tm-table-small tm-product-table mt-2">
+          <thead>
+            <tr>
+              <th scope="col">NO</th>
+              <th scope="col">PRODUCT IMAGE</th>
+              <th scope="col">PRODUCT NAME</th>
+              <th scope="col">BRAND</th>
+              <th scope="col">CATEGORY</th>
+              <th scope="col">PRICE</th>
+              <th scope="col">STOCK</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each product}}
+            <tr>
+              <th scope="row">{{@index}}</th>
+              <td><img style="width: 2.7rem;height: 2.7rem;" src="/images/{{this.PImage.[0].filename}}" alt=""></td>
+              <td>{{this.PName}}</td>
+              <td>{{this.PBrand}}</td>
+              <td>{{this.PCategory}}</td>
+              <td>{{this.PPrice}}</td>
+              <td>{{this.PStock}}</td>
+              <td>
+                <a href="/admin_panel/admin_edit_product?_id={{this._id}}" class="tm-product-delete-link">
+                  <i class="fas fa-edit text-success"></i>
+                </a>
+                <a href="/admin_panel/admin_delete_product?_id={{this._id}}" class="tm-product-delete-link" onclick="return confirm('Do you want to delete the product {{this.PName}} ?')">
+                  <i class="far fa-trash-alt text-danger"></i>
+                </a>
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+    <!-- Product end -->
+
+    <footer class="tm-footer row tm-mt-small">
+            <div class="col-12 font-weight-light">
+                <p class="text-center text-white mb-0 px-4 small">
+                    Copyright &copy; <b>2022</b> All rights reserved. 
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="/javascripts/jquery-3.3.1.min.js"></script>
+    <!-- https://jquery.com/download/ -->
+    <script src="/javascripts/moment.min.js"></script>
+    <!-- https://momentjs.com/ -->
+    <script src="/javascripts/Chart.min.js"></script>
+    <!-- http://www.chartjs.org/docs/latest/ -->
+    <script src="/javascripts/bootstrap.min.js"></script>
+    <!-- https://getbootstrap.com/ -->
+    <script src="/javascripts/tooplate-scripts.js"></script>
+    <script>
+      $(function() {
+        $(".tm-product-name").on("click", function() {
+          window.location.href = "edit-product.html";
+        });
+      });
+    </script>
+  </body>

@@ -1,0 +1,38 @@
+{{> layout}}
+
+<body>
+
+    {{> usernavbar}}
+    
+     <!-- Cart Start -->
+    <div class="container top-align">
+        <div class="row px-xl-3">
+            {{#if empty}}
+            <div style="width: auto; height: auto;padding-left: 22%;" class="text-center pt-5">
+                        <img class="img-fluid" src="/images/empty-wishlist.png" alt="">
+                    </div>
+            {{else}}
+            {{#each user.Wishlist}}
+            <div class="col-lg-12 table-responsive border-left border-right border">
+                <div class="w-100 d-flex">
+                    <div class="border w-15 m-3" style="height: 10rem;">
+                        <img src="/images/{{this.PImage.filename}}" alt="" class="img-fluid">
+                    </div>
+                    <div class="w-85 d-block ml-5 mt-3"  style="height: 10rem;">
+                        <button onclick="removeWishlist('{{this.item_id}}')" class="btn btn-sm btn-primary float-right"><i class="fa fa-times"></i></button>
+                        <h2 class="align-middle text-dark">{{this.PName}}</h2>
+                        <p class="align-middle text-dark">{{this.PDes}}</p>
+                        <p class="align-middle text-dark">${{this.PPrice}}<span class="ml-3"><del>${{this.POldPrice}}</del></span></p>
+                        <p class="align-middle text-dark">62%off</p>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+            {{/if}}
+        </div>
+    </div>
+    <!-- Cart End -->
+
+    {{> userfooter}}
+
+</body>

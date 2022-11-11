@@ -1,0 +1,112 @@
+{{> layout}}
+
+<body>
+
+    {{> usernavbar}}
+
+    <!-- Cart Start -->
+    <div class="container-fluid top-align">
+        <div class="row px-xl-5">
+            <div class="col-lg-8 table-responsive mb-5">
+                <table class="table table-bordered text-center mb-0">
+                    <thead class="bg-secondary text-dark">
+                        <tr>
+                            <th>Products</th>
+                            <th>Color</th>
+                            <th>Size</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Discount</th>
+                            <th>Remove</th>
+                        </tr>
+                    </thead>
+                    {{#if empty}}
+                    <div style="width: auto; height: auto;position: absolute;padding-left: 22%;" class="text-center pt-5">
+                        <img class="img-fluid" src="/images/emptycart.png" alt="">
+                    </div>
+                    {{else}}
+                    <tbody class="align-middle">
+                        {{#each user.Cart}}
+                        <tr>
+                            <td class="align-middle"><img src="/images/{{this.PImage.[0].filename}}" alt=""
+                                    style="width: 50px;"><br><span style="font-size: 0.8rem;">{{this.PName}}</span></td>
+                            <td class="align-middle">{{this.PColor}}</td>
+                            <td class="align-middle">{{this.PSize}}</td>
+                            <td class="align-middle">${{this.PPrice}}</td>
+                            <td class="align-middle">
+                                <div class="input-group quantity mx-auto" style="width: 100px;">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-sm btn-primary" id="break-minus"
+                                            onclick="counting('{{this.item_id}}','{{this.PPrice}}','-1')">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                    </div>
+                                    <span class="form-control form-control-sm bg-secondary text-center"
+                                        id="{{this.item_id}}">{{this.quantity}}</span>
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-sm btn-primary" id="break-plus"
+                                            onclick="counting('{{this.item_id}}','{{this.PPrice}}','1')">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="align-middle text-danger">${{this.PDiscount}}</td>
+                            <td class="align-middle"><button onclick="removeCart('{{this.item_id}}')"
+                                    class="btn btn-sm btn-primary"><i class="fa fa-times"></i></button></td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                    {{/if}}
+                </table>
+            </div>
+            <div class="col-lg-4">
+                <form class="mb-5" action="">
+                    <div class="input-group">
+                        <input type="text" class="form-control p-4" placeholder="Coupon Code">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary">Apply Coupon</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="card border-secondary mb-5">
+                    <div class="card-header bg-secondary border-0">
+                        <h4 class="font-weight-semi-bold m-0">Cart Summary</h4>
+                    </div>
+                    <div class="card-body">
+                        {{#each user.Cart}}
+                        <div class="d-flex justify-content-between mb-3 pt-1">
+                            <h6 class="font-weight-medium">{{this.PName}}</h6>
+                            <h6 class="font-weight-medium">${{this.PPrice}}</h6>
+                        </div>
+                        {{/each}}
+                        <hr>
+                        <div class="d-flex justify-content-between">
+                            <h6 class="font-weight-medium">Sub Total</h6>
+                            <h6 style="font-size: 1.1rem;" class="font-weight-bold">$<span id="total">{{totalAmount}}</span></h6>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <h6 class="font-weight-medium">Discount</h6>
+                            <h6 class="font-weight-medium text-danger">$<span id="discount">{{discountPrice}}</span></h6>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <h6 class="font-weight-medium">Delivery</h6>
+                            <h6 class="font-weight-medium text-success">Free</h6>
+                        </div>
+                    </div>
+                    <div class="card-footer border-secondary bg-transparent">
+                        <div class="d-flex justify-content-between mt-2">
+                            <h5 class="font-weight-bold">Total</h5>
+                            <h5 class="font-weight-bold">$<span id="lastPrice">{{totalLast}}</span></h5>
+                        </div>
+                        <a href="/checkout" class="btn btn-block btn-primary my-3 py-3">Proceed To Checkout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Cart End -->
+
+    {{> userfooter}}
+
+</body>

@@ -1,0 +1,55 @@
+{{> layout}}
+
+<body>
+    
+    {{> usernavbar}}
+
+    <!-- Login Start -->
+    <div class="container top-align-log">
+        <div class="row">
+          <div class="col-sm-9 col-md-7 col-lg-5 mx-auto mt-5">
+            <div class="card card-signin my-5">
+              <div class="card-body">
+                <h5 class="card-title text-center" style="font-weight: bold;">REGISTER</h5>
+                <form id="register-form" class="form-signin" action="/user_registration" method="post">
+                  <div class="d-flex">
+                    <div class="form-label-group w-50">
+                        <label  class="mt-4" for="inputEmail">First Name</label>
+                        <input type="text" id="inputEmail" class="form-control" name="userFName" placeholder="First Name">
+                    </div>
+                    <div class="form-label-group w-50 ml-3">
+                        <label  class="mt-4" for="inputEmail">Second Name</label>
+                        <input type="text" id="inputEmail" class="form-control" name="userLName" placeholder="Second Name">
+                    </div>
+                  </div>
+
+                  <div class="form-label-group">
+                    <label  class="mt-4" for="inputEmail">E-mail / Phone No</label>
+                    <input type="email" id="inputEmail" class="form-control" name="userEmail" placeholder="E-mail / Phone No">
+                    <label style="font-size: 0.8rem;" class="text-danger" for="">{{errorMeassage}}</label>
+                  </div>
+    
+                  <div class="form-label-group">
+                    <label class="mt-4" for="inputPassword">Password</label>
+                    <input type="password" id="inputPassword" class="form-control" name="userPass" placeholder="Password">
+                  </div>
+                  <div class="form-label-group">
+                    <label class="mt-4" for="inputPassword">Confirm Password</label>
+                    <input type="password" id="inputPassword" class="form-control" name="userConfPass" placeholder="Password">
+                    <label style="font-size: 0.8rem;" class="text-danger" for="">{{errorPassword}}</label>
+                  </div>
+    
+                  <button class="btn btn-lg btn-primary btn-block text-uppercase mt-5" type="submit">Get OTP</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <!-- Login End -->
+
+    {{> userfooter}}
+
+</body>
+
+</html>

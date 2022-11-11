@@ -1,0 +1,144 @@
+{{> layout}}
+
+<body>
+
+    {{> usernavbar}}
+
+    <!-- Checkout Start -->
+    <div class="container-fluid top-align">
+        <form action="/user_order" id="place-order" method="post">
+            <div class="row px-xl-5">
+                <div class="col-lg-8">
+                    <div class="mb-4">
+                        <h4 class="font-weight-semi-bold mb-4">Billing Address</h4>
+                        {{#if Address}}
+                        <div class="col-lg-12 table-responsive mb-3 border-left border-right border">
+                            <div class="w-100 d-flex">
+                                <div class="border w-15 m-3" style="height: 10rem;">
+                                    <img src="" alt="" class="img-fluid">
+                                </div>
+                                <div class="w-85 d-block ml-5" style="height: 10rem;">
+                                    <button class="btn btn-sm btn-primary float-right"><i
+                                            class="fa fa-times"></i></button>
+                                    <h2 class="align-middle"> Colorful Stylish Shirt</h2>
+                                    <p class="align-middle">ratings</p>
+                                    <p class="align-middle">$150</p>
+                                    <p class="align-middle">62%off</p>
+                                </div>
+                            </div>
+                        </div>
+                        {{else}}
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label>First Name</label>
+                                <input class="form-control" type="text" name="firstName">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Last Name</label>
+                                <input class="form-control" type="text" name="lastName">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Mobile No</label>
+                                <input class="form-control" type="text" name="mobileNo">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Address Line</label>
+                                <input class="form-control" type="text" name="address">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>City</label>
+                                <input class="form-control" type="text" name="city">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Locality</label>
+                                <input class="form-control" type="text" name="locality">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Landmark</label>
+                                <input class="form-control" type="text" name="landmark">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Pin Code</label>
+                                <input class="form-control" type="text" name="pinCode">
+                            </div>
+                        </div>
+                        {{/if}}
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card border-secondary mb-5">
+                        <div class="card-header bg-secondary border-0">
+                            <h4 class="font-weight-semi-bold m-0">Order Total</h4>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="font-weight-medium mb-3">Products</h5>
+                            {{#each user.Cart}}
+                            <div class="d-flex justify-content-between">
+                                <p>{{this.PName}}</p>
+                                <p>${{this.PPrice}}</p>
+                            </div>
+                            {{/each}}
+                            <hr class="mt-0">
+                            <div class="d-flex justify-content-between mb-3 pt-1">
+                                <h6 class="font-weight-medium">Subtotal</h6>
+                                <h6 style="font-size: 1.1rem;" class="font-weight-bold">${{totalAmount}}</h6>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <h6 class="font-weight-medium">Discount</h6>
+                                <h6 class="font-weight-medium text-danger">{{discountPrice}}</h6>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <h6 class="font-weight-medium">Delivery</h6>
+                                <h6 class="font-weight-medium text-success">FREE</h6>
+                            </div>
+                        </div>
+                        <div class="card-footer border-secondary bg-transparent">
+                            <div class="d-flex justify-content-between mt-2">
+                                <h5 class="font-weight-bold">Total</h5>
+                                <h5 class="font-weight-bold">${{totalLast}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card border-secondary mb-5">
+                        <div class="card-header bg-secondary border-0">
+                            <h4 class="font-weight-semi-bold m-0">Payment</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" name="payment" id="paypal"
+                                        value="Cash on Delivery">
+                                    <label class="custom-control-label" for="paypal">Cash On Delivery</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" name="payment" id="directcheck"
+                                        value="Razor Pay">
+                                    <label class="custom-control-label" for="directcheck">Razor Pay</label>
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" name="payment" id="banktransfer"
+                                        value="Paypal">
+                                    <label class="custom-control-label" for="banktransfer">Paypal</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer border-secondary bg-transparent">
+                            <input class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3" type="submit"
+                                value="Place Order">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- Checkout End -->
+
+    {{> userfooter}}
+
+</body>
+
+</html>

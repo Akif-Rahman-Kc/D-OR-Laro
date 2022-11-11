@@ -1,0 +1,138 @@
+{{> adminlayout}}
+
+<body>
+  {{> adminnavbar}}
+
+  <div class="container tm-mt-big tm-mb-big">
+    <div class="row">
+      <div class="col-xl-9 col-lg-10 col-md-12 col-sm-12 mx-auto">
+        <div class="tm-bg-primary-dark tm-block tm-block-h-auto">
+          <div class="row">
+            <div class="col-12">
+              <h2 class="tm-block-title d-inline-block">EDIT PRODUCT</h2>
+            </div>
+          </div>
+          <div class="row tm-edit-product-row">
+            <div class="col-xl-6 col-lg-6 col-md-12">
+              <form action="/admin_panel/admin_edit_product?_id={{productEdit._id}}" method="post"
+                enctype="multipart/form-data" class="tm-edit-product-form">
+                <div class="form-group mb-3">
+                  <label for="name">Product Name
+                  </label>
+                  <input value="{{productEdit.PName}}" id="name" name="PName" type="text"
+                    class="form-control validate" />
+                </div>
+                <div class="form-group mb-3">
+                  <label for="description">Description</label>
+                  <input value="{{productEdit.PDes}}" id="name" name="PDes" type="text" class="form-control validate" />
+                </div>
+                <div class="form-group mb-3">
+                  <label for="category">Category</label>
+                  <select class="custom-select tm-select-accounts" id="category" name="PCategory">
+                    <option selected>{{productEdit.PCategory}}</option>
+                    {{#each category}}
+                    <option>{{this.Category}}</option>
+                    {{/each}}
+                  </select>
+                </div>
+                <div class="form-group mb-3">
+                  <label for="category">Sub Category</label>
+                  <select class="custom-select tm-select-accounts" id="category" name="PSubCategory">
+                    <option selected>{{productEdit.PSubCategory}}</option>
+                    {{#each category}}
+                    {{#each this.subCategory}}
+                    <option>{{this}}</option>
+                    {{/each}}
+                    {{/each}}
+                  </select>
+                </div>
+                <div class="form-group mb-3">
+                  <label for="exampleColorInput" class="form-label">Size</label>
+                  <input value="{{productEdit.PSize}}" name="PSize" class="form-control validate"
+                    data-large-mode="true" />
+                </div>
+                <div class="row">
+                  <div class="form-group mb-3 col-xs-12 col-sm-6">
+                    <label for="price">Price
+                    </label>
+                    <input value="{{productEdit.PPrice}}" name="PPrice" class="form-control validate"
+                      data-large-mode="true" />
+                  </div>
+                  <div class="form-group mb-3 col-xs-12 col-sm-6">
+                    <label for="price">Old Price
+                    </label>
+                    <input value="{{productEdit.POldPrice}}" name="POldPrice" class="form-control validate"
+                      data-large-mode="true" />
+                  </div>
+                </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-12 mx-auto mb-4">
+              <div>
+                <label for="formFileLg" class="form-label text-white">Product Images</label>
+                <input onchange="previewMultiple(event)" style="padding: 0.3rem;" class="form-control form-control-lg"
+                  id="formFileLg" type="file" multiple name="PImage">
+                <div class="mt-2 d-flex" id="galeria">
+                  {{#each productEdit.PImage}}
+                  <img class="ml-1" src="/images/{{this.filename}}" alt="">
+                  {{/each}}
+                </div>
+              </div>
+              <div class="form-group mb-3 mt-3">
+                <label for="brand">Brand</label>
+                <input value="{{productEdit.PBrand}}" name="PBrand" class="form-control validate"
+                  data-large-mode="true" />
+              </div>
+              <div class="form-group mb-3">
+                <label for="stock">Stock</label>
+                <input value="{{productEdit.PStock}}" name="PStock" class="form-control validate"
+                  data-large-mode="true" />
+              </div>
+              <div class="form-group mb-3">
+                  <label for="stock">Discount</label>
+                  <input value="{{productEdit.PDiscount}}" name="PDiscount" class="form-control validate" data-large-mode="true" />
+                </div>
+                <div class="form-group mb-3">
+                  <label for="exampleColorInput" class="form-label">Colors</label>
+                  <input value="{{productEdit.PColor}}" name="PColor" class="form-control validate"
+                    data-large-mode="true" />
+                </div>
+            </div>
+            <div class="col-12">
+              <button type="submit" class="btn btn-primary btn-block text-uppercase">Submit</button>
+            </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="tm-footer row tm-mt-small">
+    <div class="col-12 font-weight-light">
+      <p class="text-center text-white mb-0 px-4 small">
+        Copyright &copy; <b>2022</b> All rights reserved.
+      </p>
+    </div>
+  </footer>
+
+  <script src="/javascripts/jquery-3.3.1.min.js"></script>
+  <!-- https://jquery.com/download/ -->
+  <script src="/javascripts/moment.min.js"></script>
+  <!-- https://momentjs.com/ -->
+  <script src="/javascripts/Chart.min.js"></script>
+  <!-- http://www.chartjs.org/docs/latest/ -->
+  <script src="/javascripts/bootstrap.min.js"></script>
+  <!-- https://getbootstrap.com/ -->
+  <script src="/javascripts/tooplate-scripts.js"></script>
+
+  <script>
+    function previewMultiple(event) {
+      var saida = document.getElementById("formFileLg");
+      var quantos = saida.files.length;
+      document.getElementById("galeria").innerText += '';
+      for (i = 0; i < 5; i++) {
+        var urls = URL.createObjectURL(event.target.files[i]);
+        document.getElementById("galeria").innerHTML += '<img style class="ml-1" src="' + urls + '">';
+      }
+    }
+  </script>
+</body>

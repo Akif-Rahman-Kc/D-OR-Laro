@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>D OR Laro Sports Hub</title>
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    {{!-- ajax --}}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="/javascripts/ajax.js"></script>
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Magic Zoom Plus -->
+    <script src="/magiczoomplus/magiczoomplus.js"></script>
+    <link href="/magiczoomplus/magiczoomplus.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/stylesheets/style.css" rel="stylesheet">
+    <link href="/stylesheets/order.css" rel="stylesheet">
+</head>
+
+</html>
+
+<body>
+
+    {{> usernavbar}}
+
+    <!-- Order Start -->
+    <div class="row">
+        <div class="col-md-12 col-lg-12 top-align">
+            <div class="tab-content">
+                <section class="inner-section orderlist-part">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="orderlist-filter">
+
+
+                                    <h5>total order <span>- 5</span></h5>
+                                    <div class="filter-short"><label class="form-label">short by:</label><select
+                                            class="form-select">
+                                            <option value="all" selected>all order</option>
+                                            <option value="recieved">recieved order</option>
+                                            <option value="processed">processed order</option>
+                                            <option value="shipped">shipped order</option>
+                                            <option value="delivered">delivered order</option>
+                                        </select></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+
+                                <!-- loop by order -->
+
+
+                                <div class="orderlist">
+                                    <div class="orderlist-head">
+                                        <h5>order#0 </h5><span>created date</span>
+                                        <h5>order recieved</h5>
+                                    </div>
+                                    <div class="orderlist-body">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="order-track">
+                                                    <ul class="order-track-list">
+                                                        <li class="order-track-item active"><i
+                                                                class="icofont-check"></i><span>order
+                                                                recieved</span></li>
+                                                        <li class="order-track-item active"><i
+                                                                class="icofont-check"></i><span>order
+                                                                processed</span></li>
+                                                        <li class="order-track-item"><i
+                                                                class="icofont-close"></i><span>order
+                                                                shipped</span></li>
+                                                        <li class="order-track-item"><i
+                                                                class="icofont-close"></i><span>order
+                                                                delivered</span></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <ul class="orderlist-details">
+                                                    <li>
+                                                        <h6>order id</h6>
+                                                        <p>dfmgs </p>
+                                                    </li>
+                                                    <li>
+                                                        <h6>Total Item</h6>
+                                                        <p>6</p>
+                                                    </li>
+                                                    <li>
+                                                        <h6>Order Time</h6>
+                                                        <p>8.00</p>
+                                                    </li>
+                                                    <li>
+                                                        <h6>Delivery Time</h6>
+                                                        <p>12th February 2021</p>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <ul class="orderlist-details">
+                                                    <li>
+                                                        <h6>Sub Total</h6>
+                                                        <p>$684 </p>
+                                                    </li>
+                                                    <li>
+                                                        <h6>discount</h6>
+                                                        <p>$74 </p>
+                                                    </li>
+                                                    <li>
+                                                        <h6>delivery fee</h6>
+                                                        <p class="text-success">Free(0)</p>
+                                                    </li>
+                                                    <li>
+                                                        <h6>Total</h6>
+                                                        <p>$4565</p>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-lg-4 ">
+                                                <div class="orderlist-deliver">
+                                                    <h6>Delivery location</h6>
+                                                    <p>Kannur </p>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <div class="table-scroll">
+                                                    <table class="table-list">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">Serial</th>
+                                                                <th scope="col">Product</th>
+                                                                <th scope="col">Name</th>
+                                                                <th scope="col">Price</th>
+                                                                <th scope="col">brand</th>
+                                                                <th scope="col">quantity</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+
+
+                                                            <tr>
+                                                                <td class="table-serial">
+                                                                    <h6>1 </h6>
+                                                                </td>
+                                                                <td class="table-image"><img
+                                                                        src="data:<%=element.item.product_image[0].contentType %>;base64,<%=element.item.product_image[0].imageBase64 %> "
+                                                                        alt="product"></td>
+                                                                <td class="table-name">
+                                                                    <a href="/product?id=<%= element.item._id%> ">
+                                                                        <h6>Nike boot</h6>
+                                                                    </a>
+                                                                </td>
+                                                                <td class="table-price">
+                                                                    <h6>$544</h6>
+                                                                </td>
+                                                                <td class="table-brand">
+                                                                    <h6>brand </h6>
+                                                                </td>
+                                                                <td class="table-quantity">
+                                                                    <h6>Quantity </h6>
+                                                                </td>
+                                                            </tr>
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <!-- Order End -->
+
+    {{> userfooter}}
+
+    <script>
+        jQuery(document).ready(function ($) {
+
+            var panels = $(".faq-ans").hide();
+
+            panels.first().show();
+
+            $(".faq-que").click(function () {
+
+                var $this = $(this);
+
+                panels.slideUp();
+                $this.next().slideDown();
+
+            });
+
+        });
+
+        // FOR ORDER LIST
+        jQuery(document).ready(function ($) {
+
+            var panels = $(".orderlist-body").hide();
+
+            panels.first().show();
+
+            $(".orderlist-head").click(function () {
+
+                var $this = $(this);
+
+                panels.slideUp();
+                $this.next().slideDown();
+
+            });
+
+        });
+    </script>
+
+</body>
+
+</html>

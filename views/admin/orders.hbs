@@ -1,0 +1,76 @@
+{{> adminlayout}}
+
+<body id="reportsPage">
+  {{> adminnavbar}}
+
+  <div class="w-100 text-center p-3 text-white bg-info">
+    <h5>ORDERS</h5>
+  </div>
+  <!-- Orders start -->
+  <div class="container">
+    <div class="row">
+      <table style="font-size: 0.8rem;" class="text-center table tm-table-small tm-product-table mt-2">
+        <thead>
+          <tr>
+            <th scope="col">NO</th>
+            <th scope="col">PRODUCT IMAGE</th>
+            <th scope="col">PRODUCT NAME</th>
+            <th scope="col">PRICE</th>
+            <th scope="col">ORDER DATE</th>
+            <th scope="col">ORDER STATUS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td>IMAGE 1</td>
+            <td>Nike Boot</td>
+            <td>3,450</td>
+            <td>28 March 2022</td>
+            <td>
+              <select style="width: 6.5rem;" class="custom-select bg-transparent border-0 tm-select-accounts" id="category" name="PSubCategory">
+                <option>Status</option>
+                <option class="text-danger">Pending</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">1</th>
+            <td>IMAGE 1</td>
+            <td>Nike Boot</td>
+            <td>3,450</td>
+            <td>28 March 2022</td>
+            <td class="text-success">Delivered</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!-- Orders end -->
+
+  <footer class="tm-footer row tm-mt-small">
+    <div class="col-12 font-weight-light">
+      <p class="text-center text-white mb-0 px-4 small">
+        Copyright &copy; <b>2022</b> All rights reserved.
+      </p>
+    </div>
+  </footer>
+  </div>
+
+  <script src="/javascripts/jquery-3.3.1.min.js"></script>
+  <!-- https://jquery.com/download/ -->
+  <script src="/javascripts/moment.min.js"></script>
+  <!-- https://momentjs.com/ -->
+  <script src="/javascripts/Chart.min.js"></script>
+  <!-- http://www.chartjs.org/docs/latest/ -->
+  <script src="/javascripts/bootstrap.min.js"></script>
+  <!-- https://getbootstrap.com/ -->
+  <script src="/javascripts/tooplate-scripts.js"></script>
+  <script>
+    $(function () {
+      $(".tm-product-name").on("click", function () {
+        window.location.href = "edit-product.html";
+      });
+    });
+  </script>
+</body>
