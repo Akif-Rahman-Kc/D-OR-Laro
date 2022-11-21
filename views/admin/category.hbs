@@ -1,170 +1,252 @@
 {{> adminlayout}}
 
-  <body id="reportsPage">
-    {{> adminnavbar}}
-    
-    <div class="w-100 text-center p-3 text-white bg-info">
-		<h5>CATEGORY</h5>
-	</div>
-    <!-- Category start -->
-        <div class="container">
-            <button class="w-25 m-3 btn btn-success block-btn font-weight-bold" data-bs-toggle="modal" data-bs-target="#category">
-            ADD CATEGORY
-            </button>
-        </div>
-        <div class="modal fade" id="category" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">ADD CATEGORY</h5>
-            </div>
-            <div class="modal-body">
-              <form action="/admin_panel/admin_category" method="post" enctype="multipart/form-data">
-                <label for="inputPassword5" class="form-label">Category Name</label>
-                <input type="text"  class="form-control" name="Category" required/>
-                <div>
-                  <label for="formFileLg" class="form-label text-white">Category Images</label>
-                  <input name="imgCategory" class="mt-3" type="file" onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])">
-                  <img id="blah" alt="your image" width="100" height="100" />
-                </div>
-                <div id="dynamicCheck">
-                  <input style="width: 3rem;" type="button" class="btn btn-primary mt-3" value="+" onclick="createNewElement();"/>
-                </div>
-                <div class="mt-2" id="newElementId">Sub Categories</div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="container">
-        <table style="font-size: 0.9rem;" class="text-center table tm-table-small tm-product-table mt-2">
-          <thead>
-            <tr>
-              <th scope="col">NO</th>
-              <th scope="col">CATEGORY IMAGE</th>
-              <th scope="col">CATEGORY</th>
-              <th scope="col"></th>
-            </tr>
-          </thead>
-          {{#each categories}}
-          <tbody>
-              <tr>
-                <th scope="row">{{@index}}</th>
-                <td><img style="width: 2.7rem;height: 2.7rem;" src="/images/{{this.imgCategory.[0].filename}}" alt=""></td>
-                <td class="btn btn-default btn-xs border-0" data-bs-toggle="collapse" href="#collapse{{this._id}}" role="button" aria-expanded="false" aria-controls="collapseExample">
-                  {{this.Category}}<i class="fas fa-caret-down ml-1"></i>
-                </td>
-                <td>
-                  <a class="tm-product-delete-link"  data-bs-toggle="modal" data-bs-target="#editCategory{{@index}}">
-                    <i class="fas fa-edit text-success"></i>
-                  </a>
-                  <a href="/admin_panel/admin_category/delete?_id={{this._id}}" class="tm-product-delete-link" onclick="return confirm('Do you want to delete the category {{this.Category}} ?')">
-                    <i class="far fa-trash-alt text-danger"></i>
-                  </a>
-                </td>
-                <div class="modal fade" id="editCategory{{@index}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">EDIT CATEGORY</h5>
-            </div>
-            <div class="modal-body">
-              <form action="/admin_panel/admin_category/edit?_id={{this._id}}" method="post" enctype="multipart/form-data">
-                <label for="inputPassword5" class="form-label">Category Name</label>
-                <input type="text"  class="form-control" name="Category" value="{{this.Category}}" required/>
-                <div>
-                  <label for="formFileLg" class="form-label text-white mt-4">Category Images</label>
-                  <input name="imgCategory" class="mt-3" type="file">
-                </div>
-                <div id="dynamicCheck">
-                   <label for="subCategory" class="form-label">Sub Category </label>
-                <input type="text"  class="form-control" name="subCategory" value="{{this.subCategory}}"/>
-                <p>Insert with comma seperation</p>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-              </tr>
-              <tr>
-                <td colspan="12" class="hiddenRow">
-                  <div> 
-                    <table class="collapse text-center table tm-table-small tm-product-table w-100" id="collapse{{this._id}}">
-                      {{#each this.subCategory}}
-                        <tbody>
-                          <tr style="background-color: #394e64;font-size: 0.8rem;">
-                            <th scope="row">*</th>
-                            <td>
-                              {{this}}
-                            </td>
-                            <td>
-                              <a href="/admin_panel/admin_category/subdelete?_id={{../this._id}}&&sub={{this}}" class="ml-3" onclick="return confirm('Do you want to delete the sub category {{this.this}} ?')">
-                                <i class="far fa-trash-alt text-danger"></i>
-                              </a>
-                            </td>
-                          <tr>   
-                        </tbody>
-                      {{/each}} 
-                    </table>
-                  </div> 
-                </td>
-              </tr>
-            </tbody>
-          {{/each}}
-        </table>
-      </div>
-    <!-- Category end -->
+<body id="reportsPage">
 
-    <footer class="tm-footer row tm-mt-small">
-            <div class="col-12 font-weight-light">
-                <p class="text-center text-white mb-0 px-4 small">
-                    Copyright &copy; <b>2022</b> All rights reserved. 
-                </p>
+  {{> adminnavbar}}
+
+  {{#if existCat}}
+  <p id="existMsg" hidden>a</p>
+  {{/if}}
+  {{#if products}}
+  <p id="proMsg" hidden>b</p>
+  {{/if}}
+
+  <div class="w-100 text-center p-1 text-white bg-info">
+    <h5>CATEGORY</h5>
+  </div>
+  <!-- Category start -->
+  <div class="container-fluid">
+    <button class="w-25 m-3 btn btn-success block-btn font-weight-bold" data-bs-toggle="modal"
+      data-bs-target="#category">
+      ADD CATEGORY
+    </button>
+  </div>
+  <div class="modal fade" id="category" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">ADD CATEGORY</h5>
+        </div>
+        <div class="modal-body">
+          <form action="/admin_panel/admin_category" method="post" enctype="multipart/form-data">
+            <label for="inputPassword5" class="form-label">Category Name</label>
+            <input type="text" class="form-control" name="Category" required />
+            <div>
+              <label for="formFileLg" class="form-label text-white">Category Images</label>
+              <input name="imgCategory" class="mt-3" type="file"
+                onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])">
+              <img id="blah" alt="your image" width="100" height="100" />
             </div>
-        </footer>
+            <div id="dynamicCheck">
+              <input style="width: 3rem;" type="button" class="btn btn-primary mt-3" value="+"
+                onclick="createNewElement();" />
+            </div>
+            <div class="mt-2" id="newElementId">Sub Categories</div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
+  </div>
+  <div class="container-fluid">
+    <table id="category" class="table table-striped table-bordered text-center font-weight-bold w-100"
+      style="font-size: 0.8rem;">
+      <thead>
+        <tr>
+          <th scope="col">NO</th>
+          <th scope="col">CATEGORY IMAGE</th>
+          <th scope="col">CATEGORY</th>
+          <th scope="col">OPTIONS</th>
+        </tr>
+      </thead>
+      {{#each categories}}
+      <tbody>
+        <tr>
+          <th scope="row">{{@index}}</th>
+          <td><img style="width: 2.7rem;height: 2.7rem;" src="/images/{{this.imgCategory.[0]}}" alt=""></td>
+          <td class="btn btn-default btn-xs border-0" data-bs-toggle="collapse" href="#collapse{{this._id}}"
+            role="button" aria-expanded="false" aria-controls="collapseExample">
+            {{this.Category}}<i class="fas fa-caret-down ml-1"></i>
+          </td>
+          <td>
+            <a class="tm-product-delete-link" data-bs-toggle="modal" data-bs-target="#editCategory{{@index}}">
+              <i class="fas fa-edit text-success"></i>
+            </a>
+            <a class="tm-product-delete-link" onclick="deleteCategory('{{this._id}}')">
+              <i class="far fa-trash-alt text-danger"></i>
+            </a>
+          </td>
+          <div class="modal fade" id="editCategory{{@index}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">EDIT CATEGORY</h5>
+                </div>
+                <div class="modal-body">
+                  <form action="/admin_panel/admin_category/edit?_id={{this._id}}" method="post"
+                    enctype="multipart/form-data">
+                    <label for="inputPassword5" class="form-label">Category Name</label>
+                    <input type="text" class="form-control" name="Category" value="{{this.Category}}" required />
+                    <div>
+                      <label for="formFileLg" class="form-label text-white mt-4">Category Images</label>
+                      <input name="imgCategory" class="mt-3" type="file">
+                    </div>
+                    <div id="dynamicCheck">
+                      <label for="subCategory" class="form-label">Sub Category </label>
+                      <input type="text" class="form-control" name="subCategory" value="{{this.subCategory}}" />
+                      <p>Insert with comma seperation</p>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </tr>
+        <tr>
+          <td colspan="12" class="hiddenRow">
+            <div>
+              <table class="collapse text-center table tm-table-small tm-product-table w-100" id="collapse{{this._id}}">
+                {{#each this.subCategory}}
+                <tbody>
+                  <tr style="background-color: #fff;font-size: 0.8rem;" class="border-top">
+                    <th scope="row">*</th>
+                    <td>
+                      {{this}}
+                    </td>
+                    <td>
+                      <a class="ml-3"
+                        onclick="deleteSubCategory('{{../this._id}}','{{this}}')">
+                        <i class="far fa-trash-alt text-danger"></i>
+                      </a>
+                    </td>
+                  <tr>
+                </tbody>
+                {{/each}}
+              </table>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+      {{/each}}
+    </table>
+  </div>
+  <!-- Category end -->
 
-    <script src="/javascripts/jquery-3.3.1.min.js"></script>
-    <!-- https://jquery.com/download/ -->
-    <script src="/javascripts/moment.min.js"></script>
-    <!-- https://momentjs.com/ -->
-    <script src="/javascripts/Chart.min.js"></script>
-    <!-- http://www.chartjs.org/docs/latest/ -->
-    <script src="/javascripts/bootstrap.min.js"></script>
-    <!-- https://getbootstrap.com/ -->
-    <script src="/javascripts/tooplate-scripts.js"></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-      crossorigin="anonymous"
-    ></script>
-    <script>
-      $(function() {
-        $(".tm-product-name").on("click", function() {
-          window.location.href = "edit-product.html";
-        });
-      });
+  <footer class="tm-footer row tm-mt-small">
+    <div class="col-12 font-weight-light">
+      <p class="text-center text-white mb-0 px-4 small">
+        Copyright &copy; <b>2022</b> All rights reserved.
+      </p>
+    </div>
+  </footer>
+  </div>
 
-      function previewMultiple(event){
-        var saida = document.getElementById("formFileLg");
-        var quantos = saida.files.length;
-        document.getElementById("galeria").innerText += '';
-        for(i = 0; i < 5; i++){
-            var urls = URL.createObjectURL(event.target.files[i]);
-            document.getElementById("galeria").innerHTML += '<img style class="ml-1" src="'+urls+'">';
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <!-- https://jquery.com/download/ -->
+  <script src="/javascripts/moment.min.js"></script>
+  <!-- https://momentjs.com/ -->
+  <script src="/javascripts/Chart.min.js"></script>
+  <!-- http://www.chartjs.org/docs/latest/ -->
+  <script src="/javascripts/bootstrap.min.js"></script>
+  <!-- https://getbootstrap.com/ -->
+  <script src="/javascripts/tooplate-scripts.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <script>
+    function deleteCategory(id) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        customClass: 'swal-wide',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          location.href = `/admin_panel/admin_category/delete?_id=${id}`
+          Swal.fire(
+            'Deleted!',
+            'Category has been deleted.',
+            'success'
+          ).then((result) => {
+            location.reload()
+          })
         }
+      })
     }
+
+    function deleteSubCategory(id,subCat) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        customClass: 'swal-wide',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          location.href = `/admin_panel/admin_category/subdelete?_id=${id}&&sub=${subCat}`
+          Swal.fire(
+            'Deleted!',
+            'Sub Category has been deleted.',
+            'success'
+          ).then((result) => {
+            location.reload()
+          })
+        }
+      })
+    }
+  </script>
+
+  <script>
+        let alerts = document.getElementById("existMsg").innerHTML
+        if(alerts == "a"){
+            Swal.fire({
+                    icon: 'warning',
+                    title: 'Cart Existed',
+                    text: 'This is already existed',
+                    customClass: 'swal-wide',
+                })
+        }
+
+        let alerts = document.getElementById("proMsg").innerHTML
+        if(alerts == "b"){
+            Swal.fire({
+                    icon: 'warning',
+                    title: 'Did not Deleted',
+                    text: 'not deleted this,Products available in this category',
+                    customClass: 'swal-wide',
+                })
+        }
     </script>
-    <script type="text/JavaScript">
+
+  <script>
+    function previewMultiple(event) {
+      var saida = document.getElementById("formFileLg");
+      var quantos = saida.files.length;
+      document.getElementById("galeria").innerText += '';
+      for (i = 0; i < 5; i++) {
+        var urls = URL.createObjectURL(event.target.files[i]);
+        document.getElementById("galeria").innerHTML += '<img style class="ml-1" src="' + urls + '">';
+      }
+    }
+  </script>
+  <script type="text/JavaScript">
         function createNewElement() {
         // First create a DIV element.
 	      const txtNewInputBox = document.createElement('div');
@@ -176,4 +258,4 @@
 	      document.getElementById("newElementId").appendChild(txtNewInputBox);
         }
     </script>
-  </body>
+</body>

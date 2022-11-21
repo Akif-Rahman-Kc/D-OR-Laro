@@ -4,6 +4,10 @@
     
     {{> usernavbar}}
 
+    {{#if success}}
+        <p id="alertMsgLog" hidden>b</p>
+    {{/if}}
+
     <!-- Login Start -->
     <div class="container top-align-log">
         <div class="row">
@@ -13,17 +17,17 @@
                 <h5 class="card-title text-center" style="font-weight: bold;">LOG IN</h5>
                 <form  class="form-signin" action="/user_login" method="post">
                   <div class="form-label-group">
-                    <label  class="mt-4" for="inputEmail">E-mail / Phone No</label>
-                    <input type="email" id="inputEmail" class="form-control" name="userEmail" placeholder="E-mail / Phone No">
+                    <label  class="mt-4" for="inputEmail">E-mail</label>
+                    <input type="email" id="inputEmail" class="form-control" name="userEmail" placeholder="E-mail" value="akifrahman90442@gmail.com">
                     <label style="font-size: 0.8rem;" class="text-danger" for="">{{errorEmail}}</label>
                   </div>
     
                   <div class="form-label-group">
                     <label class="mt-4" for="inputPassword">Password</label>
-                    <input type="password" id="inputPassword" class="form-control" name="userPass" placeholder="Password">
+                    <input type="password" id="inputPassword" class="form-control" name="userPass" placeholder="Password" value="123456">
                     <label style="font-size: 0.8rem;" class="text-danger" for="">{{errorPass}}</label>
                     <div class="text-right">
-                      <a style="font-size: 0.8rem;color: blue;" href="">Forgot password ?</a>
+                      <a style="font-size: 0.8rem;color: blue;" href="/user_login/forgot_password">Forgot password ?</a>
                     </div>
                   </div>
     
@@ -37,6 +41,20 @@
     <!-- Login End -->
 
     {{> userfooter}}
+
+    <script>
+        let alerts = document.getElementById("alertMsgLog").innerHTML
+        if(alerts == "b"){
+            Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Your Password is changed',
+                            customClass: 'swal-wide',
+                            showConfirmButton: false,
+                            timer: 1000
+                        })
+        }
+    </script>
 
 </body>
 

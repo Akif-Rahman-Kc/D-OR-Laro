@@ -3,32 +3,58 @@
 <body>
 
     {{> usernavbar}}
-    
-     <!-- Cart Start -->
-    <div class="container top-align">
+
+    <!-- Cart Start -->
+    <div class="container-fluid top-align">
         <div class="row px-xl-3">
-            {{#if empty}}
-            <div style="width: auto; height: auto;padding-left: 22%;" class="text-center pt-5">
-                        <img class="img-fluid" src="/images/empty-wishlist.png" alt="">
-                    </div>
-            {{else}}
-            {{#each user.Wishlist}}
-            <div class="col-lg-12 table-responsive border-left border-right border">
-                <div class="w-100 d-flex">
-                    <div class="border w-15 m-3" style="height: 10rem;">
-                        <img src="/images/{{this.PImage.filename}}" alt="" class="img-fluid">
-                    </div>
-                    <div class="w-85 d-block ml-5 mt-3"  style="height: 10rem;">
-                        <button onclick="removeWishlist('{{this.item_id}}')" class="btn btn-sm btn-primary float-right"><i class="fa fa-times"></i></button>
-                        <h2 class="align-middle text-dark">{{this.PName}}</h2>
-                        <p class="align-middle text-dark">{{this.PDes}}</p>
-                        <p class="align-middle text-dark">${{this.PPrice}}<span class="ml-3"><del>${{this.POldPrice}}</del></span></p>
-                        <p class="align-middle text-dark">62%off</p>
-                    </div>
+
+            <div class="col-md-12">
+                <h2 class="main-heading text-center mb-10 font-weight-bold">My wishlist</h2>
+                <hr>
+                {{#if empty}}
+                <div class="w-100 text-center pt-5">
+                    <img class="img-fluid" src="/images/empty-wishlist.png" alt="">
                 </div>
+                {{else}}
+                <div class="table-wishlist">
+                    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th width="45%">Product Name</th>
+                                <th width="15%">Unit Price</th>
+                                <th width="15%">Stock</th>
+                                <th width="15%"></th>
+                                <th width="10%"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each user.Wishlist}}
+                            <tr>
+                                <td width="45%">
+                                    <div class="display-flex align-center">
+                                        <div class="img-product">
+                                            <img src="/images/{{this.PImage}}" alt="" class="mCS_img_loaded">
+                                        </div>
+                                        <div class="name-product">
+                                            {{this.PName}}
+                                        </div>
+                                    </div>
+                                </td>
+                                <td width="15%" class="price">${{this.PPrice}}</td>
+                                <td width="15%"><span>{{this.PStock}}</span></td>
+                                <td width="15%"><a href="/shops/details?_id={{this.item_id}}"
+                                        class="round-black-btn small-btn"><i class="fas fa-eye text-light mr-1"></i>View
+                                        Detail</a></td>
+                                <td width="10%" class="text-center"><a
+                                        onclick="removeWishlist('{{this.item_id}}')" class="trash-icon"><i
+                                            class="far fa-trash-alt"></i></a></td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+                {{/if}}
             </div>
-            {{/each}}
-            {{/if}}
         </div>
     </div>
     <!-- Cart End -->

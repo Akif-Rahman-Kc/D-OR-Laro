@@ -6,28 +6,12 @@
 
     <!-- Checkout Start -->
     <div class="container-fluid top-align">
-        <form action="/user_order" id="place-order" method="post">
-            <div class="row px-xl-5">
-                <div class="col-lg-8">
-                    <div class="mb-4">
-                        <h4 class="font-weight-semi-bold mb-4">Billing Address</h4>
-                        {{#if Address}}
-                        <div class="col-lg-12 table-responsive mb-3 border-left border-right border">
-                            <div class="w-100 d-flex">
-                                <div class="border w-15 m-3" style="height: 10rem;">
-                                    <img src="" alt="" class="img-fluid">
-                                </div>
-                                <div class="w-85 d-block ml-5" style="height: 10rem;">
-                                    <button class="btn btn-sm btn-primary float-right"><i
-                                            class="fa fa-times"></i></button>
-                                    <h2 class="align-middle"> Colorful Stylish Shirt</h2>
-                                    <p class="align-middle">ratings</p>
-                                    <p class="align-middle">$150</p>
-                                    <p class="align-middle">62%off</p>
-                                </div>
-                            </div>
-                        </div>
-                        {{else}}
+        <div class="row px-xl-5">
+            <div class="col-lg-8">
+                <div class="mb-4">
+                    <h4 class="font-weight-bold mb-4">Billing Address</h4>
+                    {{#if addressNull}}
+                    <form action="/checkout_address/add" method="post">
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label>First Name</label>
@@ -61,44 +45,145 @@
                                 <label>Pin Code</label>
                                 <input class="form-control" type="text" name="pinCode">
                             </div>
+                            <input class="w-25 btn btn-primary btn-block border-0 font-weight-bold ml-3 mt-3"
+                                type="submit" value="CREATE ADDRESS">
                         </div>
-                        {{/if}}
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="card border-secondary mb-5">
-                        <div class="card-header bg-secondary border-0">
-                            <h4 class="font-weight-semi-bold m-0">Order Total</h4>
-                        </div>
-                        <div class="card-body">
-                            <h5 class="font-weight-medium mb-3">Products</h5>
-                            {{#each user.Cart}}
-                            <div class="d-flex justify-content-between">
-                                <p>{{this.PName}}</p>
-                                <p>${{this.PPrice}}</p>
+                    </form>
+                    {{else}}
+                    <div class="w-75 ml-5 bg-secondary pt-5 pl-5">
+                        <div class="row">
+                            {{#each user.Address}}
+                            <div class="col-lg-5 m-4  table-responsive "
+                                style="border: 4px solid; border-radius: 1.6rem;">
+                                <div class="w-100 d-flex">
+                                    <div class="w-85 d-block ml-3 mt-3" style="height: auto;">
+                                        <div class="float-right d-block">
+                                            <div class="form-check">
+                                                <input style="width: 1.9rem;height: 1.9rem;" name="id"
+                                                    class="form-check-input mt-0"  type="radio" value="{{@index}}"
+                                                    id="address" checked>
+                                            </div>
+                                        </div>
+                                        <h6 class="align-middle text-dark font-weight-bold">{{this.firstName}}
+                                            {{this.lastName}}</h6>
+                                        <p style="font-size: 0.7rem;" class="align-middle text-dark font-weight-bold">
+                                            {{this.mobileNo}}</p>
+                                        <p style="font-size: 0.8rem;" class="align-middle text-dark font-weight-bold">
+                                            {{this.address}}</p>
+                                        <p style="font-size: 0.8rem;" class="align-middle text-dark font-weight-bold">
+                                            {{this.landmark}},{{this.locality}}</p>
+                                        <p style="font-size: 0.8rem;" class="align-middle text-dark font-weight-bold">
+                                            {{this.city}}</p>
+                                        <p style="font-size: 0.71rem;" class="align-middle text-dark font-weight-bold">
+                                            ({{this.pinCode}})</p>
+                                    </div>
+                                </div>
                             </div>
                             {{/each}}
-                            <hr class="mt-0">
-                            <div class="d-flex justify-content-between mb-3 pt-1">
-                                <h6 class="font-weight-medium">Subtotal</h6>
-                                <h6 style="font-size: 1.1rem;" class="font-weight-bold">${{totalAmount}}</h6>
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <h6 class="font-weight-medium">Discount</h6>
-                                <h6 class="font-weight-medium text-danger">{{discountPrice}}</h6>
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <h6 class="font-weight-medium">Delivery</h6>
-                                <h6 class="font-weight-medium text-success">FREE</h6>
-                            </div>
                         </div>
-                        <div class="card-footer border-secondary bg-transparent">
-                            <div class="d-flex justify-content-between mt-2">
-                                <h5 class="font-weight-bold">Total</h5>
-                                <h5 class="font-weight-bold">${{totalLast}}</h5>
+                        <a class="w-25 btn btn-primary btn-sm border-0 font-weight-bold float-right mr-5 mt-4 mb-4"
+                        data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                        ADD NEW ADDRESS
+                    </a>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+                        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Create New Address</h1>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="/checkout_address/add" method="post">
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                <label>First Name</label>
+                                                <input class="form-control" type="text" name="firstName">
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <label>Last Name</label>
+                                                <input class="form-control" type="text" name="lastName">
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <label>Mobile No</label>
+                                                <input class="form-control" type="text" name="mobileNo">
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <label>Address Line</label>
+                                                <input class="form-control" type="text" name="address">
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <label>City</label>
+                                                <input class="form-control" type="text" name="city">
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <label>Locality</label>
+                                                <input class="form-control" type="text" name="locality">
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <label>Landmark</label>
+                                                <input class="form-control" type="text" name="landmark">
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <label>Pin Code</label>
+                                                <input class="form-control" type="text" name="pinCode">
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary font-weight-bold">Create
+                                                    Address</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    </div>
+                    {{/if}}
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card border-secondary mb-5">
+                    <div class="card-header bg-secondary border-0">
+                        <h4 class="font-weight-semi-bold m-0">Order Total</h4>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="font-weight-medium mb-3">Products</h5>
+                        {{#each user.Cart}}
+                        <div class="d-flex justify-content-between">
+                            <p>{{this.PName}}</p>
+                            <p>${{this.PPrice}}</p>
+                        </div>
+                        {{/each}}
+                        <hr class="mt-0">
+                        <div class="d-flex justify-content-between mb-3 pt-1">
+                            <h6 class="font-weight-medium">Subtotal</h6>
+                            <h6 style="font-size: 1.1rem;" class="font-weight-bold">${{totalAmount}}</h6>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <h6 class="font-weight-medium">Discount</h6>
+                            <h6 class="font-weight-medium text-danger">-${{discountPrice}}</h6>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <h6 class="font-weight-medium">Coupon Discount</h6>
+                            <h6 class="font-weight-medium text-success">{{couponDiscount}}%</h6>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <h6 class="font-weight-medium">Delivery</h6>
+                            <h6 class="font-weight-medium text-success">FREE</h6>
+                        </div>
+                    </div>
+                    <div class="card-footer border-secondary bg-transparent">
+                        <div class="d-flex justify-content-between mt-2">
+                            <h5 class="font-weight-bold">Total</h5>
+                            <h5 class="font-weight-bold">${{totalLast}}</h5>
+                        </div>
+                    </div>
+                </div>
+                <form action="" id="place-order">
                     <div class="card border-secondary mb-5">
                         <div class="card-header bg-secondary border-0">
                             <h4 class="font-weight-semi-bold m-0">Payment</h4>
@@ -114,15 +199,8 @@
                             <div class="form-group">
                                 <div class="custom-control custom-radio">
                                     <input type="radio" class="custom-control-input" name="payment" id="directcheck"
-                                        value="Razor Pay">
-                                    <label class="custom-control-label" for="directcheck">Razor Pay</label>
-                                </div>
-                            </div>
-                            <div class="">
-                                <div class="custom-control custom-radio">
-                                    <input type="radio" class="custom-control-input" name="payment" id="banktransfer"
-                                        value="Paypal">
-                                    <label class="custom-control-label" for="banktransfer">Paypal</label>
+                                        value="Online Payment">
+                                    <label class="custom-control-label" for="directcheck">Online Payment</label>
                                 </div>
                             </div>
                         </div>
@@ -131,13 +209,123 @@
                                 value="Place Order">
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
-        </form>
+        </div>
     </div>
     <!-- Checkout End -->
 
     {{> userfooter}}
+
+    <script>
+        $("#place-order").submit((e) => {
+            e.preventDefault()
+            let selectedAddress
+            let addresses = document.querySelectorAll('input[name="id"]')
+
+            for(address of addresses){
+                if(address.checked){
+                    selectedAddress = address.value
+                    break
+                }
+            }
+            console.log(selectedAddress)
+            $.ajax({
+                url: '/user_order',
+                method: 'post',
+                data: $('#place-order').serialize() + "&id=" + selectedAddress,
+                success: (response) => {
+                    if (response.codSuccess) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Order Success',
+                            customClass: 'swal-wide',
+                            showConfirmButton: false,
+                            timer: 1000
+                        }).then((result) => {
+                            location.href = '/order_success'
+                        })
+                    } else {
+                        if (response.order == null) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Connection Failed',
+                                text: 'Please Check the Internet Connection!',
+                                customClass: 'swal-wide',
+                            })
+                        } else {
+                            razorpayPayment(response)
+                        }
+                    }
+                }
+            })
+        })
+
+        function razorpayPayment(Payment) {
+            var options = {
+                "key": "rzp_test_1Pl9Fu2TCeC5Vk", // Enter the Key ID generated from the Dashboard
+                "amount": Payment.order.totalLast, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                "currency": "INR",
+                "name": "D OR Laro ",
+                "description": "Complete Your Transaction",
+                "image": "/images/logo.png",
+                "order_id": Payment.order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                "handler": function (response) {
+                    verifyPayment(response, Payment.order)
+                },
+                "prefill": {
+                    "name": Payment.userOrder.Address.firstName + " " + Payment.userOrder.Address.lastName,
+                    "email": Payment.user.userEmail,
+                    "contact": Payment.userOrder.Address.mobileNo
+                },
+                "notes": {
+                    "address": "D OR Laro Sports Hub"
+                },
+                "theme": {
+                    "color": "#3399cc"
+                }
+            };
+            var rzp1 = new Razorpay(options);
+            rzp1.open();
+        }
+
+        function verifyPayment(payment, order) {
+            $.ajax({
+                url: '/verify_payment',
+                data: {
+                    payment: payment,
+                    orders: order
+                },
+                method: 'post',
+                success: (response) => {
+                    if (response.status) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Payment Success',
+                            showConfirmButton: false,
+                            customClass: 'swal-wide',
+                            timer: 1000
+                        }).then((result) => {
+                            location.href = '/order_success'
+                        })
+                    } else {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: 'Payment Failed',
+                            showConfirmButton: false,
+                            customClass: 'swal-wide',
+                            timer: 1000
+                        }).then((result) => {
+                            location.reload()
+                        })
+                    }
+                }
+            })
+        }
+    </script>
 
 </body>
 

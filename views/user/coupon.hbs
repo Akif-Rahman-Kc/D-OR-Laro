@@ -1,0 +1,48 @@
+{{> layout}}
+
+<body>
+
+    {{> usernavbar}}
+
+    <!-- Cart Start -->
+    <div class="container top-align">
+        <div class="row px-xl-3">
+
+            <div class="col-md-12">
+                <h2 class="main-heading text-center mb-10 font-weight-bold">My Coupons</h2>
+                <hr>
+                {{#if empty}}
+                <div class="text-center text-dark m-auto">
+                        <i style="font-size: 8rem;color: #bbb6b6;" class="fas fa-exclamation-circle mt-4"></i>
+                        <h1 style="font-size: 2.7rem;color: #bbb6b6;" class="font-weight-bold mt-4">Coupon Not
+                            Available</h1>
+                    </div>
+                {{else}}
+                <div class="p-5">
+                    {{#each user.Coupon}}
+                    <div class="w-100 border p-4 d-flex coup-div mt-4">
+                        <div class="w-75">
+                        <h5 class="font-weight-bold">{{this.couponName}}-<span>{{this.percentage}}%</span></h5>
+                        <p>{{this.couponDes}}</p>
+                        <label style="border-radius: 0.7rem" class="border w-100" for="">
+                            <p class="m-2 text-center text-dark font-weight-bold">{{this.couponCode}}</p>
+                        </label>
+                        </div>
+                        <div class="ml-auto w-25 pl-5">
+                            <h6 class="font-weight-bold">Start Date</h6>
+                            <p class="text-success">25/06/2022</p>
+                            <h6 class="font-weight-bold">End Date</h6>
+                            <p class="text-danger">25/06/2022</p>
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+    <!-- Cart End -->
+
+    {{> userfooter}}
+
+</body>

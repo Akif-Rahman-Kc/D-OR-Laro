@@ -5,16 +5,16 @@ const schema = mongoose.Schema;
 const adminSchema = new schema({
   adminEmail : {
         type: String,
-        required: [true,'Please enter your Email'],
+        required: true,
         trim: true
       },
     adminPass:{
         type: String,
-        required: [true,'Please enter the Password'],
-        minlength: [6,'Minimum Password Length is 6 Charcter'],
+        required: true,
+        minlength: 6,
         trim: true
       }
-});
+},{ timestamps: true });
 
 
 

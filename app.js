@@ -3,9 +3,12 @@ const express = require('express');
 const hbs = require('hbs');
 const path = require('path');
 const logger = require('morgan');
+const bodyParser = require('body-parser')
 const session = require('express-session');
 const flash = require('express-flash')
 const dbconnection = require('./models/dbConnection');
+const dotenv = require('dotenv')
+dotenv.config();
 
 const userRouter = require('./routes/user');
 const adminRouter = require('./routes/admin');
@@ -21,6 +24,7 @@ hbs.registerPartials(layoutPath)
 const oneDay = 1000 * 60 * 60 * 24;
 app.use(session({ secret: "dorlaro",cookie: { maxAge: oneDay },resave: true,saveUninitialized: true }));
 app.use(flash());
+app.use( bodyParser.urlencoded({ extended: true }) );
 
 // cache clear
 

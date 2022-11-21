@@ -16,7 +16,7 @@ const upload = multer({
   fileFilter: multerFilter
 });
 
-const uploadFiles = upload.array("PImage",6);
+const uploadFiles = upload.array("imgCategory");
 
 const uploadImages = (req, res, next) => {
   uploadFiles(req, res, err => {
@@ -32,22 +32,6 @@ const uploadImages = (req, res, next) => {
   });
 };
 
-// const uploadFile = upload.single("imgCategory");
-
-// const uploadImage = (req, res, next) => {
-//   uploadFile(req, res, err => {
-//     if (err instanceof multer.MulterError) {
-//       if (err.code === "LIMIT_UNEXPECTED_FILE") {
-//         return res.send("Too many files to upload.");
-//       }
-//     } else if (err) {
-//       return res.send(err);
-//     }
-
-//     next();
-//   });
-// };
-
 const resizeImages = async (req, res, next) => {
   if (!req.files) return next();
 
@@ -55,14 +39,14 @@ const resizeImages = async (req, res, next) => {
   await Promise.all(
     req.files.map(async file => {
       const filename = file.originalname.replace(/\..+$/, "");
-      const newFilename = `${file.fieldname}-${Date.now()}.jpeg`;
+      const newFilename = `${file.fieldname}-${Date.now()}-${Math.random()}.jpeg`;
 
       await sharp(file.buffer)
-        .resize(650, 650)
+        .resize(300, 300)
         .toFormat("jpeg")
         .jpeg({ quality: 90 })
-        .toFile(`./public/img/${newFilename}`);
-
+        .toFile(`./public/images/${newFilename}`);
+        console.log(newFilename);
       req.body.images.push(newFilename);
     })
   );
@@ -72,6 +56,5 @@ const resizeImages = async (req, res, next) => {
 
 module.exports = {
   uploadImages: uploadImages,
-  // uploadImage:uploadImage,
   resizeImages: resizeImages
 };

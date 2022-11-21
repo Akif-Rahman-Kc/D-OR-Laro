@@ -6,10 +6,17 @@
 
     <!-- Cart Start -->
     <div class="container-fluid top-align">
+        <h2 class="main-heading text-center mb-10 font-weight-bold pb-3">My Cart</h2>
+        <hr>
         <div class="row px-xl-5">
-            <div class="col-lg-8 table-responsive mb-5">
+            {{#if empty}}
+            <div style="width: auto; height: auto;padding-left: 31%;" class="text-center pt-2">
+                <img class="img-fluid" src="/images/emptycart.png" alt="">
+            </div>
+            {{else}}
+            <div class="col-lg-8 table-responsive mb-5" style="height: 27rem;">
                 <table class="table table-bordered text-center mb-0">
-                    <thead class="bg-secondary text-dark">
+                    <thead class="bg-secondary text-dark" style="height: auto;">
                         <tr>
                             <th>Products</th>
                             <th>Color</th>
@@ -20,21 +27,34 @@
                             <th>Remove</th>
                         </tr>
                     </thead>
-                    {{#if empty}}
-                    <div style="width: auto; height: auto;position: absolute;padding-left: 22%;" class="text-center pt-5">
-                        <img class="img-fluid" src="/images/emptycart.png" alt="">
-                    </div>
-                    {{else}}
                     <tbody class="align-middle">
                         {{#each user.Cart}}
                         <tr>
-                            <td class="align-middle"><img src="/images/{{this.PImage.[0].filename}}" alt=""
+                            <td class="align-middle"><img src="/images/{{this.PImage.[0]}}" alt=""
                                     style="width: 50px;"><br><span style="font-size: 0.8rem;">{{this.PName}}</span></td>
                             <td class="align-middle">{{this.PColor}}</td>
                             <td class="align-middle">{{this.PSize}}</td>
                             <td class="align-middle">${{this.PPrice}}</td>
                             <td class="align-middle">
+                                {{#if ../user.applyCoupon}}
                                 <div class="input-group quantity mx-auto" style="width: 100px;">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-sm btn-primary" hidden id="break-minus"
+                                            onclick="counting('{{this.item_id}}','{{this.PPrice}}','-1')">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                    </div>
+                                    <span class="form-control form-control-sm bg-secondary text-center"
+                                        id="{{this.item_id}}">{{this.quantity}}</span>
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-sm btn-primary" hidden id="break-plus"
+                                            onclick="counting('{{this.item_id}}','{{this.PPrice}}','1')">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                {{else}}
+                                 <div class="input-group quantity mx-auto" style="width: 100px;">
                                     <div class="input-group-btn">
                                         <button class="btn btn-sm btn-primary" id="break-minus"
                                             onclick="counting('{{this.item_id}}','{{this.PPrice}}','-1')">
@@ -50,23 +70,41 @@
                                         </button>
                                     </div>
                                 </div>
+                                {{/if}}
                             </td>
                             <td class="align-middle text-danger">${{this.PDiscount}}</td>
-                            <td class="align-middle"><button onclick="removeCart('{{this.item_id}}')"
+                            {{#if ../user.applyCoupon}}
+                                 <td class="align-middle"><button hidden onclick="removeCart('{{this.item_id}}')"
                                     class="btn btn-sm btn-primary"><i class="fa fa-times"></i></button></td>
+                            {{else}}
+                                <td class="align-middle"><button onclick="removeCart('{{this.item_id}}')"
+                                    class="btn btn-sm btn-primary"><i class="fa fa-times"></i></button></td>
+                            {{/if}}
+                            
                         </tr>
                         {{/each}}
                     </tbody>
-                    {{/if}}
                 </table>
             </div>
             <div class="col-lg-4">
-                <form class="mb-5" action="">
+                <form class="mb-5" action="" id="verify-coupon" method="post">
                     <div class="input-group">
-                        <input type="text" class="form-control p-4" placeholder="Coupon Code">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary">Apply Coupon</button>
-                        </div>
+                        <input type="text" class="form-control p-4" name="CouponCode" placeholder="Apply Coupon Code">
+                        {{#if applyCoupon}}
+                             <div class="input-group-append">
+                                <button style="height: 3rem;" class="btn btn-danger">Remove Coupon</button>
+                            </div>
+                        {{else}}
+                             <div class="input-group-append">
+                                <button style="height: 3rem;" class="btn btn-primary">Apply Coupon</button>
+                            </div>
+                        {{/if}}
+                            <div class="input-group-append d-none" id="remove">
+                                <button style="height: 3rem;" class="btn btn-danger">Remove Coupon</button>
+                            </div>
+                             <div class="input-group-append d-none" id="apply">
+                                <button style="height: 3rem;" class="btn btn-primary">Apply Coupon</button>
+                            </div>
                     </div>
                 </form>
                 <div class="card border-secondary mb-5">
@@ -83,11 +121,17 @@
                         <hr>
                         <div class="d-flex justify-content-between">
                             <h6 class="font-weight-medium">Sub Total</h6>
-                            <h6 style="font-size: 1.1rem;" class="font-weight-bold">$<span id="total">{{totalAmount}}</span></h6>
+                            <h6 style="font-size: 1.1rem;" class="font-weight-bold">$<span
+                                    id="total">{{totalAmount}}</span></h6>
                         </div>
                         <div class="d-flex justify-content-between">
                             <h6 class="font-weight-medium">Discount</h6>
-                            <h6 class="font-weight-medium text-danger">$<span id="discount">{{discountPrice}}</span></h6>
+                            <h6 class="font-weight-medium text-danger">-$<span id="discount">{{discountPrice}}</span>
+                            </h6>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <h6 class="font-weight-medium">Coupon Discount</h6>
+                            <h6 class="font-weight-medium text-success" id="coupon-discount">{{couponDiscount}}%</h6>
                         </div>
                         <div class="d-flex justify-content-between">
                             <h6 class="font-weight-medium">Delivery</h6>
@@ -103,10 +147,80 @@
                     </div>
                 </div>
             </div>
+            {{/if}}
         </div>
     </div>
     <!-- Cart End -->
 
     {{> userfooter}}
+
+    <script>
+        $("#verify-coupon").submit((e) => {
+            e.preventDefault()
+            const total = document.getElementById('lastPrice').innerHTML
+            console.log(total)
+            $.ajax({
+                url: '/coupon_verify',
+                method: 'post',
+                data: $('#verify-coupon').serialize() + "&amountTotal=" + total,
+                success: (response) => {
+                    if (response.success) {
+                        console.log(response.success.totalLast)
+                        console.log(response.success.percentage)
+                        document.getElementById('coupon-discount').innerHTML = response.success.percentage +'%'
+                        document.getElementById('lastPrice').innerHTML = response.success.totalLast
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Received the Coupon',
+                            customClass: 'swal-wide',
+                            showConfirmButton: false,
+                            timer: 1000
+                        })
+                        location.reload()
+                    } else if (response.maxRadeem) {
+                        console.log(response.maxRadeem)
+                        Swal.fire(
+                            'Sorry!',
+                            `Maximum radeem amount is ${response.maxRadeem}`,
+                            'error'
+                        )
+                    }else if (response.minCart) {
+                        console.log(response.minCart)
+                        Swal.fire(
+                            'Sorry!',
+                            `Minimum cart amount is ${response.minCart}`,
+                            'error'
+                        )
+                    }else if (response.minCart) {
+                        Swal.fire(
+                            'Sorry!',
+                            'This coupon date is expired',
+                            'error'
+                        )
+                    }else if (response.exist) {
+                        Swal.fire(
+                            'Sorry!',
+                            'This coupon already used',
+                            'error'
+                        )
+                    }else if (response.removeCoupon) {
+                        Swal.fire(
+                            'Coupon code Removed',
+                            'Not use the Coupon',
+                            'success'
+                        )
+                        location.reload()
+                    }else{
+                        Swal.fire(
+                            'Sorry!',
+                            'This coupon Invalid',
+                            'error'
+                        )
+                    }
+                }
+            })
+        })
+    </script>
 
 </body>

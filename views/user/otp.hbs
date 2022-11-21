@@ -1,31 +1,117 @@
 {{> layout}}
 
 <body>
-    
-    {{> usernavbar}}
 
-    <!-- Login Start -->
-    <div class="container top-align">
-        <div class="row">
-          <div class="col-sm-9 col-md-7 col-lg-5 mx-auto mt-5">
-            <div class="card card-signin my-5">
-              <div class="card-body">
-                <form  class="form-signin">
-                  <div class="form-label-group">
-                    <label  class="mt-4" for="inputEmail">Enter Your OTP Number</label>
-                    <input type="text" id="inputEmail" class="form-control" name="OTP" placeholder="OTP Number">
+  {{> usernavbar}}
+
+  <!-- Login Start -->
+  <div class="container top-align">
+    <div class="row">
+      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto mt-5">
+        <div class="card card-signin my-5">
+          <div class="card-body">
+            <form action="/verify_otp" method="post">
+              <div class="form-label-group">
+                <label class="mt-4" for="inputEmail">Enter Your OTP Number</label>
+                {{!-- <input type="text" id="inputEmail" class="form-control" name="OTP" placeholder="OTP Number"> --}}
+                  <div id="otp" class="inputs d-flex flex-row justify-content-center mt-2">
+                    <input class="m-2 text-center form-control rounded" type="text" inputmode="numeric" name="No1" maxlength="1" autofocus />
+                    <input class="m-2 text-center form-control rounded" type="text" inputmode="numeric" name="No2" maxlength="1" />
+                    <input class="m-2 text-center form-control rounded" type="text" inputmode="numeric" name="No3" maxlength="1" />
+                    <input class="m-2 text-center form-control rounded" type="text" inputmode="numeric" name="No4" maxlength="1" />
+                    <input class="m-2 text-center form-control rounded" type="text" inputmode="numeric" name="No5" maxlength="1" />
+                    <input class="m-2 text-center form-control rounded" type="text" inputmode="numeric" name="No6" maxlength="1" />
                   </div>
-    
-                  <button class="btn btn-lg btn-primary btn-block text-uppercase mt-5" type="submit">Rgister</button>
-                </form>
+                  <label style="font-size: 0.8rem;" class="text-danger" for="">{{otpErr}}</label>
               </div>
-            </div>
+              <button class="btn btn-lg btn-primary btn-block text-uppercase mt-5" type="submit">Send Otp</button>
+            </form>
           </div>
         </div>
       </div>
-    <!-- Login End -->
+    </div>
+  </div>
+  <!-- Login End -->
 
-    {{> userfooter}}
+  {{> userfooter}}
+
+  <script>
+    const otpForm = document.getElementById("otp");
+  const submitHandler = (event) => {
+    const {
+      first,
+      second,
+      third,
+      fourth,
+      state
+    } = event.currentTarget;
+    const otp = first.value + second.value + third.value + fourth.value;
+
+    
+    fetch("https://www.example.com", {
+      method: "POST",
+      body: new URLSearchParams({
+        otp,
+        state: state.value
+      })
+    });
+  };
+  // Collect all the input elements first
+  const inputElements = document.querySelectorAll("input[inputmode='numeric']");
+  const inputElementsArray = [...inputElements];
+  // Adding keyup event handler to manage traversing the focus
+  otpForm.addEventListener("keyup", (event) => {
+    const activeElmIdx = inputElementsArray.indexOf(event.target);
+    const nextElementIdx = activeElmIdx + 1;
+    const {
+      key
+    } = event;
+    if (key === "Tab" || key === "Shift") {
+      // return early and let the event propogates normally to have default action
+      return;
+    }
+    if (key === "Backspace") {
+      // backspace is pressed
+      document.activeElement.value = ""; // clear the input value
+      if (activeElmIdx !== 0) {
+        inputElementsArray[activeElmIdx - 1].focus();
+        inputElementsArray[activeElmIdx - 1].value = ""; // also clear the value
+      }
+      return;
+    }
+    if (key === "ArrowRight") {
+      // move the focus to the right
+      inputElementsArray[activeElmIdx + 1]?.focus();
+      return;
+    }
+    if (key === "ArrowLeft") {
+      // move the focus to the right
+      inputElementsArray[activeElmIdx - 1]?.focus();
+      return;
+    }
+    if (
+      nextElementIdx < inputElementsArray.length &&
+      document.activeElement.value !== ""
+    ) {
+      inputElementsArray[nextElementIdx].focus();
+    }
+    // If all the inputs have the value, we can submit the form
+    if (shouldSubmitForm()) {
+      submitHandler(event);
+    }
+  });
+  // Handling keydown events to avoid enter value other than a digit
+  otpForm.addEventListener("keydown", (event) => {
+    if (event.key === "Tab" || event.key === "Shift") {
+      // return early and let the event propogates normally to have default action
+      return;
+    }
+    const isNumber = /^[0-9]$/i.test(event.key);
+    if (!isNumber) {
+      event.preventDefault();
+    }
+  });
+  </script>
 
 </body>
 

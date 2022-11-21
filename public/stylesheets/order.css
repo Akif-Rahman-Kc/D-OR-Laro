@@ -60,7 +60,6 @@
     justify-content: center;
     -webkit-box-pack: justify;
     -ms-flex-pack: justify;
-    justify-content: space-between
 }
 
 .orderlist-filter h5 {
@@ -298,12 +297,12 @@
 }
 
 .order-track-item.active::before {
-    background: var(--blue)
+    background: var(--green)
 }
 
 .order-track-item.active i {
     color: var(--white);
-    background: var(--blue)
+    background: var(--green)
 }
 
 .order-track-item.active span {
@@ -488,6 +487,11 @@ tbody tr td:last-child {
 .table-action .trash i:hover {
     color: var(--white);
     background: var(--red)
+}
+
+.swal-wide{
+    width:300px !important;
+    font-size: 12px !important;
 }
 
 @media (max-width: 1199px) {

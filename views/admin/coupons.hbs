@@ -1,0 +1,150 @@
+{{> adminlayout}}
+
+<body>
+    {{> adminnavbar}}
+
+    <div class="w-100 text-center p-1 text-white bg-info">
+        <h5>COUPONS</h5>
+    </div>
+    <!-- Product start -->
+    <!-- Button trigger modal -->
+    <a class="w-25 m-3 btn btn-success block-btn font-weight-bold" data-bs-toggle="modal"
+        data-bs-target="#staticBackdrop">
+        ADD COUPON
+    </a>
+
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title" id="staticBackdropLabel">Create Coupon</h1>
+                </div>
+                <div class="modal-body">
+                    <form action="/admin_panel/add_coupon" method="post">
+                        <div class="form-group">
+                            <label class="text-dark font-weight-bold m-0" for="">Coupon Name</label>
+                            <input type="text" class="form-control border pe-2 ps-2" id="" placeholder="Coupon Name"
+                                name="couponName" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="text-dark font-weight-bold m-0" for="">Coupon Description</label>
+                            <input type="text" class="form-control border pe-2 ps-2" id="" placeholder="Coupon Description"
+                                name="couponDes" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="text-dark font-weight-bold m-0" for="">Coupon Code</label>
+                            <input type="text" class="form-control border pe-2 ps-2" id="" placeholder="Coupon Code"
+                                name="couponCode" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="text-dark font-weight-bold m-0" for="">Percentage</label>
+                            <input type="number" class="form-control border pe-2 ps-2" id="" placeholder="Coupon amount"
+                                name="percentage" required>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label class="text-dark font-weight-bold m-0" for="">Min.Cart Amount</label>
+                                    <input type="number" class="form-control border pe-2 ps-2" id=""
+                                        placeholder="Min.Cart Amount" name="minCartAmount" required>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label class="text-dark font-weight-bold m-0" for="">Max.Radeem Amount</label>
+                                    <input type="number" class="form-control border pe-2 ps-2" id=""
+                                        placeholder="Min.Radeem Amount" name="maxRadeemAmount" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="text-dark font-weight-bold m-0" for="">Start Date</label>
+                                    <input type="date" class="form-control border pe-2 ps-2" id=""
+                                        placeholder="start date" name="startDate" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="text-dark font-weight-bold m-0" for="">Expiry Date</label>
+                                    <input type="date" class="form-control border pe-2 ps-2" id=""
+                                        placeholder="expiry date" name="expiryDate" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary font-weight-bold">Create
+                                Coupon</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <table id="coupon" class="table table-striped table-bordered text-center font-weight-bold w-100"
+            style="font-size: 0.8rem;">
+            <thead>
+                <tr>
+                    <th scope="col">NO</th>
+                    <th scope="col">COUPON NAME</th>
+                    <th scope="col">COUPON CODE</th>
+                    <th scope="col">COUPON PERCENTAGE</th>
+                    <th scope="col">EXPIRY DATE</th>
+                    <th scope="col">MIN.CART AMOUNT</th>
+                    <th scope="col">MAX.RADEEM AMOUNT</th>
+                    <th scope="col">OPTIONS</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each coupon}}
+                <tr>
+                    <th scope="row">{{@index}}</th>
+                    <td>{{this.couponName}}</td>
+                    <td>{{this.couponCode}}</td>
+                    <td>{{this.percentage}}%</td>
+                    <td>{{this.expiryDate}}</td>
+                    <td>${{this.minCartAmount}}</td>
+                    <td>${{this.maxRadeemAmount}}</td>
+                    <td class="d-flex">
+                        <a class="btn btn-success text-white">Edit</a>
+                        <a class="btn btn-danger text-white ml-1">Delete</a>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+    <!-- Product end -->
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap4.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#coupon').DataTable();
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/javascripts/moment.min.js"></script>
+    <!-- https://momentjs.com/ -->
+    <script src="/javascripts/Chart.min.js"></script>
+    <!-- http://www.chartjs.org/docs/latest/ -->
+    <script src="/javascripts/bootstrap.min.js"></script>
+    <!-- https://getbootstrap.com/ -->
+    <script src="/javascripts/tooplate-scripts.js"></script>
+    <script>
+  </body >

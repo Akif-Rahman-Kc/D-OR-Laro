@@ -33,7 +33,7 @@
                                 STUFF</h6>
                             <div class="d-grid pl-5 mt-3" style="font-size: 14px;">
                                 <a href="/orders">My Orders</a>
-                                <a href="">My Coupons</a>
+                                <a href="/coupons">My Coupons</a>
                                 <a href="/cart">My Cart</a>
                                 <a href="/wishlist">My Wishlist</a>
                             </div>
@@ -41,30 +41,32 @@
                     </div>
                 </div>
                 <div class="w-75 ml-5 bg-secondary pt-5 pl-5">
-                    <div>
-                        <form action="" method="post">
+                    <form action="user_profile_edit" method="post">
+                        <div>
                             <h6>PERSONAL INFORMATIONS</h6>
                             <div class="d-flex mt-5">
-                                <input class=" w-25 border bg-white pl-2" type="text" value="{{user.userFName}}">
-                                <input class="w-25 ml-4 border bg-white pl-2" type="text" value="{{user.userLName}}">
+                                <input class=" w-25 border bg-white pl-2" name="userFName" type="text" value="{{user.userFName}}">
+                                <input class="w-25 ml-4 border bg-white pl-2" name="userLName" type="text" value="{{user.userLName}}">
                             </div>
                             <div class="d-flex mt-4">
-                                <input style="width:53%;" class="border bg-white pl-2" type="email"
+                                <input style="width:53%;" class="border bg-white pl-2" name="userEmail" type="email"
                                     value="{{user.userEmail}}">
                             </div>
+                            <label style="font-size: 0.8rem;" class="text-danger" for="">{{Existerror}}</label>
                             <div class="d-flex mt-4">
-                                <input style="width:53%;" class="border bg-white pl-2" type="text"
+                                <input style="width:53%;" class="border bg-white pl-2" name="userPhoneNo" type="text"
                                     value="+91 9562696976">
                             </div>
                             <input
                                 class="w-25 btn btn-primary btn-block border-0 font-weight-bold float-right mr-5 mt-3"
                                 type="submit" value="EDIT PROFILE">
-                        </form>
-                    </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-    </div> <!-- Account Details End -->
+    </div> 
+    <!-- Account Details End -->
 
     {{> userfooter}}
 

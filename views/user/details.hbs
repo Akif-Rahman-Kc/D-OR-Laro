@@ -13,6 +13,7 @@
         rel="stylesheet">
 
     {{!-- ajax --}}
+    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="/javascripts/ajax.js"></script>
 
@@ -20,11 +21,11 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
 
     <!-- Magic Zoom Plus -->
-    <script src="/magiczoomplus/magiczoomplus.js"></script>
-    <link href="/magiczoomplus/magiczoomplus.css" rel="stylesheet">
+    <script src="/javascripts/jquery.min.js"></script>
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="/stylesheets/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="/stylesheets/etalage.css">
 </head>
 
 </html>
@@ -34,37 +35,38 @@
     {{> usernavbar}}
 
     <!-- Shop Detail Start -->
-    <div class="container-fluid top-align">
+    <div class="container top-align">
         <div class="row px-xl-5">
             <div class="col-lg-5 pb-5">
                 <div class="">
                     <!-- Gallery -->
-                    <div class="">
-                        <div id="" style="height: 27rem;" class="text-center w-100">
-                            <a href="/images/{{product.PImage.[0].filename}}" class="MagicZoom"
-                                data-options="zoomWidth:100%; zoomHeight:100%"><img style="width: 100%;height: 27rem;"
-                                    class="img-fluid" src="/images/{{product.PImage.[0].filename}}" /></a>
-                        </div>
-                        <div style="height: 7rem;" class="d-flex">
-                            <div style="height: 7rem;" class="col-3">
-                                <img class="img-fluid" id="" src="/images/{{product.PImage.[1].filename}}" />
-                            </div>
-                            <div style="height: 7rem;" class="col-3">
-                                <img class="img-fluid" id="" src="/images/{{product.PImage.[2].filename}}" />
-                            </div>
-                            <div style="height: 7rem;" class="col-3">
-                                <img class="img-fluid" id="" src="/images/{{product.PImage.[3].filename}}" />
-                            </div>
-                            <div style="height: 7rem;" class="col-3">
-                                <img class="img-fluid" id="" src="/images/{{product.PImage.[4].filename}}" />
-                            </div>
-                        </div>
-                    </div>
+                    <div class="details-left-slider">
+						<ul id="etalage">
+							<li>
+								<a href="optionallink.html">
+									<img class="etalage_thumb_image" src="/images/{{product.PImage.[0]}}" />
+									<img class="etalage_source_image" src="/images/{{product.PImage.[0]}}" />
+								</a>
+							</li>
+							<li>
+								<img class="etalage_thumb_image" src="/images/{{product.PImage.[1]}}" />
+								<img class="etalage_source_image" src="/images/{{product.PImage.[1]}}" />
+							</li>
+							<li>
+								<img class="etalage_thumb_image" src="/images/{{product.PImage.[2]}}" />
+								<img class="etalage_source_image" src="/images/{{product.PImage.[2]}}" />
+							</li>
+							<li>
+								<img class="etalage_thumb_image" src="/images/{{product.PImage.[3]}}" />
+								<img class="etalage_source_image" src="/images/{{product.PImage.[3]}}" />
+							</li>
+						</ul>
+					</div>
                     <!-- Gallery -->
                 </div>
             </div>
 
-            <div class="col-lg-7 pb-5">
+            <div class="col-lg-7 pb-5" style="margin-top: 8rem;">
                 <h3 class="font-weight-semi-bold">{{product.PName}}</h3>
                 <div class="d-flex mb-3">
                     <div class="text-primary mr-2">
@@ -349,6 +351,29 @@
     <!-- Products End -->
 
     {{> userfooter}}
+
+    <script src="/javascripts/jquery.etalage.min.js"></script>
+
+    <script>
+						jQuery(document).ready(function($){
+			
+							$('#etalage').etalage({
+								thumb_image_width: 400,
+								thumb_image_height: 400,
+								source_image_width: 1000,
+								source_image_height: 1000,
+								show_hint: true,
+								click_callback: function(image_anchor, instance_id){
+									alert('Callback example:\nYou clicked on an image with the anchor: "'+image_anchor+'"\n(in Etalage instance: "'+instance_id+'")');
+								}
+							});
+							// This is for the dropdown list example:
+							$('.dropdownlist').change(function(){
+								etalage_show( $(this).find('option:selected').attr('class') );
+							});
+
+					});
+				</script>
 
 </body>
 

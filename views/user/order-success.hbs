@@ -19,7 +19,7 @@
        </thead>
        <tbody style="background:#ffff;padding:20px;">
          <tr>
-           <td colspan="4" class="p-3 text-left font-weight-bold text-dark">Hello, {{userOrder.Address.fName}} {{userOrder.Address.lName}}</td>
+           <td colspan="4" class="p-3 text-left font-weight-bold text-dark">Hello, {{userOrder.Address.firstName}} {{userOrder.Address.lastName}}</td>
          </tr>
          <tr>
            <td colspan="4" class="p-3 text-left">Your order details</td>
@@ -34,7 +34,7 @@
            <td>Shipping Address</td>
          </tr>
          <tr style="font-size:0.9rem; color:#262626;" class=" p-3 bg-white">
-           <td >{{userOrder.orderDate}}</td>
+           <td >{{userOrder.createdAt}}</td>
            <td >{{userOrder.paymentMethod}}</td>
            <td >{{userOrder.Address.locality}},{{userOrder.Address.city}}</td>
          </tr>
@@ -51,10 +51,10 @@
          </tr>
        </thead>
        <tbody class="border-bottom border-top">
-        {{#each user.Cart}}
+        {{#each userOrder.items}}
          <tr>
            <td style="width:10%; ">
-             <a href=""><img src="/images/{{this.PImage.[0].filename}}" style="width:100px;" /></a>
+             <a href=""><img src="/images/{{this.PImage.[0]}}" style="width:100px;" /></a>
            </td>
            <td style="width:20%;text-align: center;">{{this.PName}}</td>
            <td style="width:20%;text-align:center;"> {{this.PSize}}</td>
@@ -73,7 +73,7 @@
         </tr>
         <tr>
           <td></td>
-          <td class="text-danger" style="text-align:right;font-size:18px;">${{userOrder.discountPrice}}</td>
+          <td class="text-danger" style="text-align:right;font-size:18px;">-${{userOrder.discountPrice}}</td>
         </tr>
          <tr class="p-3 text-dark">
            <td style="font-size:23px;" class="font-weight-bold">Total</td>

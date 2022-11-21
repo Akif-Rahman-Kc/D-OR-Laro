@@ -2,9 +2,7 @@
 
 <body>
     {{#if alerts}}
-        <script>
-            alert("Your Account is Banned not Purchased the Product")
-        </script>
+    <p id="alertMsg" hidden>a</p>
     {{/if}}
     {{> usernavbar}}
 
@@ -14,21 +12,21 @@
             <div class="col-lg-9">
                 <div id="header-carousel" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner">
-                        <div class="carousel-item active" style="height: 410px;">
+                        <div class="carousel-item active" style="height: 485px;">
                             <img class="img-fluid" src="/images/carousal-1.jpg" alt="Image">
                             <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                                 <div class="p-3" style="max-width: 700px;">
                                     <h3 class="display-4 text-white font-weight-semi-bold mb-4">Football Boots</h3>
-                                    <a href="" class="btn btn-light py-2 px-3">Shop Now</a>
+                                    <a href="/shops" class="btn btn-light py-2 px-3">Shop Now</a>
                                 </div>
                             </div>
                         </div>
-                        <div class="carousel-item" style="height: 410px;">
+                        <div class="carousel-item" style="height: 485px;">
                             <img class="img-fluid" src="/images/carousal-2.jpeg" alt="Image">
                             <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                                 <div class="p-3" style="max-width: 700px;">
                                     <h3 class="display-4 text-white font-weight-semi-bold mb-4">Football Jersey</h3>
-                                    <a href="" class="btn btn-light py-2 px-3">Shop Now</a>
+                                    <a href="/shops" class="btn btn-light py-2 px-3">Shop Now</a>
                                 </div>
                             </div>
                         </div>
@@ -87,8 +85,8 @@
             {{#each categories}}
             <div class="col-lg-3 col-md-6 pb-1">
                 <div class="cat-item d-flex flex-column border mb-4" style="padding: 2rem;">
-                    <a href="" class="cat-img position-relative overflow-hidden mb-3">
-                        <img class="img-fluid" src="/images/{{this.imgCategory.[0].filename}}" alt="">
+                    <a href="/shops" class="cat-img position-relative overflow-hidden mb-3">
+                        <img class="img-fluid" src="/images/{{this.imgCategory.[0]}}" alt="">
                     </a>
                     <h5 class="font-weight-semi-bold m-0">{{this.Category}}</h5>
                 </div>
@@ -98,53 +96,38 @@
     </div>
     <!-- Categories End -->
 
-
-    <!-- Offer Start -->
-    <div class="container-fluid offer pt-5">
-        <div class="row px-xl-5">
-            <div class="col-md-6 pb-4 bg-img-1">
-                <div class="position-relative text-center text-md-right text-white mb-2 py-5 px-5">
-                    <div class="position-relative" style="z-index: 1;">
-                        <h5 class="text-uppercase text-primary mb-3">20% off</h5>
-                        <h1 class="mb-4 font-weight-semi-bold">Cloths</h1>
-                        <a href="" class="btn btn-outline-primary py-md-2 px-md-3">Shop Now</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 pb-4 bg-img-2">
-                <div class="position-relative text-center text-md-left text-white mb-2 py-5 px-5">
-                    <div class="position-relative" style="z-index: 1;">
-                        <h5 class="text-uppercase text-primary mb-3">20% off</h5>
-                        <h1 class="mb-4 font-weight-semi-bold">Shoes</h1>
-                        <a href="" class="btn btn-outline-primary py-md-2 px-md-3">Shop Now</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Offer End -->
-
-
     <!-- Products Start -->
     <div class="container-fluid pt-5">
         <div class="text-center mb-4">
-            <h2 class="section-title px-5"><span class="px-2">Trandy Products</span></h2>
+            <h2 class="section-title px-5"><span class="px-2">Latest Products</span></h2>
         </div>
         <div class="row px-xl-5 pb-3">
             {{#each products}}
             <div class="col-lg-2 col-md-4 col-sm-6 pb-1">
                 <div class="card product-item border-0 mb-4">
-                    <a href="/shops/details?_id={{this._id}}" class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                        <img class="img-fluid w-100" src="/images/{{this.PImage.[0].filename}}" alt="">
+                    
+                    {{#if this.fav}}
+                    <div class="d-flex bg-light border"id="add{{this._id}}">
+                        <a style="font-size: 1rem;" onclick="addToWishlist('{{this._id}}')"
+                            class="btn btn-sm text-danger font-weight-bold ml-auto"><i class="fas fa-heart"></i></i></a>
+                    </div>
+                    {{else}}
+                    <div class="d-flex bg-light border" id="remove{{this._id}}">
+                        <a style="font-size: 1rem;" onclick="addToWishlist('{{this._id}}')"
+                            class="btn btn-sm text-danger font-weight-bold ml-auto"><i class="far fa-heart"></i></a>
+                    </div>
+                    {{/if}}
+                    
+                    <a href="/shops/details?_id={{this._id}}"
+                        class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                        <img class="img-fluid w-100" src="/images/{{this.PImage.[0]}}" alt="">
                     </a>
                     <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                         <h6 class="text-truncate mb-3">{{this.PName}}</h6>
                         <div class="d-flex justify-content-center">
-                            <h6>${{this.PPrice}}</h6><h6 class="text-muted ml-2"><del>${{this.POldPrice}}</del></h6>
+                            <h6>${{this.PPrice}}</h6>
+                            <h6 class="text-muted ml-2"><del>${{this.POldPrice}}</del></h6>
                         </div>
-                    </div>
-                    <div class="card-footer d-flex bg-light border">
-                        <a style="font-size: 0.7rem;" onclick="addToWishlist('{{this._id}}')" class="btn btn-sm text-dark font-weight-bold"><i class="fas fa-heart text-primary mr-1"></i></i>Add To Wishlist</a>
                     </div>
                 </div>
             </div>
@@ -157,157 +140,10 @@
     <!-- More Products Start -->
     <div class="container-fluid bg-secondary my-5">
         <div class="text-center pt-5 pb-5">
-            <a href="#sports" class="btn btn-success">More Products</a>
+            <a href="/shops" class="btn btn-success">More Products</a>
         </div>
     </div>
     <!-- More Products End -->
-
-
-    <!-- Products Start -->
-    <div class="container-fluid pt-5">
-        <div class="text-center mb-4">
-            <h2 class="section-title px-5"><span class="px-2">Latest Products</span></h2>
-        </div>
-        <div class="row px-xl-5 pb-3">
-            <div class="col-lg-2 col-md-4 col-sm-6 pb-1">
-                <div class="card product-item border-0 mb-4">
-                    <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                        <img class="img-fluid w-100" src="/images/home-cloths.jpg" alt="">
-                    </div>
-                    <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                        <h6 class="text-truncate mb-3">Colorful Stylish Shirt</h6>
-                        <div class="d-flex justify-content-center">
-                            <h6>$123.00</h6><h6 class="text-muted ml-2"><del>$123.00</del></h6>
-                        </div>
-                    </div>
-                    <div class="card-footer d-flex justify-content-between bg-light border">
-                        <a style="font-size: 0.65rem;" href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                        <a style="font-size: 0.65rem;" href="" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-4 col-sm-6 pb-1">
-                <div class="card product-item border-0 mb-4">
-                    <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                        <img class="img-fluid w-100" src="/images/home-cloths.jpg" alt="">
-                    </div>
-                    <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                        <h6 class="text-truncate mb-3">Colorful Stylish Shirt</h6>
-                        <div class="d-flex justify-content-center">
-                            <h6>$123.00</h6><h6 class="text-muted ml-2"><del>$123.00</del></h6>
-                        </div>
-                    </div>
-                    <div class="card-footer d-flex justify-content-between bg-light border">
-                        <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                        <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-4 col-sm-6 pb-1">
-                <div class="card product-item border-0 mb-4">
-                    <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                        <img class="img-fluid w-100" src="/images/home-cloths.jpg" alt="">
-                    </div>
-                    <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                        <h6 class="text-truncate mb-3">Colorful Stylish Shirt</h6>
-                        <div class="d-flex justify-content-center">
-                            <h6>$123.00</h6><h6 class="text-muted ml-2"><del>$123.00</del></h6>
-                        </div>
-                    </div>
-                    <div class="card-footer d-flex justify-content-between bg-light border">
-                        <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                        <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-4 col-sm-6 pb-1">
-                <div class="card product-item border-0 mb-4">
-                    <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                        <img class="img-fluid w-100" src="/images/home-cloths.jpg" alt="">
-                    </div>
-                    <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                        <h6 class="text-truncate mb-3">Colorful Stylish Shirt</h6>
-                        <div class="d-flex justify-content-center">
-                            <h6>$123.00</h6><h6 class="text-muted ml-2"><del>$123.00</del></h6>
-                        </div>
-                    </div>
-                    <div class="card-footer d-flex justify-content-between bg-light border">
-                        <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                        <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-4 col-sm-6 pb-1">
-                <div class="card product-item border-0 mb-4">
-                    <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                        <img class="img-fluid w-100" src="/images/home-cloths.jpg" alt="">
-                    </div>
-                    <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                        <h6 class="text-truncate mb-3">Colorful Stylish Shirt</h6>
-                        <div class="d-flex justify-content-center">
-                            <h6>$123.00</h6><h6 class="text-muted ml-2"><del>$123.00</del></h6>
-                        </div>
-                    </div>
-                    <div class="card-footer d-flex justify-content-between bg-light border">
-                        <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                        <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-4 col-sm-6 pb-1">
-                <div class="card product-item border-0 mb-4">
-                    <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                        <img class="img-fluid w-100" src="/images/home-cloths.jpg" alt="">
-                    </div>
-                    <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                        <h6 class="text-truncate mb-3">Colorful Stylish Shirt</h6>
-                        <div class="d-flex justify-content-center">
-                            <h6>$123.00</h6><h6 class="text-muted ml-2"><del>$123.00</del></h6>
-                        </div>
-                    </div>
-                    <div class="card-footer d-flex justify-content-between bg-light border">
-                        <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                        <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-4 col-sm-6 pb-1">
-                <div class="card product-item border-0 mb-4">
-                    <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                        <img class="img-fluid w-100" src="/images/home-cloths.jpg" alt="">
-                    </div>
-                    <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                        <h6 class="text-truncate mb-3">Colorful Stylish Shirt</h6>
-                        <div class="d-flex justify-content-center">
-                            <h6>$123.00</h6><h6 class="text-muted ml-2"><del>$123.00</del></h6>
-                        </div>
-                    </div>
-                    <div class="card-footer d-flex justify-content-between bg-light border">
-                        <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                        <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-4 col-sm-6 pb-1">
-                <div class="card product-item border-0 mb-4">
-                    <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                        <img class="img-fluid w-100" src="/images/home-cloths.jpg" alt="">
-                    </div>
-                    <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                        <h6 class="text-truncate mb-3">Colorful Stylish Shirt</h6>
-                        <div class="d-flex justify-content-center">
-                            <h6>$123.00</h6><h6 class="text-muted ml-2"><del>$123.00</del></h6>
-                        </div>
-                    </div>
-                    <div class="card-footer d-flex justify-content-between bg-light border">
-                        <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                        <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Products End -->
 
 
     <!-- Brand Start -->
@@ -317,41 +153,53 @@
         </div>
         <div class="container">
             <div class="row">
-                    <div class="col-lg-1 col-md-2 border ml-3 mt-3">
-                        <img class="img-fluid" src="/images/brand-nike.png" alt="">
-                    </div>
-                    <div class="col-lg-1 col-md-2 border ml-3 mt-3">
-                        <img class="img-fluid" src="/images/brand-adidas.jpeg" alt="">
-                    </div>
-                    <div class="col-lg-1 col-md-2 border ml-3 mt-3">
-                        <img class="img-fluid" src="/images/brand-puma.png" alt="">
-                    </div>
-                    <div class="col-lg-1 col-md-2 border ml-3 mt-3">
-                        <img class="img-fluid" src="/images/brand-nivia.png" alt="">
-                    </div>
-                    <div class="col-lg-1 col-md-2 border ml-3 mt-3">
-                        <img class="img-fluid" src="/images/brand-yonex.jpeg" alt="">
-                    </div>
-                    <div class="col-lg-1 col-md-2 border ml-3 mt-3">
-                        <img class="img-fluid" src="/images/brand-cosco.png" alt="">
-                    </div>
-                    <div class="col-lg-1 col-md-2 border ml-3 mt-3">
-                        <img class="img-fluid" src="/images/brand-sega.jpg" alt="">
-                    </div>
-                    <div class="col-lg-1 col-md-2 border ml-3 mt-3">
-                        <img class="img-fluid" src="/images/brand-reebok.png" alt="">
-                    </div>
-                    <div class="col-lg-1 col-md-2 border ml-3 mt-3">
-                        <img class="img-fluid" src="/images/brand-umbro.png" alt="">
-                    </div>
-                    <div class="col-lg-1 col-md-2 border ml-3 mt-3">
-                        <img class="img-fluid" src="/images/brand-under-armour.png" alt="">
-                    </div>
+                <div class="col-lg-1 col-md-2 border ml-3 mt-3">
+                    <img class="img-fluid" src="/images/brand-nike.png" alt="">
+                </div>
+                <div class="col-lg-1 col-md-2 border ml-3 mt-3">
+                    <img class="img-fluid" src="/images/brand-adidas.jpeg" alt="">
+                </div>
+                <div class="col-lg-1 col-md-2 border ml-3 mt-3">
+                    <img class="img-fluid" src="/images/brand-puma.png" alt="">
+                </div>
+                <div class="col-lg-1 col-md-2 border ml-3 mt-3">
+                    <img class="img-fluid" src="/images/brand-nivia.png" alt="">
+                </div>
+                <div class="col-lg-1 col-md-2 border ml-3 mt-3">
+                    <img class="img-fluid" src="/images/brand-yonex.jpeg" alt="">
+                </div>
+                <div class="col-lg-1 col-md-2 border ml-3 mt-3">
+                    <img class="img-fluid" src="/images/brand-cosco.png" alt="">
+                </div>
+                <div class="col-lg-1 col-md-2 border ml-3 mt-3">
+                    <img class="img-fluid" src="/images/brand-sega.jpg" alt="">
+                </div>
+                <div class="col-lg-1 col-md-2 border ml-3 mt-3">
+                    <img class="img-fluid" src="/images/brand-reebok.png" alt="">
+                </div>
+                <div class="col-lg-1 col-md-2 border ml-3 mt-3">
+                    <img class="img-fluid" src="/images/brand-umbro.png" alt="">
+                </div>
+                <div class="col-lg-1 col-md-2 border ml-3 mt-3">
+                    <img class="img-fluid" src="/images/brand-under-armour.png" alt="">
+                </div>
             </div>
         </div>
     </div>
     <!-- Brand End -->
 
     {{> userfooter}}
+
+    <script>
+        let alerts = document.getElementById("alertMsg").innerHTML
+        if(alerts == "a"){
+            Swal.fire({
+                    icon: 'warning',
+                    title: 'Your Account is Banned',
+                    text: 'Your Account is Banned not Purchased the Product!',
+                    customClass: 'swal-wide',
+                })
+        }
+    </script>
 
 </body>

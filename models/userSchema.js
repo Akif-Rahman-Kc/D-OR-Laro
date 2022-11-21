@@ -20,7 +20,7 @@ const userSchema = new schema({
         trim: true
       },
       userPhoneNo:{
-        type: Number,
+        type: String,
         trim: true
       },
       userPass:{
@@ -36,12 +36,25 @@ const userSchema = new schema({
       Cart:{
         type: Array
       },
+      cartTotals : {
+        type: Object
+      },
       Address:{
         type: Array
       },
       Wishlist:{
         type: Array
       },
-});
+      Coupon:{
+        type: Array
+      },
+      applyCoupon : {
+        type: Boolean,
+        default:false
+      },
+      usedCoupon:{
+        type: Array
+      },
+},{ timestamps: true });
 
 module.exports = mongoose.model('users',userSchema);

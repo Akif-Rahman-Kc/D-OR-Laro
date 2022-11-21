@@ -3,62 +3,93 @@
 <body id="reportsPage">
   {{> adminnavbar}}
 
-  <div class="w-100 text-center p-3 text-white bg-info">
+  <div class="w-100 text-center p-1 text-white bg-info">
     <h5>ORDERS</h5>
   </div>
   <!-- Orders start -->
-  <div class="container">
-    <div class="row">
-      <table style="font-size: 0.8rem;" class="text-center table tm-table-small tm-product-table mt-2">
-        <thead>
-          <tr>
-            <th scope="col">NO</th>
-            <th scope="col">PRODUCT IMAGE</th>
-            <th scope="col">PRODUCT NAME</th>
-            <th scope="col">PRICE</th>
-            <th scope="col">ORDER DATE</th>
-            <th scope="col">ORDER STATUS</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>IMAGE 1</td>
-            <td>Nike Boot</td>
-            <td>3,450</td>
-            <td>28 March 2022</td>
-            <td>
-              <select style="width: 6.5rem;" class="custom-select bg-transparent border-0 tm-select-accounts" id="category" name="PSubCategory">
-                <option>Status</option>
-                <option class="text-danger">Pending</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <th scope="row">1</th>
-            <td>IMAGE 1</td>
-            <td>Nike Boot</td>
-            <td>3,450</td>
-            <td>28 March 2022</td>
-            <td class="text-success">Delivered</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <div class="container-fluid mt-4">
+    <table id="order" class="table table-striped table-bordered text-center font-weight-bold w-100"
+      style="font-size: 0.8rem;">
+      <thead>
+        <tr>
+          <th scope="col">NO</th>
+          <th scope="col">ORDER ID</th>
+          <th scope="col">CUSTOMER</th>
+          <th scope="col">AMOUNT</th>
+          <th scope="col">ORDER DATE</th>
+          <th scope="col">PAYMENT METHOD</th>
+          <th scope="col">PAYMENT STATUS</th>
+          <th scope="col">ORDER STATUS</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each order}}
+        <tr>
+          <th scope="row">{{this.no}}</th>
+          <td><a href="/admin_panel/order_details?id={{this._id}}">{{this._id}}</a></td>
+          <td>{{this.Address.firstName}} {{this.Address.lastName}}</td>
+          <td>{{this.totalLast}}/-</td>
+          <td>{{this.createdAt}}</td>
+          <td>{{this.paymentMethod}}</td>
+          <td class="text-success">{{this.paymentStatus}}</td>
+          <td>
+            <select id="OStatus{{@index}}" style="width: 7.5rem;" onchange="statusOrder('{{this._id}}','{{@index}}')"
+              class="custom-select font-weight-bold bg-transparent text-success border-0 tm-select-accounts"
+              name="orderStatus">
+              <option value="{{this.orderStatus}}">{{this.orderStatus}}</option>
+              <option class="text-dark font-weight-bold" value="Placed">Placed</option>
+              <option class="text-dark font-weight-bold" value="Processed">Processed</option>
+              <option class="text-dark font-weight-bold" value="Shipped">Shipped</option>
+              <option class="text-dark font-weight-bold" value="Delivered">Delivered</option>
+            </select>
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
   </div>
   <!-- Orders end -->
-
-  <footer class="tm-footer row tm-mt-small">
-    <div class="col-12 font-weight-light">
-      <p class="text-center text-white mb-0 px-4 small">
-        Copyright &copy; <b>2022</b> All rights reserved.
-      </p>
-    </div>
-  </footer>
   </div>
 
-  <script src="/javascripts/jquery-3.3.1.min.js"></script>
-  <!-- https://jquery.com/download/ -->
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap4.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <script>
+    function statusOrder(orderId, index) {
+      const status = $(`#OStatus${index}`).val()
+      console.log(orderId, status);
+      $.ajax({
+        url: '/admin_panel/status_change',
+        data: {
+          orderId,
+          status
+        },
+        method: 'post',
+        success: ((response) => {
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Order Changed',
+            customClass: 'swal-wide',
+            showConfirmButton: false,
+            timer: 1000
+          }).then(()=>{
+            location.reload()
+          })
+          
+        })
+      })
+
+    }
+  </script>
+
+  <script>
+    $(document).ready(function () {
+      $('#order').DataTable();
+    });
+  </script>
   <script src="/javascripts/moment.min.js"></script>
   <!-- https://momentjs.com/ -->
   <script src="/javascripts/Chart.min.js"></script>
@@ -66,11 +97,5 @@
   <script src="/javascripts/bootstrap.min.js"></script>
   <!-- https://getbootstrap.com/ -->
   <script src="/javascripts/tooplate-scripts.js"></script>
-  <script>
-    $(function () {
-      $(".tm-product-name").on("click", function () {
-        window.location.href = "edit-product.html";
-      });
-    });
-  </script>
+
 </body>

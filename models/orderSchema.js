@@ -12,8 +12,18 @@ const orderSchema = new schema({
         type: String,
         required: true,
         trim: true
+      }, 
+    items : {
+        type: Array,
+        required: true,
+        trim: true
       },
     paymentMethod : {
+        type: String,
+        required: true,
+        trim: true
+      },
+    paymentStatus : {
         type: String,
         required: true,
         trim: true
@@ -23,16 +33,26 @@ const orderSchema = new schema({
         required: true,
         trim: true
       },
+    totalProduct : {
+        type: Number,
+        required: true,
+        trim: true
+      },
     totalAmount : {
-        type: Object,
+        type: Number,
         required: true,
         trim: true
       },
-    orderDate : {
-        type: Date,
+    discountPrice : {
+        type: Number,
         required: true,
         trim: true
       },
-});
+    totalLast : {
+        type: Number,
+        required: true,
+        trim: true
+      },
+},{ timestamps: true });
 
 module.exports = mongoose.model('orders',orderSchema);

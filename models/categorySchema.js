@@ -5,20 +5,20 @@ const schema = mongoose.Schema;
 const categorySchema = new schema({
   Category : {
         type: String,
-        required: [true,'Please enter the category'],
+        required: true,
         trim: true
       },
     imgCategory:{
         type: Array,
-        required: [true,'Please upload image'],
+        required: true,
         trim: true
       },
     subCategory:{
         type: Array,
-        required: [true,'Please enter the sub category'],
+        required: true,
         trim: true
       }
-});
+},{ timestamps: true });
 
 
 

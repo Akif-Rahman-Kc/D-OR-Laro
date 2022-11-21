@@ -4,7 +4,7 @@ html {
 }
 body {
   font-family: Roboto, Helvetica, Arial, sans-serif;
-  background-color: #4e657a;
+  background-color: #cdc8c8;
   overflow-x: hidden;
 }
 a {
@@ -32,8 +32,8 @@ button:focus {
   color: #fff;
 }
 .navbar {
-  height: 100px;
-  background-color: #567086;
+  height: 60px;
+  background-color: #54657d;
   padding: 0;
 }
 .navbar .container {
@@ -56,9 +56,9 @@ button:focus {
 }
 .tm-block {
   padding: 40px;
-  -webkit-box-shadow: 1px 1px 5px 0 #455c71;
-  -moz-box-shadow: 1px 1px 5px 0 #455c71;
-  box-shadow: 1px 1px 5px 0 #455c71;
+  -webkit-box-shadow: 1px 1px 5px 0 #fff;
+  -moz-box-shadow: 1px 1px 5px 0 #fff;
+  box-shadow: 1px 1px 5px 0 #fff;
   min-height: 350px;
   height: 100%;
   max-height: 450px;
@@ -108,14 +108,14 @@ button:focus {
 .dropdown-menu {
   font-size: 90%;
   color: #fff;
-  background-color: #567086;
+  background-color: #fff;
   border-radius: 0;
   padding-top: 10px;
   padding-bottom: 10px;
   min-width: auto;
 }
 .dropdown-item {
-  color: #fff;
+  color: #000;
   padding: 15px 30px;
 }
 .navbar-nav .active > .nav-link,
@@ -128,11 +128,11 @@ button:focus {
 }
 .dropdown-item:focus,
 .dropdown-item:hover {
-  background-color: #567086;
+  background-color: #fff;
 }
 .navbar-nav a:hover,
 .navbar-nav a:hover i {
-  color: #f5a623;
+  color: #b6bbb9;
 }
 .nav-item {
   text-align: center;
@@ -176,8 +176,8 @@ button:focus {
 }
 .tm-notification-item {
   padding: 15px;
-  background-color: #4e657a;
-  color: #fff;
+  background-color: #fff;
+  color: #000;
   font-size: 95%;
   margin-bottom: 15px;
 }
@@ -194,8 +194,8 @@ button:focus {
   font-size: 90%;
 }
 .table {
-  background-color: #50697f;
-  color: #fff;
+  background-color: #fff;
+  color: #000;
   font-size: 85%;
   margin-bottom: 0;
 }
@@ -350,7 +350,7 @@ thead {
 }
 .table td,
 .table th {
-  border-top: 1px solid #415a70;
+  border-top: 1px solid #fff;
   padding: 15px 25px;
   vertical-align: middle;
 }
@@ -399,27 +399,6 @@ thead {
   background-color: #e9ecef;
   border-color: #dee2e6;
   color: #000;
-}
-input[type="checkbox"] {
-  cursor: pointer;
-  -webkit-appearance: none;
-  appearance: none;
-  background-color: #394e64;
-  background-position: center;
-  border-radius: 50%;
-  box-sizing: border-box;
-  position: relative;
-  box-sizing: content-box;
-  width: 24px;
-  height: 24px;
-  transition: all 0.1s linear;
-}
-input[type="checkbox"]:checked {
-  background: url(../img/check-mark.png) #394e64 center no-repeat;
-}
-input[type="checkbox"]:focus {
-  outline: 0 none;
-  box-shadow: none;
 }
 .tm-block-products {
   min-height: 725px;
@@ -599,9 +578,6 @@ input[type="checkbox"]:focus {
   .navbar-collapse {
     padding: 0;
     box-shadow: rgba(255, 255, 255, 0.1) 0 1px 1px 1px;
-    position: absolute;
-    top: 72px;
-    right: 20px;
     width: 200px;
     z-index: 1000;
   }
@@ -633,7 +609,7 @@ input[type="checkbox"]:focus {
     padding-right: 15px;
   }
   .navbar-collapse {
-    right: 15px;
+    right: 0px;
   }
 }
 @media (max-width: 991px) {
@@ -12675,9 +12651,14 @@ a.text-dark:hover {
   display: flex;
 }
 #galeria img{
-  width: 69px;
-  height: 69px;
+  width: 85px;
+  height: 84px;
   border-radius: 10px;
   box-shadow: 0 0 8px rgba(0,0,0,0.2);
   opacity: 85%;
+}
+
+.swal-wide{
+  width:300px !important;
+  font-size: 12px !important;
 }

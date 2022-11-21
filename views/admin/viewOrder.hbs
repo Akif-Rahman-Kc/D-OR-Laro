@@ -1,0 +1,77 @@
+{{> adminlayout}}
+
+<body>
+    
+    {{> adminnavbar}}
+
+    <div class="container top-align">
+  <div class="invoice-container mt-5" ref="document" id="html">
+     <table class="w-100 border">
+       <tbody style="background:#ffff;padding:20px;">
+         <tr>
+           <td colspan="4" class="p-3 text-left font-weight-bold text-dark">User Name : {{order.Address.firstName}} {{order.Address.lastName}}</td>
+         </tr>
+         <tr>
+           <td colspan="4" class="p-3 text-left font-weight-bold text-dark">User Mobile No. : {{order.Address.mobileNo}}</td>
+         </tr>
+       </tbody>
+     </table>
+     <table class="w-100 text-center p-3 border">
+       <tbody>
+         <tr style="color:#6c757d; font-size: 1rem;" class="font-weight-bold p-3 bg-light">
+           <td>Order Date</td>
+           <td>Payment</td>
+           <td>Shipping Address</td>
+         </tr>
+         <tr style="font-size:0.9rem; color:#262626;" class=" p-3 bg-white">
+           <td >{{order.createdAt}}</td>
+           <td >{{order.paymentMethod}}</td>
+           <td >{{order.Address.locality}},{{order.Address.city}}</td>
+         </tr>
+       </tbody>
+     </table>
+     <table class="w-100 text-center p-3 border">
+       <thead>
+         <tr style=" color: #6c757d;" class="p-3 bg-light font-weight-bold">
+           <td colspan="2" >PRODUCT INFORMATION</td>
+           <td >SIZE</td>
+           <td >COLOR</td>
+           <td >QUANTITY</td>
+           <td >PRICE</td>
+         </tr>
+       </thead>
+       <tbody class="border-bottom border" style="background-color: #fff;">
+        {{#each order.items}}
+         <tr>
+           <td style="width:10%; ">
+             <a href=""><img src="/images/{{this.PImage.[0]}}" style="width:100px;" /></a>
+           </td>
+           <td style="width:20%;text-align: center;">{{this.PName}}</td>
+           <td style="width:20%;text-align:center;"> {{this.PSize}}</td>
+           <td style="width:20%;text-align:center;"> {{this.PColor}}</td>
+           <td style="width:20%;10px;text-align: center;">{{this.quantity}}</td>
+           <td style="width:30%; ;font-weight: bold;">${{this.PPrice}}</td>
+         </tr>
+         {{/each}}
+       </tbody>
+     </table>
+     <table class="w-100 p-3 bg-light border">
+       <tbody>
+        <tr>
+          <td></td>
+          <td class=" text-dark pr-5" style="text-align:right;font-size:20px;">${{order.totalAmount}}</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td class="text-danger pr-5" style="text-align:right;font-size:18px;">-${{order.discountPrice}}</td>
+        </tr>
+         <tr class="p-3  text-dark border-top">
+           <td style="font-size:23px;" class="font-weight-bold p-4 mb-4">Total</td>
+           <td style="font-size:23px;text-align:right;" class="font-weight-bold pr-5 mb-4">${{order.totalLast}}</td>
+         </tr>
+       </tfoot>
+     </table>
+     <br>
+</div>
+</div>
+</body>

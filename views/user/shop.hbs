@@ -1,43 +1,13 @@
 {{> layout}}
 
 <body>
-    
+
     {{!-- Navbar Start --}}
     <div class="container-fluid p-0" style="position: fixed; z-index: 3;">
-        <div class="row bg-secondary py-2 px-xl-5">
-            <div class="col-lg-6 d-none d-lg-block">
-                <div class="d-inline-flex align-items-center">
-                    <a class="text-dark" href="">FAQs</a>
-                    <span class="text-muted px-2">|</span>
-                    <a class="text-dark" href="">Help</a>
-                    <span class="text-muted px-2">|</span>
-                    <a class="text-dark" href="">Support</a>
-                </div>
-            </div>
-            <div class="col-lg-6 text-center text-lg-right">
-                <div class="d-inline-flex align-items-center">
-                    <a class="text-dark px-2" href="">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
-                    <a class="text-dark px-2" href="">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                    <a class="text-dark px-2" href="">
-                        <i class="fab fa-linkedin-in"></i>
-                    </a>
-                    <a class="text-dark px-2" href="">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a class="text-dark pl-2" href="">
-                        <i class="fab fa-youtube"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
         <div class="row align-items-center py-3 px-xl-5 bg-light-green">
             <div class="col-lg-3 d-none d-lg-block">
                 <a href="" class="text-decoration-none">
-                    <img style="width: 45%;" src="/images/logo.png" alt="">
+                    <img style="width: 30%;" src="/images/logo.png" alt="">
                 </a>
             </div>
             <div class="col-lg-6 col-6 text-left">
@@ -53,7 +23,7 @@
                 </form>
             </div>
             <div class="col-lg-3 col-6 text-right">
-                <a href="profile.html" class="btn">
+                <a href="/user_profile" class="btn">
                     <i class="fas fa-user text-primary"></i>
                     <span class="badge">Profile</span>
                 </a>
@@ -71,12 +41,13 @@
             <div class="col-lg-9 p-0">
                 <nav class="navbar navbar-expand-lg navbar-light py-lg-0" style="background: aliceblue;">
                     <a href="" class="text-decoration-none d-block d-lg-none">
-                        <img style="width: 45%;" src="/images/logo.png" alt="">
+                        <img style="width: 30%;" src="/images/logo.png" alt="">
                     </a>
                     <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse"
+                        style="height: 2.5rem;">
                         <div class="navbar-nav mr-auto py-0">
                             <a href="/" class="nav-item nav-link font-weight-bold ml-4">HOME</a>
                             <a href="/shops" class="nav-item nav-link font-weight-bold ml-4">SHOPS</a>
@@ -87,23 +58,27 @@
                             <a style="font-size: 0.9rem;" href="/user_logout" class="nav-item nav-link">Logout</a>
                             {{else}}
                             <a style="font-size: 0.9rem;" href="/user_login" class="nav-item nav-link">Login</a>
-                            <a style="font-size: 0.9rem;" href="/user_registration" class="nav-item nav-link">Register</a>
+                            <a style="font-size: 0.9rem;" href="/user_registration"
+                                class="nav-item nav-link">Register</a>
                             {{/if}}
                         </div>
                     </div>
                 </nav>
             </div>
             <div class="col-lg-3 p-0">
-                <a class="btn shadow-none d-flex align-items-center justify-content-between bg-primary text-white w-100" data-toggle="collapse" href="#navbar-vertical" style="height: 65px; margin-top: -1px; padding: 0 30px;">
+                <a class="btn shadow-none d-flex align-items-center justify-content-between bg-primary text-white w-100"
+                    data-toggle="collapse" href="#navbar-vertical" style="height: 2.5rem; padding: 0 30px;">
                     <h6 class="m-0">Categories</h6>
                     <i class="fa fa-angle-down text-dark"></i>
                 </a>
-                <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0 bg-light" id="navbar-vertical" style="width: calc(100%); z-index: 1;">
+                <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0 bg-light"
+                    id="navbar-vertical" style="width: calc(100%); z-index: 1;">
                     <div class="navbar-nav w-100 overflow-hidden" style="height: auto;background-color: gainsboro;">
-                        <a href="" class="nav-item nav-link">Sports</a>
-                        <a href="" class="nav-item nav-link">Cloths</a>
-                        <a href="" class="nav-item nav-link">Shoes</a>
-                        <a href="" class="nav-item nav-link">Accessories</a>
+                        <a href="/shops" class="nav-item nav-link">All Products</a>
+                        {{#each categories}}
+                        <a href="/shops/filter_category?catName={{this.Category}}"
+                            class="nav-item nav-link">{{this.Category}}</a>
+                        {{/each}}
                     </div>
                 </nav>
             </div>
@@ -116,104 +91,152 @@
         <div class="row px-xl-5 mt-md-5 mt-sm-5">
             <!-- Shop Sidebar Start -->
             <div class="col-lg-3 col-md-12 d-lg-block d-md-flex">
+                <!-- Subcategory Start -->
+                <div class="col-lg-12 col-md-4 border-right border-bottom mb-4 pb-4">
+                    <h5 class="font-weight-semi-bold mb-4">Filter by Sub Categories</h5>
+                    <form action="/shops/filter_sub_category" method="post">
+                        {{#each subCat}}
+                        {{#each this.subCategory}}
+                        <div
+                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-2">
+                            <input class="form-check-input check" type="checkbox" value="{{this}}" name="subCategory">
+                            <label class="m-0 ml-1" for="">{{this}}</label>
+                        </div>
+                        {{/each}}
+                        {{/each}}
+                        <input class="btn btn-sm btn-primary btn-block border-0 font-weight-bold ml-3 mt-3"
+                            type="submit" value="SUBMIT">
+                    </form>
+                </div>
+                <!-- Subcategory End -->
+
                 <!-- Price Start -->
                 <div class="col-lg-12 col-md-4 border-right border-bottom mb-4 pb-4">
                     <h5 class="font-weight-semi-bold mb-4">Filter by price</h5>
-                    <form>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="price-1">
-                            <label class="custom-control-label" for="price-1">$0 - $100</label>
-                            <span class="badge border font-weight-normal">150</span>
+                    <form action="/shops/filter_sub_category" method="post">
+                        <div
+                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-2">
+                            <input class="form-check-input check" type="checkbox" value="0" name="price"
+                                id="flexCheckDefault">
+                            <label class="m-0 ml-1" for="">$0 - $500</label>
                         </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="price-2">
-                            <label class="custom-control-label" for="price-2">$100 - $200</label>
-                            <span class="badge border font-weight-normal">295</span>
+                        <div
+                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-2">
+                            <input class="form-check-input check" type="checkbox" value="500" name="price"
+                                id="flexCheckDefault">
+                            <label class="m-0 ml-1" for="">$500 - $1000</label>
                         </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="price-3">
-                            <label class="custom-control-label" for="price-3">$200 - $300</label>
-                            <span class="badge border font-weight-normal">246</span>
+                        <div
+                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-2">
+                            <input class="form-check-input check" type="checkbox" value="1000" name="price"
+                                id="flexCheckDefault">
+                            <label class="m-0 ml-1" for="">$1000 - $1500</label>
                         </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="price-4">
-                            <label class="custom-control-label" for="price-4">$300 - $400</label>
-                            <span class="badge border font-weight-normal">145</span>
+                        <div
+                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-2">
+                            <input class="form-check-input check" type="checkbox" value="1500" name="price"
+                                id="flexCheckDefault">
+                            <label class="m-0 ml-1" for="">$1500 - $2000</label>
                         </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                            <input type="checkbox" class="custom-control-input" id="price-5">
-                            <label class="custom-control-label" for="price-5">$400 - $500</label>
-                            <span class="badge border font-weight-normal">168</span>
+                        <div
+                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mt-2">
+                            <input class="form-check-input check" type="checkbox" value="2000" name="price"
+                                id="flexCheckDefault">
+                            <label class="m-0 ml-1" for="">$2000 - $2500</label>
                         </div>
+                        <div
+                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mt-2">
+                            <input class="form-check-input check" type="checkbox" value="2500" name="price"
+                                id="flexCheckDefault">
+                            <label class="m-0 ml-1" for="">$2500 - $3000</label>
+                        </div>
+                        <div
+                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mt-2">
+                            <input class="form-check-input check" type="checkbox" value="3000" name="price"
+                                id="flexCheckDefault">
+                            <label class="m-0 ml-1" for="">$3000 - $3500</label>
+                        </div>
+                        <div
+                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mt-2">
+                            <input class="form-check-input check" type="checkbox" value="3500" name="price"
+                                id="flexCheckDefault">
+                            <label class="m-0 ml-1" for="">$3500 - $4000</label>
+                        </div>
+                        <input class="btn btn-sm btn-primary btn-block border-0 font-weight-bold ml-3 mt-3"
+                            type="submit" value="SUBMIT">
                     </form>
                 </div>
                 <!-- Price End -->
-                
-                <!-- Color Start -->
-                <div class="col-lg-12 col-md-4 border-right border-bottom mb-4 pb-4">
-                    <h5 class="font-weight-semi-bold mb-4">Filter by color</h5>
-                    <form>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="color-1">
-                            <label class="custom-control-label" for="color-1">Black</label>
-                            <span class="badge border font-weight-normal">150</span>
-                        </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="color-2">
-                            <label class="custom-control-label" for="color-2">White</label>
-                            <span class="badge border font-weight-normal">295</span>
-                        </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="color-3">
-                            <label class="custom-control-label" for="color-3">Red</label>
-                            <span class="badge border font-weight-normal">246</span>
-                        </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="color-4">
-                            <label class="custom-control-label" for="color-4">Blue</label>
-                            <span class="badge border font-weight-normal">145</span>
-                        </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                            <input type="checkbox" class="custom-control-input" id="color-5">
-                            <label class="custom-control-label" for="color-5">Green</label>
-                            <span class="badge border font-weight-normal">168</span>
-                        </div>
-                    </form>
-                </div>
-                <!-- Color End -->
 
-                <!-- Size Start -->
-                <div class="col-lg-12 col-md-4 border-right mb-5">
-                    <h5 class="font-weight-semi-bold mb-4">Filter by size</h5>
-                    <form>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="size-1">
-                            <label class="custom-control-label" for="size-1">XS</label>
-                            <span class="badge border font-weight-normal">150</span>
+                <!-- Brand Start -->
+                <div class="col-lg-12 col-md-4 border-right border-bottom mb-4 pb-4">
+                    <h5 class="font-weight-semi-bold mb-4">Filter by Brand</h5>
+                    <form action="/shops/filter_sub_category" method="post">
+                        <div
+                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-2">
+                            <input class="form-check-input check" type="checkbox" value="Nike" name="brand"
+                                id="flexCheckDefault">
+                            <label class="m-0 ml-1" for="">Nike</label>
                         </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="size-2">
-                            <label class="custom-control-label" for="size-2">S</label>
-                            <span class="badge border font-weight-normal">295</span>
+                        <div
+                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-2">
+                            <input class="form-check-input check" type="checkbox" value="Adidas" name="brand"
+                                id="flexCheckDefault">
+                            <label class="m-0 ml-1" for="">Adidas</label>
                         </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="size-3">
-                            <label class="custom-control-label" for="size-3">M</label>
-                            <span class="badge border font-weight-normal">246</span>
+                        <div
+                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-2">
+                            <input class="form-check-input check" type="checkbox" value="Puma" name="brand"
+                                id="flexCheckDefault">
+                            <label class="m-0 ml-1" for="">Puma</label>
                         </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="size-4">
-                            <label class="custom-control-label" for="size-4">L</label>
-                            <span class="badge border font-weight-normal">145</span>
+                        <div
+                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-2">
+                            <input class="form-check-input check" type="checkbox" value="Nivia" name="brand"
+                                id="flexCheckDefault">
+                            <label class="m-0 ml-1" for="">Nivia</label>
                         </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                            <input type="checkbox" class="custom-control-input" id="size-5">
-                            <label class="custom-control-label" for="size-5">XL</label>
-                            <span class="badge border font-weight-normal">168</span>
+                        <div
+                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-2">
+                            <input class="form-check-input check" type="checkbox" value="Reebok" name="brand"
+                                id="flexCheckDefault">
+                            <label class="m-0 ml-1" for="">Reebok</label>
                         </div>
+                        <div
+                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-2">
+                            <input class="form-check-input check" type="checkbox" value="Yonex" name="brand"
+                                id="flexCheckDefault">
+                            <label class="m-0 ml-1" for="">Yonex</label>
+                        </div>
+                        <div
+                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-2">
+                            <input class="form-check-input check" type="checkbox" value="Sega" name="brand"
+                                id="flexCheckDefault">
+                            <label class="m-0 ml-1" for="">Sega</label>
+                        </div>
+                        <div
+                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-2">
+                            <input class="form-check-input check" type="checkbox" value="Cosco" name="brand"
+                                id="flexCheckDefault">
+                            <label class="m-0 ml-1" for="">Cosco</label>
+                        </div>
+                        <div
+                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-2">
+                            <input class="form-check-input check" type="checkbox" value="Under Armour" name="brand"
+                                id="flexCheckDefault">
+                            <label class="m-0 ml-1" for="">Under Armour</label>
+                        </div>
+                        <div
+                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-2">
+                            <input class="form-check-input check" type="checkbox" value="Umbro" name="brand"
+                                id="flexCheckDefault">
+                            <label class="m-0 ml-1" for="">Umbro</label>
+                        </div>
+                        <input class="btn btn-sm btn-primary btn-block border-0 font-weight-bold ml-3 mt-3"
+                            type="submit" value="SUBMIT">
                     </form>
                 </div>
-                <!-- Size End -->
+                <!-- Brand End -->
             </div>
             <!-- Shop Sidebar End -->
 
@@ -221,6 +244,13 @@
             <!-- Shop Product Start -->
             <div class="col-lg-9 col-md-12">
                 <div class="row pb-3">
+                    <div class="col-12 pb-1">
+                        {{#if subCatNull}}
+                        <h1 class="text-center font-weight-bold">All Products</h1>
+                        {{else}}
+                        <h1 class="text-center font-weight-bold">{{subCat.Category}}</h1>
+                        {{/if}}
+                    </div>
                     <div class="col-12 pb-1">
                         <div class="d-flex align-items-center justify-content-between mb-4">
                             <form action="">
@@ -235,24 +265,44 @@
                             </form>
                         </div>
                     </div>
+                    {{#if products}}
                     {{#each products}}
                     <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
                         <div class="card product-item border-0 mb-4">
-                            <a href="/shops/details?_id={{this._id}}" class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                <img class="img-fluid w-100" src="/images/{{this.PImage.[0].filename}}" alt="">
+                            {{#if this.fav}}
+                            <div class="d-flex bg-light border">
+                                <a style="font-size: 1rem;" onclick="addToWishlist('{{this._id}}')"
+                                    class="btn btn-sm text-danger font-weight-bold ml-auto"><i
+                                        class="fas fa-heart"></i></i></a>
+                            </div>
+                            {{else}}
+                            <div class="d-flex bg-light border" id="{{this._id}}">
+                                <a style="font-size: 1rem;" onclick="addToWishlist('{{this._id}}')"
+                                    class="btn btn-sm text-danger font-weight-bold ml-auto"><i
+                                        class="far fa-heart"></i></a>
+                            </div>
+                            {{/if}}
+                            <a href="/shops/details?_id={{this._id}}"
+                                class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                                <img class="img-fluid w-100" src="/images/{{this.PImage.[0]}}" alt="">
                             </a>
                             <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                                 <h6 class="text-truncate mb-3">{{this.PName}}</h6>
                                 <div class="d-flex justify-content-center">
-                                    <h6>${{this.PPrice}}</h6><h6 class="text-muted ml-2"><del>${{this.POldPrice}}</del></h6>
+                                    <h6>${{this.PPrice}}</h6>
+                                    <h6 class="text-muted ml-2"><del>${{this.POldPrice}}</del></h6>
                                 </div>
                             </div>
-                            <div class="card-footer d-flex justify-content-between bg-light border">
-                        <a style="font-size: 0.8rem;" onclick="addToWishlist('{{this._id}}')" class="btn btn-sm text-dark p-0 font-weight-bold"><i class="fas fa-heart text-primary mr-1"></i></i>Add To Wishlist</a>
-                    </div>
                         </div>
                     </div>
                     {{/each}}
+                    {{else}}
+                    <div class="text-center text-dark m-auto">
+                        <i style="font-size: 8rem;color: #bbb6b6;" class="fas fa-exclamation-circle mt-4"></i>
+                        <h1 style="font-size: 2.7rem;color: #bbb6b6;" class="font-weight-bold mt-4">Products Not
+                            Available</h1>
+                    </div>
+                    {{/if}}
                 </div>
             </div>
             <!-- Shop Product End -->

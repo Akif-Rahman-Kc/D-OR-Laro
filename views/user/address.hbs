@@ -40,58 +40,201 @@
                         </div>
                     </div>
                 </div>
+                {{#if addressNull}}
                 <div class="w-75 ml-5 bg-secondary pt-5 pl-5">
                     <div class="row">
-                        <div class="col-lg-5 ml-4 mt-2 table-responsive" style="border: 3px solid;">
+                        {{#each user.Address}}
+                        <div class="col-lg-5 ml-4 mt-2 table-responsive " style="border: 3px solid;">
                             <div class="w-100 d-flex">
                                 <div class="w-85 d-block ml-5 mt-3" style="height: auto;">
-                                    <button
-                                        class="btn btn-sm btn-primary float-right"><i class="fa fa-times"></i></button>
-                                    <h5 class="align-middle text-dark font-weight-bold">Akif Rahman</h5>
-                                    <p style="font-size: 0.75rem;" class="align-middle text-dark font-weight-bold">9562696976</p>
-                                    <p style="font-size: 0.9rem;" class="align-middle text-dark font-weight-bold">Kanu House PO Irinavu Madakkara</p>
-                                    <p style="font-size: 0.9rem;" class="align-middle text-dark font-weight-bold">landmark,Madakkara</p>
-                                    <p style="font-size: 0.9rem;" class="align-middle text-dark font-weight-bold">Kannur</p>
-                                    <p style="font-size: 0.76rem;" class="align-middle text-dark font-weight-bold">(670301)</p>
+                                    <div class="float-right d-block">
+                                        <button data-bs-toggle="modal" data-bs-target="#staticBackdrop{{@index}}" class="btn btn-sm btn-primary"><i
+                                                class="fas fa-edit"></i></button>
+                                        <a href="/user_address/delete?id={{@index}}" class="btn btn-sm btn-primary"><i class="fa fa-times"></i></a>
+                                    </div>
+                                    <h5 class="align-middle text-dark font-weight-bold">{{this.firstName}}
+                                        {{this.lastName}}</h5>
+                                    <p style="font-size: 0.75rem;" class="align-middle text-dark font-weight-bold">
+                                        {{this.mobileNo}}</p>
+                                    <p style="font-size: 0.9rem;" class="align-middle text-dark font-weight-bold">
+                                        {{this.address}}</p>
+                                    <p style="font-size: 0.9rem;" class="align-middle text-dark font-weight-bold">
+                                        {{this.landmark}},{{this.locality}}</p>
+                                    <p style="font-size: 0.9rem;" class="align-middle text-dark font-weight-bold">
+                                        {{this.city}}</p>
+                                    <p style="font-size: 0.76rem;" class="align-middle text-dark font-weight-bold">
+                                        ({{this.pinCode}})</p>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-5 ml-4 mt-2 table-responsive" style="border: 3px solid;">
-                            <div class="w-100 d-flex">
-                                <div class="w-85 d-block ml-5 mt-3" style="height: auto;">
-                                    <button
-                                        class="btn btn-sm btn-primary float-right"><i class="fa fa-times"></i></button>
-                                    <h5 class="align-middle text-dark font-weight-bold">Akif Rahman</h5>
-                                    <p style="font-size: 0.75rem;" class="align-middle text-dark font-weight-bold">9562696976</p>
-                                    <p style="font-size: 0.9rem;" class="align-middle text-dark font-weight-bold">Kanu House PO Irinavu Madakkara</p>
-                                    <p style="font-size: 0.9rem;" class="align-middle text-dark font-weight-bold">landmark,Madakkara</p>
-                                    <p style="font-size: 0.9rem;" class="align-middle text-dark font-weight-bold">Kannur</p>
-                                    <p style="font-size: 0.76rem;" class="align-middle text-dark font-weight-bold">(670301)</p>
+                        <!-- Modal -->
+                        <div class="modal fade" id="staticBackdrop{{@index}}" data-bs-backdrop="static"
+                            data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit Address</h1>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="/user_address/edit?id={{@index}}" method="post">
+                                            <div class="row">
+                                                <div class="col-md-6 form-group">
+                                                    <label>First Name</label>
+                                                    <input class="form-control" type="text" value="{{this.firstName}}" name="firstName">
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    <label>Last Name</label>
+                                                    <input class="form-control" type="text" value="{{this.lastName}}" name="lastName">
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    <label>Mobile No</label>
+                                                    <input class="form-control" type="text" value="{{this.mobileNo}}" name="mobileNo">
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    <label>Address Line</label>
+                                                    <input class="form-control" type="text" value="{{this.address}}" name="address">
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    <label>City</label>
+                                                    <input class="form-control" type="text" value="{{this.city}}" name="city">
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    <label>Locality</label>
+                                                    <input class="form-control" type="text" value="{{this.locality}}" name="locality">
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    <label>Landmark</label>
+                                                    <input class="form-control" type="text" value="{{this.landmark}}" name="landmark">
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    <label>Pin Code</label>
+                                                    <input class="form-control" type="text" value="{{this.pinCode}}" name="pinCode">
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Close</button>
+                                                    <button type="submit"
+                                                        class="btn btn-primary font-weight-bold">Edit
+                                                        Address</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-5 ml-4 mt-2 table-responsive" style="border: 3px solid;">
-                            <div class="w-100 d-flex">
-                                <div class="w-85 d-block ml-5 mt-3" style="height: auto;">
-                                    <button
-                                        class="btn btn-sm btn-primary float-right"><i class="fa fa-times"></i></button>
-                                    <h5 class="align-middle text-dark font-weight-bold">Akif Rahman</h5>
-                                    <p style="font-size: 0.75rem;" class="align-middle text-dark font-weight-bold">9562696976</p>
-                                    <p style="font-size: 0.9rem;" class="align-middle text-dark font-weight-bold">Kanu House PO Irinavu Madakkara</p>
-                                    <p style="font-size: 0.9rem;" class="align-middle text-dark font-weight-bold">landmark,Madakkara</p>
-                                    <p style="font-size: 0.9rem;" class="align-middle text-dark font-weight-bold">Kannur</p>
-                                    <p style="font-size: 0.76rem;" class="align-middle text-dark font-weight-bold">(670301)</p>
+                        {{/each}}
+                    </div>
+                    <!-- Button trigger modal -->
+                    <a class="w-25 btn btn-primary btn-block border-0 font-weight-bold float-right mr-5 mt-4 mb-4"
+                        data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                        ADD NEW ADDRESS
+                    </a>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+                        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Create New Address</h1>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="/user_address/add" method="post">
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                <label>First Name</label>
+                                                <input class="form-control" type="text" name="firstName">
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <label>Last Name</label>
+                                                <input class="form-control" type="text" name="lastName">
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <label>Mobile No</label>
+                                                <input class="form-control" type="text" name="mobileNo">
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <label>Address Line</label>
+                                                <input class="form-control" type="text" name="address">
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <label>City</label>
+                                                <input class="form-control" type="text" name="city">
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <label>Locality</label>
+                                                <input class="form-control" type="text" name="locality">
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <label>Landmark</label>
+                                                <input class="form-control" type="text" name="landmark">
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <label>Pin Code</label>
+                                                <input class="form-control" type="text" name="pinCode">
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary font-weight-bold">Create
+                                                    Address</button>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <button class="w-25 btn btn-primary btn-block border-0 font-weight-bold float-right mr-5 mt-4 mb-4">ADD NEW ADDRESS</button>
                 </div>
+                {{else}} 
+                <div class="container ml-5 pl-5">
+                    <form action="/user_address/add" method="post">
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label>First Name</label>
+                                <input class="form-control" type="text" name="firstName">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Last Name</label>
+                                <input class="form-control" type="text" name="lastName">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Mobile No</label>
+                                <input class="form-control" type="text" name="mobileNo">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Address Line</label>
+                                <input class="form-control" type="text" name="address">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>City</label>
+                                <input class="form-control" type="text" name="city">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Locality</label>
+                                <input class="form-control" type="text" name="locality">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Landmark</label>
+                                <input class="form-control" type="text" name="landmark">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Pin Code</label>
+                                <input class="form-control" type="text" name="pinCode">
+                            </div>
+                            <input class="w-25 btn btn-primary btn-block border-0 font-weight-bold ml-3 mt-3"
+                                type="submit" value="CREATE ADDRESS">
+                        </div>
+                    </form>
+                </div>
+                {{/if}}
             </div>
         </div>
-    </div> <!-- Account Details End -->
+        <!-- Account Details End -->
 
-    {{> userfooter}}
+        {{> userfooter}}
 
 
 </body>
