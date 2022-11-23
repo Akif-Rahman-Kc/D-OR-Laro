@@ -6,7 +6,7 @@
     <div class="w-100 text-center p-1 text-white bg-info">
         <h5>COUPONS</h5>
     </div>
-    <!-- Product start -->
+    <!-- Coupon start -->
     <!-- Button trigger modal -->
     <a class="w-25 m-3 btn btn-success block-btn font-weight-bold" data-bs-toggle="modal"
         data-bs-target="#staticBackdrop">
@@ -91,7 +91,7 @@
             </div>
         </div>
     </div>
-    <div class="container-fluid">
+    <div class="container-fluid" style="min-height: 76vh;">
         <table id="coupon" class="table table-striped table-bordered text-center font-weight-bold w-100"
             style="font-size: 0.8rem;">
             <thead>
@@ -113,7 +113,7 @@
                     <td>{{this.couponName}}</td>
                     <td>{{this.couponCode}}</td>
                     <td>{{this.percentage}}%</td>
-                    <td>{{this.expiryDate}}</td>
+                    <td>{{this.date}}</td>
                     <td>${{this.minCartAmount}}</td>
                     <td>${{this.maxRadeemAmount}}</td>
                     <td class="d-flex">
@@ -125,7 +125,14 @@
             </tbody>
         </table>
     </div>
-    <!-- Product end -->
+    <!-- Coupon end -->
+    <footer class="tm-footer row tm-mt-small">
+            <div class="col-12 font-weight-light">
+                <p class="text-center text-white mb-0 px-4 small">
+                    Copyright &copy; <b>2022</b> All rights reserved. 
+                </p>
+            </div>
+        </footer>
 
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>

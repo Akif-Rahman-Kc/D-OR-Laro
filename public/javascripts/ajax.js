@@ -44,7 +44,6 @@ function addToCart() {
 }
 
 function addToWishlist(_id) {
-    let wish = ''
     $.ajax({
         url: '/add_to_wishlist',
         data: {
@@ -56,7 +55,7 @@ function addToWishlist(_id) {
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
-                    title: 'Item added to wishlist',
+                    title: 'Added to your Wishlist',
                     customClass: 'swal-wide',
                     showConfirmButton: false,
                     timer: 1000
@@ -64,16 +63,23 @@ function addToWishlist(_id) {
                 let count = $('#wishlist-count').html()
                 count = parseInt(count) + 1
                 $('#wishlist-count').html(count)
-                wish += `<a style="font-size: 1rem;" onclick="addToWishlist('{{this._id}}')" class="btn btn-sm text-danger font-weight-bold ml-auto"><i class="fas fa-heart"></i></a>`
-                console.log(wish);
-                $(`#add${_id}`).html(wish)
+                $('#'+_id).removeClass('far')
+                $('#'+_id).addClass('fas')
             } else if (response.exist) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'removed from your Wishlist',
+                    customClass: 'swal-wide',
+                    showConfirmButton: false,
+                    timer: 1000
+                })
                 let count = $('#wishlist-count').html()
                 count = parseInt(count) - 1
                 $('#wishlist-count').html(count)
-                wish += `<a style="font-size: 1rem;" onclick="addToWishlist('{{this._id}}')" class="btn btn-sm text-danger font-weight-bold ml-auto"><i class="far fa-heart"></i></a>`
-                console.log(wish);
-                $(`#remove${_id}`).html(wish)
+                console.log("aaaaa")
+                $('#'+_id).removeClass('fas')
+                $('#'+_id).addClass('far')
             } else {
                 window.location = '/user_login'
             }

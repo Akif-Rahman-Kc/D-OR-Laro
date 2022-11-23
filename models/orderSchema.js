@@ -53,6 +53,11 @@ const orderSchema = new schema({
         required: true,
         trim: true
       },
+    deliveryDate : {
+      type: String,
+      required: true,
+      trim: true
+      }
 },{ timestamps: true });
 
 module.exports = mongoose.model('orders',orderSchema);

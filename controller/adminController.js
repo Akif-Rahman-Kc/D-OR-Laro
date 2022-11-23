@@ -4,12 +4,69 @@ const Category = require("../models/categorySchema");
 const Order = require("../models/orderSchema");
 const Product = require("../models/productSchema");
 const Coupon = require("../models/couponSchema");
+const moment = require('moment')
 const fs = require("fs");
 
 module.exports = {
-    adminHome: (req, res) => {
+    adminHome: async (req, res) => {
         try {
-            res.render("admin/dashboard");
+            const order = await Order.find().sort({createdAt: -1,}).lean();
+            for (let i = 0; i < order.length; i++) {
+                if (order[i].orderStatus == 'Pending') {
+                    order[i].pending = true
+                }
+                const testDate = order[i].createdAt
+                order[i].testDate = moment(testDate).format('DD MMMM , YYYY')
+            }
+
+            // let totalSelling =await Order.find({orderStatus:'Delivered'}).count()
+            // let todayDate= new Date();
+            // todayDate.setDate(todayDate.getDate());
+            // console.log(todayDate);
+            // let totalIncome = await Order.aggregate([
+            //     {
+            //         $match : {
+            //             "deliveryDate" : { $lte : todayDate }
+            //             }
+            //     },
+            //     {
+            //         $group : {
+            //             _id : null,
+            //             totalIncome : {$sum : "$totalLast"}
+            //         }
+            //     },
+            // ])
+
+            // console.log(totalIncome)
+            
+            // if(totalIncome[0]){
+            //     totalIncome=(totalIncome[0].totalIncome/100)*25 
+            //     totalIncome=Math.round(totalIncome)
+            // }
+
+            let monthlTtotalIncome = await Order.aggregate([
+                    {
+                        $project : {
+                            'totalLast' : true,
+                            'createdAt' : true
+                        }
+                    },
+                    {
+                        $group : {
+                            _id : { '$month' : '$createdAt'},
+                            totalIncome : {$sum : "$totalLast"}
+                        }
+                    },
+                    {
+                        $sort : {
+                            _id : 1
+                        }
+                    },
+                ])
+
+                console.log(monthlTtotalIncome);
+
+            res.render("admin/dashboard",{order, monthlTtotalIncome});
         } catch (error) {
             console.log(error.message);
         }
@@ -183,12 +240,14 @@ module.exports = {
 
     adminOrder: async (req, res) => {
         try {
-            const pendingOrder = await Order.find()
+            const pendingOrder = await Order.find().sort({createdAt: -1,}).lean();
             let order = [];
             let count = 0
             for (let i = 0; i < pendingOrder.length; i++) {
                 if (pendingOrder[i].orderStatus != 'Pending') {
                     order[i] = pendingOrder[i]
+                    const testDate = pendingOrder[i].createdAt
+                    order[i].testDate = moment(testDate).format('DD MMMM , YYYY')
                     order[i].no = count = count + 1
                 }
             }
@@ -396,6 +455,10 @@ module.exports = {
     adminCoupon: async (req, res) => {
         try {
             const coupon = await Coupon.find()
+            for (let i = 0; i < coupon.length; i++) {
+                const testDate = coupon[i].expiryDate
+                coupon[i].date = moment(testDate).format('DD MMMM , YYYY')
+            }
             res.render("admin/coupons",{coupon});
         } catch (error) {
             console.log(error.message);

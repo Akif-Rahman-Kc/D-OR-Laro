@@ -105,16 +105,15 @@
             {{#each products}}
             <div class="col-lg-2 col-md-4 col-sm-6 pb-1">
                 <div class="card product-item border-0 mb-4">
-                    
                     {{#if this.fav}}
-                    <div class="d-flex bg-light border"id="add{{this._id}}">
+                    <div class="d-flex bg-light border">
                         <a style="font-size: 1rem;" onclick="addToWishlist('{{this._id}}')"
-                            class="btn btn-sm text-danger font-weight-bold ml-auto"><i class="fas fa-heart"></i></i></a>
+                            class="btn btn-sm text-danger font-weight-bold ml-auto"><i id="{{this._id}}" class="fas fa-heart"></i></i></a>
                     </div>
                     {{else}}
-                    <div class="d-flex bg-light border" id="remove{{this._id}}">
+                    <div class="d-flex bg-light border">
                         <a style="font-size: 1rem;" onclick="addToWishlist('{{this._id}}')"
-                            class="btn btn-sm text-danger font-weight-bold ml-auto"><i class="far fa-heart"></i></a>
+                            class="btn btn-sm text-danger font-weight-bold ml-auto"><i id="{{this._id}}" class="far fa-heart"></i></a>
                     </div>
                     {{/if}}
                     

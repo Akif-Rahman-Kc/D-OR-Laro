@@ -110,64 +110,6 @@
                 </div>
                 <!-- Subcategory End -->
 
-                <!-- Price Start -->
-                <div class="col-lg-12 col-md-4 border-right border-bottom mb-4 pb-4">
-                    <h5 class="font-weight-semi-bold mb-4">Filter by price</h5>
-                    <form action="/shops/filter_sub_category" method="post">
-                        <div
-                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-2">
-                            <input class="form-check-input check" type="checkbox" value="0" name="price"
-                                id="flexCheckDefault">
-                            <label class="m-0 ml-1" for="">$0 - $500</label>
-                        </div>
-                        <div
-                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-2">
-                            <input class="form-check-input check" type="checkbox" value="500" name="price"
-                                id="flexCheckDefault">
-                            <label class="m-0 ml-1" for="">$500 - $1000</label>
-                        </div>
-                        <div
-                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-2">
-                            <input class="form-check-input check" type="checkbox" value="1000" name="price"
-                                id="flexCheckDefault">
-                            <label class="m-0 ml-1" for="">$1000 - $1500</label>
-                        </div>
-                        <div
-                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-2">
-                            <input class="form-check-input check" type="checkbox" value="1500" name="price"
-                                id="flexCheckDefault">
-                            <label class="m-0 ml-1" for="">$1500 - $2000</label>
-                        </div>
-                        <div
-                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mt-2">
-                            <input class="form-check-input check" type="checkbox" value="2000" name="price"
-                                id="flexCheckDefault">
-                            <label class="m-0 ml-1" for="">$2000 - $2500</label>
-                        </div>
-                        <div
-                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mt-2">
-                            <input class="form-check-input check" type="checkbox" value="2500" name="price"
-                                id="flexCheckDefault">
-                            <label class="m-0 ml-1" for="">$2500 - $3000</label>
-                        </div>
-                        <div
-                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mt-2">
-                            <input class="form-check-input check" type="checkbox" value="3000" name="price"
-                                id="flexCheckDefault">
-                            <label class="m-0 ml-1" for="">$3000 - $3500</label>
-                        </div>
-                        <div
-                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mt-2">
-                            <input class="form-check-input check" type="checkbox" value="3500" name="price"
-                                id="flexCheckDefault">
-                            <label class="m-0 ml-1" for="">$3500 - $4000</label>
-                        </div>
-                        <input class="btn btn-sm btn-primary btn-block border-0 font-weight-bold ml-3 mt-3"
-                            type="submit" value="SUBMIT">
-                    </form>
-                </div>
-                <!-- Price End -->
-
                 <!-- Brand Start -->
                 <div class="col-lg-12 col-md-4 border-right border-bottom mb-4 pb-4">
                     <h5 class="font-weight-semi-bold mb-4">Filter by Brand</h5>
@@ -272,14 +214,12 @@
                             {{#if this.fav}}
                             <div class="d-flex bg-light border">
                                 <a style="font-size: 1rem;" onclick="addToWishlist('{{this._id}}')"
-                                    class="btn btn-sm text-danger font-weight-bold ml-auto"><i
-                                        class="fas fa-heart"></i></i></a>
+                                    class="btn btn-sm text-danger font-weight-bold ml-auto"><i id="{{this._id}}" class="fas fa-heart"></i></a>
                             </div>
                             {{else}}
-                            <div class="d-flex bg-light border" id="{{this._id}}">
+                            <div class="d-flex bg-light border">
                                 <a style="font-size: 1rem;" onclick="addToWishlist('{{this._id}}')"
-                                    class="btn btn-sm text-danger font-weight-bold ml-auto"><i
-                                        class="far fa-heart"></i></a>
+                                    class="btn btn-sm text-danger font-weight-bold ml-auto"><i id="{{this._id}}" class="far fa-heart"></i></a>
                             </div>
                             {{/if}}
                             <a href="/shops/details?_id={{this._id}}"

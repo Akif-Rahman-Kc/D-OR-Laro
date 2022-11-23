@@ -52,7 +52,7 @@
                             <div class="col-lg-12">
                                 <div class="orderlist">
                                     <div class="orderlist-head">
-                                        <h5>order {{this.orderStatus}}</h5><span>{{this.createdAt}}</span>
+                                        <h5>order {{this.orderStatus}}</h5><span>{{this.testDate}}</span>
                                     </div>
                                     <div class="orderlist-body">
                                         <div class="row">
@@ -97,7 +97,11 @@
                                                     </li>
                                                     <li>
                                                         <h6>Order Time</h6>
-                                                        <p>{{this.createdAt}}</p>
+                                                        <p>{{this.testDate}}</p>
+                                                    </li>
+                                                    <li>
+                                                        <h6>Delivery Time</h6>
+                                                        <p class="text-success">{{this.deliveryDate}}</p>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -108,11 +112,15 @@
                                                         <p>${{this.totalAmount}}</p>
                                                     </li>
                                                     <li>
-                                                        <h6>discount</h6>
+                                                        <h6>Discount</h6>
                                                         <p>${{this.discountPrice}}</p>
                                                     </li>
                                                     <li>
-                                                        <h6>delivery fee</h6>
+                                                        <h6>Coupon Discount</h6>
+                                                        <p>${{this.couponDiscount}}</p>
+                                                    </li>
+                                                    <li>
+                                                        <h6>Delivery Fee</h6>
                                                         <p class="text-success">Free(0)</p>
                                                     </li>
                                                     <li>

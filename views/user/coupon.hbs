@@ -1,11 +1,41 @@
-{{> layout}}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>D OR Laro Sports Hub</title>
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    {{!-- ajax --}}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="/javascripts/ajax.js"></script>
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Magic Zoom Plus -->
+    <script src="/magiczoomplus/magiczoomplus.js"></script>
+    <link href="/magiczoomplus/magiczoomplus.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/stylesheets/style.css" rel="stylesheet">
+    <link href="/stylesheets/coupon.css" rel="stylesheet">
+</head>
+
+</html>
 
 <body>
 
     {{> usernavbar}}
 
-    <!-- Cart Start -->
-    <div class="container top-align">
+    <!-- Coupon Start -->
+    {{!-- <div class="container top-align">
         <div class="row px-xl-3">
 
             <div class="col-md-12">
@@ -13,20 +43,20 @@
                 <hr>
                 {{#if empty}}
                 <div class="text-center text-dark m-auto">
-                        <i style="font-size: 8rem;color: #bbb6b6;" class="fas fa-exclamation-circle mt-4"></i>
-                        <h1 style="font-size: 2.7rem;color: #bbb6b6;" class="font-weight-bold mt-4">Coupon Not
-                            Available</h1>
-                    </div>
+                    <i style="font-size: 8rem;color: #bbb6b6;" class="fas fa-exclamation-circle mt-4"></i>
+                    <h1 style="font-size: 2.7rem;color: #bbb6b6;" class="font-weight-bold mt-4">Coupon Not
+                        Available</h1>
+                </div>
                 {{else}}
                 <div class="p-5">
                     {{#each user.Coupon}}
                     <div class="w-100 border p-4 d-flex coup-div mt-4">
                         <div class="w-75">
-                        <h5 class="font-weight-bold">{{this.couponName}}-<span>{{this.percentage}}%</span></h5>
-                        <p>{{this.couponDes}}</p>
-                        <label style="border-radius: 0.7rem" class="border w-100" for="">
-                            <p class="m-2 text-center text-dark font-weight-bold">{{this.couponCode}}</p>
-                        </label>
+                            <h5 class="font-weight-bold">{{this.couponName}}-<span>{{this.percentage}}%</span></h5>
+                            <p>{{this.couponDes}}</p>
+                            <label style="border-radius: 0.7rem" class="border w-100" for="">
+                                <p class="m-2 text-center text-dark font-weight-bold">{{this.couponCode}}</p>
+                            </label>
                         </div>
                         <div class="ml-auto w-25 pl-5">
                             <h6 class="font-weight-bold">Start Date</h6>
@@ -40,9 +70,54 @@
                 {{/if}}
             </div>
         </div>
+    </div> --}}
+
+    <div class="container" style="padding-top:7rem;">
+        <div class="row pt-5" style=" ">
+                {{#each coupon}}
+                <div class="card col-lg-5 col-md-12 mt-2">
+                    <div class="main">
+                        <div class="co-img">
+                            <img class="img-fluid" src="/images/logo.png" alt="" />
+                        </div>
+                        <div class="vertical"></div>
+                        <div class="content">
+                            <h2>{{this.couponName}}</h2>
+                            <p>{{this.couponDes}}</p>
+                            <h1 class="font-weight-bold">{{this.percentage}}% <span>Coupon</span></h1>
+                            <p class="font-weight-bold text-danger">Expired in {{this.date}}</p>
+                        </div>
+                    </div>
+                    <div class="copy-button">
+                        <input id="copyvalue" type="text" readonly value="{{this.couponCode}}" />
+                        <button onclick="copyIt()" class="copybtn">COPY</button>
+                    </div>
+                </div>
+                {{/each}}
+        </div>
     </div>
-    <!-- Cart End -->
+
+
+    <!-- Coupon End -->
 
     {{> userfooter}}
+
+    <script>
+
+        let copybtn = document.querySelector(".copybtn");
+
+
+        function copyIt() {
+            let copyInput = document.querySelector('#copyvalue');
+
+            copyInput.select();
+
+            document.execCommand("copy");
+
+            copybtn.textContent = "COPIED";
+        }
+
+
+    </script>
 
 </body>

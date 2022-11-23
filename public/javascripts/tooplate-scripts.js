@@ -21,31 +21,36 @@ function drawLineChart() {
       $(window).width() < width_threshold ? false : true;
 
     configLine = {
-      type: "line",
+      type: "bar",
       data: {
         labels: [
-          "January",
-          "February",
-          "March",
-          "April",
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
           "May",
-          "June",
-          "July"
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec"
         ],
         datasets: [
           {
-            label: "Latest Hits",
+            label: "Total Users",
             data: [88, 68, 79, 57, 50, 55, 70],
             fill: false,
-            borderColor: "rgb(75, 192, 192)",
+            backgroundColor: "rgb(75, 192, 192)",
             cubicInterpolationMode: "monotone",
             pointRadius: 0
           },
           {
-            label: "Popular Hits",
+            label: "Total Sells product",
             data: [33, 45, 37, 21, 55, 74, 69],
             fill: false,
-            borderColor: "rgba(255,99,132,1)",
+            backgroundColor: "rgba(255,99,132,1)",
             cubicInterpolationMode: "monotone",
             pointRadius: 0
           },
@@ -53,7 +58,7 @@ function drawLineChart() {
             label: "Featured",
             data: [44, 19, 38, 46, 85, 66, 79],
             fill: false,
-            borderColor: "rgba(153, 102, 255, 1)",
+            backgroundColor: "rgba(153, 102, 255, 1)",
             cubicInterpolationMode: "monotone",
             pointRadius: 0
           }
@@ -69,7 +74,8 @@ function drawLineChart() {
 function drawBarChart() {
   if ($("#barChart").length) {
     ctxBar = document.getElementById("barChart").getContext("2d");
-
+   const total =  $('#monthlyTotal').data('month')
+console.log(total[0].)
     optionsBar = {
       responsive: true,
       scales: {
@@ -81,7 +87,7 @@ function drawBarChart() {
             },
             scaleLabel: {
               display: true,
-              labelString: "Hits"
+              labelString: "Amount"
             }
           }
         ]
@@ -103,13 +109,13 @@ function drawBarChart() {
      */
 
     configBar = {
-      type: "horizontalBar",
+      type: "bar",
       data: {
-        labels: ["Red", "Aqua", "Green", "Yellow", "Purple", "Orange", "Blue"],
+        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
         datasets: [
           {
-            label: "# of Hits",
-            data: [33, 40, 28, 49, 58, 38, 44],
+            label: "Monthly Total Income",
+            data: [1040, 2340, 2568, 4959, 5843, 3338, 4794, 3243, 8853, 1932, 4748, 7564],
             backgroundColor: [
               "#F7604D",
               "#4ED6B8",
@@ -117,7 +123,12 @@ function drawBarChart() {
               "#D7D768",
               "#9D66CC",
               "#DB9C3F",
-              "#3889FC"
+              "#3889FC",
+              "#768279",
+              "#40ed6d",
+              "#d9abd4",
+              "#916233",
+              "#7d4141"
             ],
             borderWidth: 0
           }

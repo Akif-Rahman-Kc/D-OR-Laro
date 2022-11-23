@@ -7,7 +7,7 @@
     <h5>ORDERS</h5>
   </div>
   <!-- Orders start -->
-  <div class="container-fluid mt-4">
+  <div class="container-fluid mt-4" style="min-height: 76vh;">
     <table id="order" class="table table-striped table-bordered text-center font-weight-bold w-100"
       style="font-size: 0.8rem;">
       <thead>
@@ -29,7 +29,7 @@
           <td><a href="/admin_panel/order_details?id={{this._id}}">{{this._id}}</a></td>
           <td>{{this.Address.firstName}} {{this.Address.lastName}}</td>
           <td>{{this.totalLast}}/-</td>
-          <td>{{this.createdAt}}</td>
+          <td>{{this.testDate}}</td>
           <td>{{this.paymentMethod}}</td>
           <td class="text-success">{{this.paymentStatus}}</td>
           <td>
@@ -49,6 +49,13 @@
     </table>
   </div>
   <!-- Orders end -->
+  <footer class="tm-footer row tm-mt-small">
+            <div class="col-12 font-weight-light">
+                <p class="text-center text-white mb-0 px-4 small">
+                    Copyright &copy; <b>2022</b> All rights reserved. 
+                </p>
+            </div>
+        </footer>
   </div>
 
   <script src="https://code.jquery.com/jquery-3.5.1.js"></script>

@@ -4,6 +4,7 @@ const Category = require("../models/categorySchema");
 const Order = require("../models/orderSchema");
 const Coupon = require("../models/couponSchema");
 const OTP = require('twilio')
+const moment = require('moment')
 const otpCheck = require('../middleware/otp')
 const bcrypt = require("bcrypt");
 const { findById, startSession } = require("../models/adminSchema");
@@ -320,28 +321,6 @@ module.exports = {
                     });
                 }
             }
-            if (data.price) {
-                // console.log(price);
-                if (Array.isArray(data.price)) {
-                    const len = data.price.length;
-                    console.log(len);
-                    products = products.filter((obj) => {
-                        for (let i = 0; i < len; i++) {
-                            return (
-                                obj.PPrice >= data.price[i] &&
-                                obj.PPrice <= data.price[i] + data.price[i]
-                            );
-                        }
-                        // return obj.PPrice >= price &&
-                        // obj.PPrice <= price+price ;
-                    });
-                } else {
-                    const price = parseInt(data.price);
-                    products = products.filter((obj) => {
-                        return obj.PPrice >= price && obj.PPrice <= price + price;
-                    });
-                }
-            }
             console.log(products);
             if (products != "") {
                 res.locals.products = products;
@@ -387,14 +366,14 @@ module.exports = {
             const user = await User.findById(userId);
             let empty = null;
             if (user.Cart == "") {
-                totalAmount = 0;
-                discountPrice = 0;
-                totalLast = 0;
-                res.locals.totalLast = totalLast;
                 empty = "cart is Empty";
             } else {
                 if(user.applyCoupon){
                     res.locals.applyCoupon = true
+
+                    const usedCouponlen = user.usedCoupon.length -1
+                    const usedCoupon = user.usedCoupon[usedCouponlen]
+                    res.locals.usedCoupon = usedCoupon
 
                     const totalAmount = user.cartTotals.subTotal
                     const discountPrice = user.cartTotals.discount
@@ -454,7 +433,7 @@ module.exports = {
                 
             }
             
-            res.render("user/cart", { empty });
+            res.render("user/cart", { empty ,user });
         } catch (error) {
             console.log(error.message);
         }
@@ -659,28 +638,21 @@ module.exports = {
         try {
             const userId = req.session.user;
             const user = await User.findById(userId);
-            let coupons = await Coupon.find()
-
-            coupons = coupons.filter((obj) => {
-                if (user.usedCoupon.includes(obj._id)) {
-                    return obj;
-                }
-            });
-            console.log(coupons);
-
-            await User.updateMany(
-                {},
-                {
-                    $set: {
-                        Coupon: coupons
-                    },
-                }
-            );
+            let coupon = await Coupon.find()
+           usedCouponId = user.usedCoupon.map(el=> el.couponId.toString())
+           console.log(usedCouponId);
+           coupon = coupon.filter(el=> !usedCouponId.includes(el._id.toString()))
+           
+           for (let i = 0; i < coupon.length; i++) {
+            const testDate = coupon[i].expiryDate
+            coupon[i].date = moment(testDate).format('DD/MM/YYYY')
+           }
+            
             let empty = null;
             if (user.Coupon == "") {
                 empty = "Coupon is empty";
             }
-            res.render("user/coupon", { user, empty });
+            res.render("user/coupon", { coupon, empty });
         } catch (error) {
             console.log(error.message);
         }
@@ -704,7 +676,8 @@ module.exports = {
                 await User.updateOne({_id:userId} ,{
                         $pull:{
                             usedCoupon:{
-                                _id:coupon._id
+                                _id:coupon._id,
+                                code:coupon.couponCode,
                             }
                         }
                     })
@@ -748,11 +721,12 @@ module.exports = {
                                 await User.updateOne({_id:userId} ,{
                                     $push:{
                                         usedCoupon:{
-                                            _id:coupon._id
+                                            couponId:coupon._id,
+                                            code:coupon.couponCode,
                                         }
                                     }
                                 })
-                                res.json({ success: { totalLast, discount, percentage } })
+                                res.json({ success: true })
                             } else {
                                 res.json({ maxRadeem: coupon.maxRadeemAmount })
                             }
@@ -843,6 +817,7 @@ module.exports = {
             })
             const totalAmount = user.cartTotals.subTotal;
             const discountPrice = user.cartTotals.discount;
+            const couponDiscount = user.cartTotals.couponDiscount;
             const totalLast = user.cartTotals.total;
             const proCount = user.Cart.length;
             const status =
@@ -851,6 +826,9 @@ module.exports = {
                 orderBody.payment === "Cash on Delivery" ? "Unpaid" : "Paid";
             const id = orderBody.id;
             const codOrder = user.Address.at(id);
+            let date= new Date();
+            date.setDate(date.getDate() + 5);
+            date = moment(date).format('DD MMMM , YYYY')
             const userOrder = {
                 Address: {
                     firstName: codOrder.firstName,
@@ -869,7 +847,9 @@ module.exports = {
                 totalProduct: proCount,
                 totalAmount: totalAmount,
                 discountPrice: discountPrice,
+                couponDiscount:couponDiscount,
                 totalLast: totalLast,
+                deliveryDate:date
             };
             const orderId = await Order.create(userOrder);
 
@@ -943,7 +923,9 @@ module.exports = {
             const userOrder = await Order.findOne({ userId: userId })
                 .sort({ createdAt: -1 })
                 .limit(1);
-            res.render("user/order-success", { userOrder });
+                const testDate = userOrder.createdAt
+                const date = moment(testDate).format('DD MMMM , YYYY')
+            res.render("user/order-success", { userOrder,date });
         } catch (error) {
             console.log(error.message);
         }
@@ -959,25 +941,26 @@ module.exports = {
             for (let i = 0; i < pendingOrder.length; i++) {
                 if (pendingOrder[i].orderStatus != "Pending") {
                     order[i] = pendingOrder[i];
+                    const testDate = pendingOrder[i].createdAt
+                    order[i].testDate = moment(testDate).format('DD MMMM , YYYY')
+                    console.log(order[i].testDate);
                     orderCount = orderCount + 1;
-                }
-            }
 
-            for (let i = 0; i < order.length; i++) {
-                if (order[i].orderStatus == "Placed") {
-                    order[i].Placed = true
-                } else if (order[i].orderStatus == "Processed") {
-                    order[i].Placed = true
-                    order[i].Processed = true
-                } else if (order[i].orderStatus == "Shipped") {
-                    order[i].Placed = true
-                    order[i].Processed = true
-                    order[i].Shipped = true
-                } else if (order[i].orderStatus == "Delivered") {
-                    order[i].Placed = true
-                    order[i].Processed = true
-                    order[i].Shipped = true
-                    order[i].Delivered = true
+                    if (order[i].orderStatus == "Placed") {
+                        order[i].Placed = true
+                    } else if (order[i].orderStatus == "Processed") {
+                        order[i].Placed = true
+                        order[i].Processed = true
+                    } else if (order[i].orderStatus == "Shipped") {
+                        order[i].Placed = true
+                        order[i].Processed = true
+                        order[i].Shipped = true
+                    } else if (order[i].orderStatus == "Delivered") {
+                        order[i].Placed = true
+                        order[i].Processed = true
+                        order[i].Shipped = true
+                        order[i].Delivered = true
+                    }
                 }
             }
 

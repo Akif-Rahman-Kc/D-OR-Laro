@@ -16,6 +16,7 @@
                     <div class="form-label-group w-50">
                         <label  class="mt-4" for="inputEmail">First Name</label>
                         <input type="text" id="inputEmail" class="form-control" name="userFName" placeholder="First Name">
+                        <label style="font-size: 0.8rem;" class="text-danger" for="">{{errorValidation}}</label>
                     </div>
                     <div class="form-label-group w-50 ml-3">
                         <label  class="mt-4" for="inputEmail">Second Name</label>
@@ -26,17 +27,23 @@
                   <div class="form-label-group">
                     <label  class="mt-4" for="inputEmail">E-mail</label>
                     <input type="email" id="inputEmail" class="form-control" name="userEmail" placeholder="E-mail">
-                    <label style="font-size: 0.8rem;" class="text-danger" for="">{{errorMeassage}}</label>
+                    {{#if errorValidation}}
+                      <label style="font-size: 0.8rem;" class="text-danger" for="">{{errorValidation}}</label>
+                    {{else}}
+                      <label style="font-size: 0.8rem;" class="text-danger" for="">{{errorMeassage}}</label>
+                    {{/if}}
                   </div>
 
                   <div class="form-label-group">
                     <label  class="mt-4" for="inputEmail">Phone No</label>
                     <input type="text" id="inputEmail" class="form-control" name="userPhoneNo" placeholder="Phone No">
+                    <label style="font-size: 0.8rem;" class="text-danger" for="">{{errorValidation}}</label>
                   </div>
     
                   <div class="form-label-group">
                     <label class="mt-4" for="inputPassword">Password</label>
                     <input type="password" id="inputPassword" class="form-control" name="userPass" placeholder="Password">
+                    <label style="font-size: 0.8rem;" class="text-danger" for="">{{errorValidation}}</label>
                   </div>
                   <div class="form-label-group">
                     <label class="mt-4" for="inputPassword">Confirm Password</label>

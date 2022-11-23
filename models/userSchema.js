@@ -20,13 +20,14 @@ const userSchema = new schema({
         trim: true
       },
       userPhoneNo:{
+        required: true,
         type: String,
         trim: true
       },
       userPass:{
         type: String,
         required: true,
-        minlength: true,
+        minlength: 6,
         trim: true
       },
       isBanned:{

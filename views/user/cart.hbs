@@ -89,7 +89,12 @@
             <div class="col-lg-4">
                 <form class="mb-5" action="" id="verify-coupon" method="post">
                     <div class="input-group">
-                        <input type="text" class="form-control p-4" name="CouponCode" placeholder="Apply Coupon Code">
+                        {{#if usedCoupon}}
+                            <input type="text" class="form-control p-4" name="CouponCode" value="{{usedCoupon.code}}" placeholder="Apply Coupon Code">
+                        {{else}}
+                            <input type="text" class="form-control p-4" name="CouponCode" placeholder="Apply Coupon Code">
+                        {{/if}}
+                        
                         {{#if applyCoupon}}
                              <div class="input-group-append">
                                 <button style="height: 3rem;" class="btn btn-danger">Remove Coupon</button>
@@ -99,12 +104,6 @@
                                 <button style="height: 3rem;" class="btn btn-primary">Apply Coupon</button>
                             </div>
                         {{/if}}
-                            <div class="input-group-append d-none" id="remove">
-                                <button style="height: 3rem;" class="btn btn-danger">Remove Coupon</button>
-                            </div>
-                             <div class="input-group-append d-none" id="apply">
-                                <button style="height: 3rem;" class="btn btn-primary">Apply Coupon</button>
-                            </div>
                     </div>
                 </form>
                 <div class="card border-secondary mb-5">
@@ -165,10 +164,6 @@
                 data: $('#verify-coupon').serialize() + "&amountTotal=" + total,
                 success: (response) => {
                     if (response.success) {
-                        console.log(response.success.totalLast)
-                        console.log(response.success.percentage)
-                        document.getElementById('coupon-discount').innerHTML = response.success.percentage +'%'
-                        document.getElementById('lastPrice').innerHTML = response.success.totalLast
                         Swal.fire({
                             position: 'center',
                             icon: 'success',
@@ -176,8 +171,9 @@
                             customClass: 'swal-wide',
                             showConfirmButton: false,
                             timer: 1000
+                        }).then((result)=>{
+                            location.reload()
                         })
-                        location.reload()
                     } else if (response.maxRadeem) {
                         console.log(response.maxRadeem)
                         Swal.fire(
@@ -205,12 +201,16 @@
                             'error'
                         )
                     }else if (response.removeCoupon) {
-                        Swal.fire(
-                            'Coupon code Removed',
-                            'Not use the Coupon',
-                            'success'
-                        )
-                        location.reload()
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Coupon Code Removed',
+                            customClass: 'swal-wide',
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then((result)=>{
+                            location.reload()
+                        })
                     }else{
                         Swal.fire(
                             'Sorry!',
