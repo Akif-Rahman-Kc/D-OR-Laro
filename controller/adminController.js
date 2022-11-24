@@ -6,6 +6,7 @@ const Product = require("../models/productSchema");
 const Coupon = require("../models/couponSchema");
 const moment = require('moment')
 const fs = require("fs");
+const { now } = require("mongoose");
 
 module.exports = {
     adminHome: async (req, res) => {
@@ -19,32 +20,12 @@ module.exports = {
                 order[i].testDate = moment(testDate).format('DD MMMM , YYYY')
             }
 
-            // let totalSelling =await Order.find({orderStatus:'Delivered'}).count()
-            // let todayDate= new Date();
-            // todayDate.setDate(todayDate.getDate());
-            // console.log(todayDate);
-            // let totalIncome = await Order.aggregate([
-            //     {
-            //         $match : {
-            //             "deliveryDate" : { $lte : todayDate }
-            //             }
-            //     },
-            //     {
-            //         $group : {
-            //             _id : null,
-            //             totalIncome : {$sum : "$totalLast"}
-            //         }
-            //     },
-            // ])
-
-            // console.log(totalIncome)
-            
-            // if(totalIncome[0]){
-            //     totalIncome=(totalIncome[0].totalIncome/100)*25 
-            //     totalIncome=Math.round(totalIncome)
-            // }
-
-            let monthlTtotalIncome = await Order.aggregate([
+            let monthlyTtotalIncome = await Order.aggregate([
+                    {
+                        $match : {
+                            'orderStatus' : "Delivered",
+                        }
+                    },
                     {
                         $project : {
                             'totalLast' : true,
@@ -63,10 +44,157 @@ module.exports = {
                         }
                     },
                 ])
+                const month = ['jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+                monthlyTtotalIncome = month.map( (el, ind) =>{
+                    const found = monthlyTtotalIncome.find(elm => elm._id === ind+1)
+                    return found ? found.totalIncome : 0;
+                })
+                console.log(monthlyTtotalIncome);
 
-                console.log(monthlTtotalIncome);
+                let testDate = new Date()
+                let date = moment(testDate).format('MM')
+                date = parseInt(date) - 1
+                let totalIncomeAtMonth = monthlyTtotalIncome[date]
+                totalIncomeAtMonth = Math.round(totalIncomeAtMonth)
+                res.locals.totalIncomeAtMonth = totalIncomeAtMonth
 
-            res.render("admin/dashboard",{order, monthlTtotalIncome});
+                monthlyTtotalIncome = JSON.stringify(monthlyTtotalIncome)
+
+                let todayTtotalIncome = await Order.aggregate([
+                    {
+                        $match : {
+                            'orderStatus' : "Delivered",
+                        }
+                    },
+                    {
+                        $project : {
+                            'totalLast' : true,
+                            'createdAt' : true
+                        }
+                    },
+                    {
+                        $group : {
+                            _id : { '$dayOfMonth' : '$createdAt'},
+                            totalIncome : {$sum : "$totalLast"}
+                        }
+                    },
+                    {
+                        $sort : {
+                            _id : 1
+                        }
+                    },
+                ])
+                const day = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]
+                todayTtotalIncome = day.map( (el, ind) =>{
+                    const found = todayTtotalIncome.find(elm => elm._id === ind+1)
+                    return found ? found.totalIncome : 0;
+                })
+                console.log(todayTtotalIncome);
+
+                let dayDate = moment(testDate).format('DD')
+                dayDate = parseInt(dayDate) - 1
+                console.log(dayDate);
+                let totalIncomeAtDay = todayTtotalIncome[dayDate]
+                totalIncomeAtDay = Math.round(totalIncomeAtDay)
+                res.locals.totalIncomeAtDay = totalIncomeAtDay
+
+                let yrarlyTtotalIncome = await Order.aggregate([
+                    {
+                        $match : {
+                            'orderStatus' : "Delivered",
+                        }
+                    },
+                    {
+                        $project : {
+                            'totalLast' : true,
+                            'createdAt' : true
+                        }
+                    },
+                    {
+                        $group : {
+                            _id : { '$year' : '$createdAt'},
+                            totalIncome : {$sum : "$totalLast"}
+                        }
+                    },
+                    {
+                        $sort : {
+                            _id : -1
+                        }
+                    },
+                ])
+
+                yrarlyTtotalIncome = yrarlyTtotalIncome[0].totalIncome
+                yrarlyTtotalIncome = Math.round(yrarlyTtotalIncome)
+                res.locals.yrarlyTtotalIncome = yrarlyTtotalIncome
+
+                let monthlyTtotalSells = await Order.aggregate([
+                    {
+                        $match : {
+                            'orderStatus' : "Delivered",
+                        }
+                    },
+                    {
+                        $unwind : '$items'
+                    },
+                    {
+                        $project : {
+                            'createdAt' : true
+                        }
+                    },
+                    {
+                        $group : {
+                            _id : { '$month' : '$createdAt'},
+                            totalSells : {$sum : 1 }
+                        }
+                    },
+                    {
+                        $sort : {
+                            _id : 1
+                        }
+                    },
+                ])
+                monthlyTtotalSells = month.map( (el, ind) =>{
+                    const found = monthlyTtotalSells.find(elm => elm._id === ind+1)
+                    return found ? found.totalSells : 0;
+                })
+                console.log(monthlyTtotalSells);
+                monthlyTtotalSells = JSON.stringify(monthlyTtotalSells)
+
+                let monthlyCancelProduct = await Order.aggregate([
+                    {
+                        $match : {
+                            'orderStatus' : "Cancelled",
+                        }
+                    },
+                    {
+                        $unwind : '$items'
+                    },
+                    {
+                        $project : {
+                            'createdAt' : true
+                        }
+                    },
+                    {
+                        $group : {
+                            _id : { '$month' : '$createdAt'},
+                            totalCancel : {$sum : 1 }
+                        }
+                    },
+                    {
+                        $sort : {
+                            _id : 1
+                        }
+                    },
+                ])
+                monthlyCancelProduct = month.map( (el, ind) =>{
+                    const found = monthlyCancelProduct.find(elm => elm._id === ind+1)
+                    return found ? found.totalCancel : 0;
+                })
+                console.log(monthlyCancelProduct);
+                monthlyCancelProduct = JSON.stringify(monthlyCancelProduct)
+                
+
+            res.render("admin/dashboard",{order, monthlyTtotalIncome , monthlyTtotalSells, monthlyCancelProduct});
         } catch (error) {
             console.log(error.message);
         }

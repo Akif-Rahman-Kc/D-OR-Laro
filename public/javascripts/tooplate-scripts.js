@@ -1,15 +1,19 @@
+
 const width_threshold = 480;
 
 function drawLineChart() {
   if ($("#lineChart").length) {
     ctxLine = document.getElementById("lineChart").getContext("2d");
+    const deliveredSells = $('#monthlySells').data('month')
+    const CancelledSells = $('#monthlyCancel').data('month')
+    console.log(deliveredSells , CancelledSells)
     optionsLine = {
       scales: {
         yAxes: [
           {
             scaleLabel: {
               display: true,
-              labelString: "Hits"
+              labelString: "Count"
             }
           }
         ]
@@ -39,26 +43,18 @@ function drawLineChart() {
         ],
         datasets: [
           {
-            label: "Total Users",
-            data: [88, 68, 79, 57, 50, 55, 70],
+            label: "Total Sells Product",
+            data: [deliveredSells[0], deliveredSells[1], deliveredSells[2], deliveredSells[3], deliveredSells[4], deliveredSells[5], deliveredSells[6], deliveredSells[7], deliveredSells[8], deliveredSells[9], deliveredSells[10], deliveredSells[11]],
             fill: false,
             backgroundColor: "rgb(75, 192, 192)",
             cubicInterpolationMode: "monotone",
             pointRadius: 0
           },
           {
-            label: "Total Sells product",
-            data: [33, 45, 37, 21, 55, 74, 69],
+            label: "Total Canceled Product",
+            data: [CancelledSells[0], CancelledSells[1], CancelledSells[2], CancelledSells[3], CancelledSells[4], CancelledSells[5], CancelledSells[6], CancelledSells[7], CancelledSells[8], CancelledSells[9], CancelledSells[10], CancelledSells[11]],
             fill: false,
             backgroundColor: "rgba(255,99,132,1)",
-            cubicInterpolationMode: "monotone",
-            pointRadius: 0
-          },
-          {
-            label: "Featured",
-            data: [44, 19, 38, 46, 85, 66, 79],
-            fill: false,
-            backgroundColor: "rgba(153, 102, 255, 1)",
             cubicInterpolationMode: "monotone",
             pointRadius: 0
           }
@@ -74,8 +70,8 @@ function drawLineChart() {
 function drawBarChart() {
   if ($("#barChart").length) {
     ctxBar = document.getElementById("barChart").getContext("2d");
-   const total =  $('#monthlyTotal').data('month')
-console.log(total[0].)
+   const total = $('#monthlyTotal').data('month')
+console.log(total)
     optionsBar = {
       responsive: true,
       scales: {
@@ -115,7 +111,7 @@ console.log(total[0].)
         datasets: [
           {
             label: "Monthly Total Income",
-            data: [1040, 2340, 2568, 4959, 5843, 3338, 4794, 3243, 8853, 1932, 4748, 7564],
+            data: [total[0], total[1], total[2], total[3], total[4], total[5], total[6], total[7], total[8], total[9], total[10], total[11]],
             backgroundColor: [
               "#F7604D",
               "#4ED6B8",
@@ -138,53 +134,6 @@ console.log(total[0].)
     };
 
     barChart = new Chart(ctxBar, configBar);
-  }
-}
-
-function drawPieChart() {
-  if ($("#pieChart").length) {
-    var chartHeight = 300;
-
-    $("#pieChartContainer").css("height", chartHeight + "px");
-
-    ctxPie = document.getElementById("pieChart").getContext("2d");
-
-    optionsPie = {
-      responsive: true,
-      maintainAspectRatio: false,
-      layout: {
-        padding: {
-          left: 10,
-          right: 10,
-          top: 10,
-          bottom: 10
-        }
-      },
-      legend: {
-        position: "top"
-      }
-    };
-
-    configPie = {
-      type: "pie",
-      data: {
-        datasets: [
-          {
-            data: [18.24, 6.5, 9.15],
-            backgroundColor: ["#F7604D", "#4ED6B8", "#A8D582"],
-            label: "Storage"
-          }
-        ],
-        labels: [
-          "Used Storage (18.240GB)",
-          "System Storage (6.500GB)",
-          "Available Storage (9.150GB)"
-        ]
-      },
-      options: optionsPie
-    };
-
-    pieChart = new Chart(ctxPie, configPie);
   }
 }
 
