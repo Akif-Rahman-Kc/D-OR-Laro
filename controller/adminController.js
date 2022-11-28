@@ -583,9 +583,16 @@ module.exports = {
     adminCoupon: async (req, res) => {
         try {
             const coupon = await Coupon.find()
+            let date = new Date()
             for (let i = 0; i < coupon.length; i++) {
-                const testDate = coupon[i].expiryDate
-                coupon[i].date = moment(testDate).format('DD MMMM , YYYY')
+                if (date > coupon[i].expiryDate) {
+                    const id = coupon[i]._id
+                    await Coupon.deleteOne({_id:id})
+                } else {
+                    const testDate = coupon[i].expiryDate
+                    coupon[i].date = moment(testDate).format('DD MMMM , YYYY')
+                }
+                
             }
             res.render("admin/coupons",{coupon});
         } catch (error) {
@@ -596,6 +603,14 @@ module.exports = {
         try {
             await Coupon.create(req.body)
             res.redirect('/admin_panel/admin_coupon')
+        } catch (error) {
+            console.log(error.message);
+        }
+    },
+    deleteCoupon: async (req, res) => {
+        try {
+            const {id} = req.query
+            await Coupon.deleteOne({_id:id})
         } catch (error) {
             console.log(error.message);
         }

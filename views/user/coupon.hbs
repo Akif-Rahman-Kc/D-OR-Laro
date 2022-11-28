@@ -3,7 +3,6 @@
 
 <head>
     <title>D OR Laro Sports Hub</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <!-- Favicon -->
     <link href="img/favicon.ico" rel="icon">
 
@@ -89,8 +88,8 @@
                         </div>
                     </div>
                     <div class="copy-button">
-                        <input id="copyvalue" type="text" readonly value="{{this.couponCode}}" />
-                        <button onclick="copyIt()" class="copybtn">COPY</button>
+                        <input id="{{this._id}}" type="text" readonly value="{{this.couponCode}}" />
+                        <button onclick="copyIt('{{this._id}}')" class="{{this._id}}">COPY</button>
                     </div>
                 </div>
                 {{/each}}
@@ -104,11 +103,9 @@
 
     <script>
 
-        let copybtn = document.querySelector(".copybtn");
-
-
-        function copyIt() {
-            let copyInput = document.querySelector('#copyvalue');
+        function copyIt(Id) {
+            let copybtn = document.getElementsByClassName(Id);
+            let copyInput = document.getElementById(Id);
 
             copyInput.select();
 

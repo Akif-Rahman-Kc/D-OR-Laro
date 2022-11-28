@@ -19,7 +19,8 @@
                 <div class="form-group mb-3">
                   <label for="name">Product Name
                   </label>
-                  <input id="name" name="PName" type="text" class="form-control validate" />
+                  <input id="pname" name="PName" type="text" class="form-control validate" />
+                  <label id="pnameError" style="font-size: 0.7rem;" class="text-danger" for=""></label>
                 </div>
                 <div class="form-group mb-3">
                   <label for="description">Description</label>
@@ -47,55 +48,70 @@
                   </select>
                 </div>
                 <div class="form-group mb-3">
-                    <label for="size">Size
-                    </label>
-                    <div class="row">
-                      <div class="col-3">
-                        <input name="PSize" type="checkbox" value="S" style="width: 1.2rem;height: 1.2rem;"/><span class="ml-1 text-white">S</span>
-                      </div>
-                      <div class="col-3">
-                        <input name="PSize" type="checkbox" value="M" style="width: 1.2rem;height: 1.2rem;"/><span class="ml-1 text-white ">M</span>
-                      </div>
-                      <div class="col-3">
-                        <input name="PSize" type="checkbox" value="L" style="width: 1.2rem;height: 1.2rem;"/><span class="ml-1 text-white ">L</span>
-                      </div>
-                      <div class="col-3">
-                        <input name="PSize" type="checkbox" value="XL" style="width: 1.2rem;height: 1.2rem;"/><span class="ml-1 text-white">XL</span>
-                      </div>
-                      <div class="col-3">
-                        <input name="PSize" type="checkbox" value="XXL" style="width: 1.2rem;height: 1.2rem;"/><span class="ml-1 text-white ">XXL</span>
-                      </div>
-                      <div class="col-3">
-                        <input name="PSize" type="checkbox" value="1" style="width: 1.2rem;height: 1.2rem;"/><span class="ml-1 text-white ">1</span>
-                      </div>
-                      <div class="col-3">
-                        <input name="PSize" type="checkbox" value="2" style="width: 1.2rem;height: 1.2rem;"/><span class="ml-1 text-white">2</span>
-                      </div>
-                      <div class="col-3">
-                        <input name="PSize" type="checkbox" value="3" style="width: 1.2rem;height: 1.2rem;"/><span class="ml-1 text-white ">3</span>
-                      </div>
-                      <div class="col-3">
-                        <input name="PSize" type="checkbox" value="4" style="width: 1.2rem;height: 1.2rem;"/><span class="ml-1 text-white ">4</span>
-                      </div>
-                      <div class="col-3">
-                        <input name="PSize" type="checkbox" value="5" style="width: 1.2rem;height: 1.2rem;"/><span class="ml-1 text-white">5</span>
-                      </div>
-                      <div class="col-3">
-                        <input name="PSize" type="checkbox" value="6" style="width: 1.2rem;height: 1.2rem;"/><span class="ml-1 text-white ">6</span>
-                      </div>
-                      <div class="col-3">
-                        <input name="PSize" type="checkbox" value="7" style="width: 1.2rem;height: 1.2rem;"/><span class="ml-1 text-white ">7</span>
-                      </div>
-                      <div class="col-3">
-                        <input name="PSize" type="checkbox" value="8" style="width: 1.2rem;height: 1.2rem;"/><span class="ml-1 text-white ">8</span>
-                      </div>
-                      <div class="col-3">
-                        <input name="PSize" type="checkbox" value="9" style="width: 1.2rem;height: 1.2rem;"/><span class="ml-1 text-white">9</span>
-                      </div>
-                      <div class="col-3">
-                        <input name="PSize" type="checkbox" value="10" style="width: 1.2rem;height: 1.2rem;"/><span class="ml-1 text-white ">10</span>
-                      </div>
+                  <label for="size">Size
+                  </label>
+                  <div class="row">
+                    <div class="col-3">
+                      <input name="PSize" type="checkbox" value="S" style="width: 1.2rem;height: 1.2rem;" /><span
+                        class="ml-1 text-white">S</span>
                     </div>
+                    <div class="col-3">
+                      <input name="PSize" type="checkbox" value="M" style="width: 1.2rem;height: 1.2rem;" /><span
+                        class="ml-1 text-white ">M</span>
+                    </div>
+                    <div class="col-3">
+                      <input name="PSize" type="checkbox" value="L" style="width: 1.2rem;height: 1.2rem;" /><span
+                        class="ml-1 text-white ">L</span>
+                    </div>
+                    <div class="col-3">
+                      <input name="PSize" type="checkbox" value="XL" style="width: 1.2rem;height: 1.2rem;" /><span
+                        class="ml-1 text-white">XL</span>
+                    </div>
+                    <div class="col-3">
+                      <input name="PSize" type="checkbox" value="XXL" style="width: 1.2rem;height: 1.2rem;" /><span
+                        class="ml-1 text-white ">XXL</span>
+                    </div>
+                    <div class="col-3">
+                      <input name="PSize" type="checkbox" value="1" style="width: 1.2rem;height: 1.2rem;" /><span
+                        class="ml-1 text-white ">1</span>
+                    </div>
+                    <div class="col-3">
+                      <input name="PSize" type="checkbox" value="2" style="width: 1.2rem;height: 1.2rem;" /><span
+                        class="ml-1 text-white">2</span>
+                    </div>
+                    <div class="col-3">
+                      <input name="PSize" type="checkbox" value="3" style="width: 1.2rem;height: 1.2rem;" /><span
+                        class="ml-1 text-white ">3</span>
+                    </div>
+                    <div class="col-3">
+                      <input name="PSize" type="checkbox" value="4" style="width: 1.2rem;height: 1.2rem;" /><span
+                        class="ml-1 text-white ">4</span>
+                    </div>
+                    <div class="col-3">
+                      <input name="PSize" type="checkbox" value="5" style="width: 1.2rem;height: 1.2rem;" /><span
+                        class="ml-1 text-white">5</span>
+                    </div>
+                    <div class="col-3">
+                      <input name="PSize" type="checkbox" value="6" style="width: 1.2rem;height: 1.2rem;" /><span
+                        class="ml-1 text-white ">6</span>
+                    </div>
+                    <div class="col-3">
+                      <input name="PSize" type="checkbox" value="7" style="width: 1.2rem;height: 1.2rem;" /><span
+                        class="ml-1 text-white ">7</span>
+                    </div>
+                    <div class="col-3">
+                      <input name="PSize" type="checkbox" value="8" style="width: 1.2rem;height: 1.2rem;" /><span
+                        class="ml-1 text-white ">8</span>
+                    </div>
+                    <div class="col-3">
+                      <input name="PSize" type="checkbox" value="9" style="width: 1.2rem;height: 1.2rem;" /><span
+                        class="ml-1 text-white">9</span>
+                    </div>
+                    <div class="col-3">
+                      <input name="PSize" type="checkbox" value="10" style="width: 1.2rem;height: 1.2rem;" /><span
+                        class="ml-1 text-white ">10</span>
+                    </div>
+                  </div>
                 </div>
                 <div class="row">
                   <div class="form-group mb-3 col-xs-12 col-sm-6">
@@ -114,7 +130,7 @@
               <div>
                 <label for="formFileLg" class="form-label text-white">Product Images</label>
                 <input onchange="previewMultiple(event)" style="padding: 0.3rem;" class="form-control form-control-lg"
-                  id="formFileLg" type="file"  name="PImage" multiple data-large-mode="true">
+                  id="formFileLg" type="file" name="PImage" multiple data-large-mode="true">
                 <div class="mt-2" id="galeria">
                 </div>
                 <div class="form-group mb-3 mt-1">
@@ -126,46 +142,58 @@
                   <input name="PStock" class="form-control validate" data-large-mode="true" />
                 </div>
                 <div class="form-group mb-3">
-                    <label for="exampleColorInput" class="form-label">Colors</label>
-                    <div class="row">
-                      <div class="col-3">
-                        <input name="PColor" type="checkbox" value="Red" style="width: 1.2rem;height: 1.2rem;"/><span class="ml-1 text-white">Red</span>
-                      </div>
-                      <div class="col-3">
-                        <input name="PColor" type="checkbox" value="Blue" style="width: 1.2rem;height: 1.2rem;"/><span class="ml-1 text-white">Blue</span>
-                      </div>
-                      <div class="col-3">
-                        <input name="PColor" type="checkbox" value="Black" style="width: 1.2rem;height: 1.2rem;"/><span class="ml-1 text-white">Black</span>
-                      </div>
-                      <div class="col-3 p-0">
-                        <input name="PColor" type="checkbox" value="Yellow" style="width: 1.2rem;height: 1.2rem;"/><span class="ml-1 text-white">Yellow</span>
-                      </div>
-                      <div class="col-3 d-flex">
-                        <input name="PColor" type="checkbox" value="Gray" style="width: 1.2rem;height: 1.2rem;"/><span class="ml-1 text-white">Gray</span>
-                      </div>
-                      <div class="col-3">
-                      <input name="PColor" type="checkbox" value="Silver" style="width: 1.2rem;height: 1.2rem;"/><span class="ml-1 text-white">Silver</span>
-                      </div>
-                      <div class="col-3">
-                        <input name="PColor" type="checkbox" value="White" style="width: 1.2rem;height: 1.2rem;"/><span class="ml-1 text-white">White</span>
-                      </div>
-                      <div class="col-3 p-0">
-                        <input name="PColor" type="checkbox" value="Orange" style="width: 1.2rem;height: 1.2rem;"/><span class="ml-1 text-white">Orange</span>
-                      </div>
-                      <div class="col-3">
-                        <input name="PColor" type="checkbox" value="Pink" style="width: 1.2rem;height: 1.2rem;"/><span class="ml-1 text-white">Pink</span>
-                      </div>
-                      <div class="col-3">
-                        <input name="PColor" type="checkbox" value="Golden" style="width: 1.2rem;height: 1.2rem;"/><span class="ml-1 text-white">Gold</span>
-                      </div>
-                      <div class="col-3">
-                        <input name="PColor" type="checkbox" value="Green" style="width: 1.2rem;height: 1.2rem;"/><span class="ml-1 text-white">Green</span>
-                      </div>
-                      <div class="col-3 p-0">
-                        <input name="PColor" type="checkbox" value="Brown" style="width: 1.2rem;height: 1.2rem;"/><span class="ml-1 text-white">Brown</span>
-                      </div>
+                  <label for="exampleColorInput" class="form-label">Colors</label>
+                  <div class="row">
+                    <div class="col-3">
+                      <input name="PColor" type="checkbox" value="Red" style="width: 1.2rem;height: 1.2rem;" /><span
+                        class="ml-1 text-white">Red</span>
+                    </div>
+                    <div class="col-3">
+                      <input name="PColor" type="checkbox" value="Blue" style="width: 1.2rem;height: 1.2rem;" /><span
+                        class="ml-1 text-white">Blue</span>
+                    </div>
+                    <div class="col-3">
+                      <input name="PColor" type="checkbox" value="Black" style="width: 1.2rem;height: 1.2rem;" /><span
+                        class="ml-1 text-white">Black</span>
+                    </div>
+                    <div class="col-3 p-0">
+                      <input name="PColor" type="checkbox" value="Yellow" style="width: 1.2rem;height: 1.2rem;" /><span
+                        class="ml-1 text-white">Yellow</span>
+                    </div>
+                    <div class="col-3 d-flex">
+                      <input name="PColor" type="checkbox" value="Gray" style="width: 1.2rem;height: 1.2rem;" /><span
+                        class="ml-1 text-white">Gray</span>
+                    </div>
+                    <div class="col-3">
+                      <input name="PColor" type="checkbox" value="Silver" style="width: 1.2rem;height: 1.2rem;" /><span
+                        class="ml-1 text-white">Silver</span>
+                    </div>
+                    <div class="col-3">
+                      <input name="PColor" type="checkbox" value="White" style="width: 1.2rem;height: 1.2rem;" /><span
+                        class="ml-1 text-white">White</span>
+                    </div>
+                    <div class="col-3 p-0">
+                      <input name="PColor" type="checkbox" value="Orange" style="width: 1.2rem;height: 1.2rem;" /><span
+                        class="ml-1 text-white">Orange</span>
+                    </div>
+                    <div class="col-3">
+                      <input name="PColor" type="checkbox" value="Pink" style="width: 1.2rem;height: 1.2rem;" /><span
+                        class="ml-1 text-white">Pink</span>
+                    </div>
+                    <div class="col-3">
+                      <input name="PColor" type="checkbox" value="Golden" style="width: 1.2rem;height: 1.2rem;" /><span
+                        class="ml-1 text-white">Gold</span>
+                    </div>
+                    <div class="col-3">
+                      <input name="PColor" type="checkbox" value="Green" style="width: 1.2rem;height: 1.2rem;" /><span
+                        class="ml-1 text-white">Green</span>
+                    </div>
+                    <div class="col-3 p-0">
+                      <input name="PColor" type="checkbox" value="Brown" style="width: 1.2rem;height: 1.2rem;" /><span
+                        class="ml-1 text-white">Brown</span>
                     </div>
                   </div>
+                </div>
                 <div class="form-group mb-3">
                   <label for="stock">Discount</label>
                   <input name="PDiscount" class="form-control validate" data-large-mode="true" />
@@ -173,7 +201,7 @@
               </div>
             </div>
             <div class="col-12">
-              <input type="submit" value="Submit" class="btn btn-primary btn-block text-uppercase">
+              <input id="add-product" type="submit" value="Submit" class="btn btn-primary btn-block text-uppercase">
             </div>
             </form>
           </div>

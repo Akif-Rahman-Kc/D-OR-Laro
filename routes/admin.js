@@ -47,6 +47,7 @@ router.get('/admin_category/subdelete', adminAuth.sessionAdmin,adminController.d
 
 router.get('/admin_coupon', adminAuth.sessionAdmin,adminController.adminCoupon);
 router.post('/add_coupon', adminAuth.sessionAdmin,adminController.addCoupon);
+router.get('/delete_coupon', adminAuth.sessionAdmin,adminController.deleteCoupon);
 
 
 module.exports = router;

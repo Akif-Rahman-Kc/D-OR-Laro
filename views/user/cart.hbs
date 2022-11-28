@@ -21,9 +21,9 @@
                             <th>Products</th>
                             <th>Color</th>
                             <th>Size</th>
-                            <th>Price</th>
                             <th>Quantity</th>
                             <th>Discount</th>
+                            <th>Price</th>
                             <th>Remove</th>
                         </tr>
                     </thead>
@@ -34,7 +34,6 @@
                                     style="width: 50px;"><br><span style="font-size: 0.8rem;">{{this.PName}}</span></td>
                             <td class="align-middle">{{this.PColor}}</td>
                             <td class="align-middle">{{this.PSize}}</td>
-                            <td class="align-middle">${{this.PPrice}}</td>
                             <td class="align-middle">
                                 {{#if ../user.applyCoupon}}
                                 <div class="input-group quantity mx-auto" style="width: 100px;">
@@ -72,7 +71,8 @@
                                 </div>
                                 {{/if}}
                             </td>
-                            <td class="align-middle text-danger">${{this.PDiscount}}</td>
+                            <td class="align-middle text-danger">$<span id="countDiscount{{this.item_id}}">{{this.countDiscount}}</span></td>
+                            <td class="align-middle">$<span id="countTotal{{this.item_id}}">{{this.countTotal}}</span></td>
                             {{#if ../user.applyCoupon}}
                                  <td class="align-middle"><button hidden onclick="removeCart('{{this.item_id}}')"
                                     class="btn btn-sm btn-primary"><i class="fa fa-times"></i></button></td>
@@ -114,7 +114,7 @@
                         {{#each user.Cart}}
                         <div class="d-flex justify-content-between mb-3 pt-1">
                             <h6 class="font-weight-medium">{{this.PName}}</h6>
-                            <h6 class="font-weight-medium">${{this.PPrice}}</h6>
+                            <h6 class="font-weight-medium">$<span id="countTotalSummery{{this.item_id}}">{{this.countTotal}}</span></h6>
                         </div>
                         {{/each}}
                         <hr>
@@ -130,7 +130,7 @@
                         </div>
                         <div class="d-flex justify-content-between">
                             <h6 class="font-weight-medium">Coupon Discount</h6>
-                            <h6 class="font-weight-medium text-success" id="coupon-discount">{{couponDiscount}}%</h6>
+                            <h6 class="font-weight-medium text-success" id="coupon-discount">-${{couponDiscount}}</h6>
                         </div>
                         <div class="d-flex justify-content-between">
                             <h6 class="font-weight-medium">Delivery</h6>

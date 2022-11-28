@@ -23,7 +23,6 @@ const layoutPath = path.join(__dirname, 'views/layout');
 hbs.registerPartials(layoutPath)
 const oneDay = 1000 * 60 * 60 * 24;
 app.use(session({ secret: "dorlaro",cookie: { maxAge: oneDay },resave: true,saveUninitialized: true }));
-app.use(flash());
 app.use( bodyParser.urlencoded({ extended: true }) );
 
 // cache clear

@@ -143,10 +143,10 @@
                                                                 <th scope="col">Serial</th>
                                                                 <th scope="col">Product</th>
                                                                 <th scope="col">Name</th>
-                                                                <th scope="col">Price</th>
                                                                 <th scope="col">Size</th>
                                                                 <th scope="col">Color</th>
                                                                 <th scope="col">quantity</th>
+                                                                <th scope="col">Price</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -164,9 +164,6 @@
                                                                         <h6>{{this.PName}}</h6>
                                                                     </a>
                                                                 </td>
-                                                                <td class="table-price">
-                                                                    <h6>${{this.PPrice}}</h6>
-                                                                </td>
                                                                 <td class="table-brand">
                                                                     <h6>{{this.PSize}}</h6>
                                                                 </td>
@@ -175,6 +172,9 @@
                                                                 </td>
                                                                 <td class="table-quantity">
                                                                     <h6>{{this.quantity}}</h6>
+                                                                </td>
+                                                                <td class="table-price">
+                                                                    <h6>${{this.countTotal}}</h6>
                                                                 </td>
                                                             </tr>
                                                             {{/each}}

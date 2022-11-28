@@ -40,17 +40,11 @@ module.exports = {
             } else {
                 try {
                     const userDetails = req.body;
-                    if (userDetails.userPass === userDetails.userConfPass) {
-                        req.session.userDetails = userDetails
-                        const number = parseInt(userDetails.userPhoneNo)
-                        console.log(number);
-                        otpCheck.otpSend(number)
-                        res.redirect('/otp')
-                    } else {
-                        res.render("user/register", {
-                            errorPassword: "Do not match the password !",
-                        });
-                    }
+                    req.session.userDetails = userDetails
+                    const number = parseInt(userDetails.userPhoneNo)
+                    console.log(number);
+                    otpCheck.otpSend(number)
+                    res.redirect('/otp')
                 } catch (error) {
                     console.log(error.message);
                 }
@@ -134,7 +128,7 @@ module.exports = {
         try {
             req.session.userLogged = false;
             req.session.user = null;
-            res.redirect("/user_login");
+            res.redirect("/");
         } catch (error) {
             console.log(error.message);
         }
@@ -363,11 +357,16 @@ module.exports = {
     userCart: async (req, res) => {
         try {
             const userId = req.session.user;
-            const user = await User.findById(userId);
+            let user = await User.findById(userId);
             let empty = null;
             if (user.Cart == "") {
                 empty = "cart is Empty";
             } else {
+                user.Cart = user.Cart.filter((obj)=>{
+                    obj.countDiscount = obj.PDiscount * obj.quantity
+                    obj.countTotal = obj.PPrice * obj.quantity
+                    return obj
+                })
                 if(user.applyCoupon){
                     res.locals.applyCoupon = true
 
@@ -523,6 +522,14 @@ module.exports = {
                         },
                     }
                 );
+                let product = await User.findOne({_id: userId})
+                product = product.Cart.filter((obj)=>{
+                    if (obj.item_id == _id) {
+                        return obj
+                    }
+                })
+                const countTotal = product[0].PPrice * product[0].quantity
+                const countDiscount = product[0].PDiscount * product[0].quantity
                 const total = await User.aggregate([
                     {
                         $match: {
@@ -563,7 +570,7 @@ module.exports = {
                         },
                     }
                 );
-                res.json({ totalAmount, totalLast, discountPrice , couponDiscount });
+                res.json({ totalAmount, totalLast, discountPrice , couponDiscount , countTotal , countDiscount});
             }
         } catch (error) {
             console.log(error.message);
@@ -676,7 +683,7 @@ module.exports = {
                 await User.updateOne({_id:userId} ,{
                         $pull:{
                             usedCoupon:{
-                                _id:coupon._id,
+                                couponId:coupon._id,
                                 code:coupon.couponCode,
                             }
                         }
@@ -686,7 +693,7 @@ module.exports = {
                 if(CouponCode == ''){
                     res.json(false)
                 }else{
-                    const existCoupon = await User.findOne({'usedCoupon._id':coupon._id})
+                    const existCoupon = await User.findOne({_id:userId,'usedCoupon.couponId':coupon._id})
                 console.log(existCoupon);
                 if (existCoupon) {
                     res.json({exist:true})
@@ -707,7 +714,7 @@ module.exports = {
                                             cartTotals: {
                                                 subTotal: user.cartTotals.subTotal,
                                                 discount: user.cartTotals.discount,
-                                                couponDiscount:percentage,
+                                                couponDiscount:discount,
                                                 total: totalLast
                                             }
                                         },
@@ -753,7 +760,7 @@ module.exports = {
     Checkout: async (req, res) => {
         try {
             const userId = req.session.user;
-            const user = await User.findById(userId);
+            let user = await User.findById(userId);
             let addressNull = null;
             if (user.Cart == "") {
                 res.redirect("/cart");
@@ -761,6 +768,10 @@ module.exports = {
                 if (user.Address == "") {
                     addressNull = "created Address";
                 }
+                user.Cart = user.Cart.filter((obj)=>{
+                    obj.countTotal = obj.PPrice * obj.quantity
+                    return obj
+                })
                 const totalAmount = user.cartTotals.subTotal;
                 const discountPrice = user.cartTotals.discount;
                 const totalLast = user.cartTotals.total;
@@ -829,6 +840,10 @@ module.exports = {
             let date= new Date();
             date.setDate(date.getDate() + 5);
             date = moment(date).format('DD MMMM , YYYY')
+            user.Cart = user.Cart.filter((obj)=>{
+                obj.countTotal = obj.PPrice * obj.quantity
+                return obj
+            })
             const userOrder = {
                 Address: {
                     firstName: codOrder.firstName,
@@ -920,6 +935,7 @@ module.exports = {
     orderSuccess: async (req, res) => {
         try {
             const userId = req.session.user;
+            
             const userOrder = await Order.findOne({ userId: userId })
                 .sort({ createdAt: -1 })
                 .limit(1);
@@ -988,12 +1004,32 @@ module.exports = {
             console.log(req.body);
             const updateUser = req.body;
             const userId = req.session.user;
-            const oldUser = await User.findOne({ userEmail: updateUser.userEmail });
+            const user = await User.findById(userId)
+            console.log(user);
+            if (user.userEmail == updateUser.userEmail) {
+                console.log("aaa vannu");
+                await User.findByIdAndUpdate(
+                    { _id: userId },
+                    {
+                        $set: {
+                            userFName: updateUser.userFName,
+                            userLName: updateUser.userLName,
+                            userPhoneNo: updateUser.userPhoneNo,
+                        },
+                    }
+                );
+                console.log("aaaaaa");
+                res.redirect("/user_profile");
+            } else {
+                const oldUser = await User.findOne({ userEmail: updateUser.userEmail });
+                console.log(oldUser);
             if (oldUser) {
+                console.log("exist");
                 res.render("user/profile", {
                     Existerror: "This email already existed !",
                 });
             } else {
+                console.log("Last");
                 await User.findByIdAndUpdate(
                     { _id: userId },
                     {
@@ -1007,6 +1043,8 @@ module.exports = {
                 );
                 res.redirect("/user_profile");
             }
+            }
+            
         } catch (error) {
             console.log(error.message);
         }

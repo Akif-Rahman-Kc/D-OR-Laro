@@ -48,6 +48,11 @@ const orderSchema = new schema({
         required: true,
         trim: true
       },
+    couponDiscount : {
+        type: Number,
+        required: true,
+        trim: true 
+      },
     totalLast : {
         type: Number,
         required: true,

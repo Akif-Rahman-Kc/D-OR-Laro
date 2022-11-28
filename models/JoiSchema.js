@@ -2,9 +2,11 @@ const Joi = require('joi')
 
 module.exports.userAuthSchema = Joi.object({
     userFName: Joi.required().label('Please Enter the First Name'),
+    userLName: Joi.required().label('Please Enter the Second Name'),
     userEmail: Joi.required().label('Please Enter the Email'),
     userPhoneNo: Joi.required().label('Please enter the Phone Number'),
     userPass: Joi.required().label('Please enter the Password'),
+    userConfPass: Joi.required().label('Please enter the Confirm Password'),
 });
 
 module.exports.productSchema = Joi.object({

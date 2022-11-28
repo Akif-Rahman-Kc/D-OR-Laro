@@ -155,7 +155,7 @@
                         {{#each user.Cart}}
                         <div class="d-flex justify-content-between">
                             <p>{{this.PName}}</p>
-                            <p>${{this.PPrice}}</p>
+                            <p>${{this.countTotal}}</p>
                         </div>
                         {{/each}}
                         <hr class="mt-0">
@@ -169,7 +169,7 @@
                         </div>
                         <div class="d-flex justify-content-between">
                             <h6 class="font-weight-medium">Coupon Discount</h6>
-                            <h6 class="font-weight-medium text-success">{{couponDiscount}}%</h6>
+                            <h6 class="font-weight-medium text-success">-${{couponDiscount}}</h6>
                         </div>
                         <div class="d-flex justify-content-between">
                             <h6 class="font-weight-medium">Delivery</h6>
@@ -192,14 +192,14 @@
                             <div class="form-group">
                                 <div class="custom-control custom-radio">
                                     <input type="radio" class="custom-control-input" name="payment" id="paypal"
-                                        value="Cash on Delivery">
+                                        value="Cash on Delivery" required>
                                     <label class="custom-control-label" for="paypal">Cash On Delivery</label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-radio">
                                     <input type="radio" class="custom-control-input" name="payment" id="directcheck"
-                                        value="Online Payment">
+                                        value="Online Payment" required>
                                     <label class="custom-control-label" for="directcheck">Online Payment</label>
                                 </div>
                             </div>

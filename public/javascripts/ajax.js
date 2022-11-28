@@ -106,6 +106,9 @@ function counting(proId, price, Cartcount) {
                 document.getElementById('discount').innerHTML = response.discountPrice
                 document.getElementById('coupon-discount').innerHTML = response.couponDiscount
                 document.getElementById('lastPrice').innerHTML = response.totalLast
+                document.getElementById(`countDiscount${proId}`).innerHTML = response.countDiscount
+                document.getElementById(`countTotal${proId}`).innerHTML = response.countTotal
+                document.getElementById(`countTotalSummery${proId}`).innerHTML = response.countTotal
             }
         }
     })
