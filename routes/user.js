@@ -4,6 +4,10 @@ const userController = require('../controller/userContorller')
 const userAuth = require('../middleware/auth')
 
 
+// 404
+
+router.get('/404', userController.user404)
+
 // Authentication
 
 router.get('/user_registration', userController.userRegister)

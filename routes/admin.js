@@ -6,6 +6,10 @@ const multiplefileupload = require("../middleware/filesupload")
 const singlefileupload = require("../middleware/fileupload")
 
 
+// 404
+
+router.get('/admin_404', adminController.admin404)
+
 // Authentication
 
 router.get('/admin_login', adminController.adminLogin);

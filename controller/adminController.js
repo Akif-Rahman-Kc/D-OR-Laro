@@ -9,9 +9,13 @@ const fs = require("fs");
 const { now } = require("mongoose");
 
 module.exports = {
+    admin404:(req, res) => {
+        res.render("admin/admin404");
+    },
     adminHome: async (req, res) => {
         try {
             const order = await Order.find().sort({createdAt: -1,}).lean();
+            console.log(order);
             for (let i = 0; i < order.length; i++) {
                 if (order[i].orderStatus == 'Pending') {
                     order[i].pending = true
@@ -95,6 +99,7 @@ module.exports = {
                 dayDate = parseInt(dayDate) - 1
                 console.log(dayDate);
                 let totalIncomeAtDay = todayTtotalIncome[dayDate]
+                console.log(totalIncomeAtDay,"aaahhhh");
                 totalIncomeAtDay = Math.round(totalIncomeAtDay)
                 res.locals.totalIncomeAtDay = totalIncomeAtDay
 
@@ -123,7 +128,14 @@ module.exports = {
                     },
                 ])
 
-                yrarlyTtotalIncome = yrarlyTtotalIncome[0].totalIncome
+               
+
+                if (yrarlyTtotalIncome == []) {
+                    yrarlyTtotalIncome = 0
+                } else {
+                    yrarlyTtotalIncome = yrarlyTtotalIncome[0].totalIncome
+                }
+                
                 yrarlyTtotalIncome = Math.round(yrarlyTtotalIncome)
                 res.locals.yrarlyTtotalIncome = yrarlyTtotalIncome
 
@@ -197,6 +209,7 @@ module.exports = {
             res.render("admin/dashboard",{order, monthlyTtotalIncome , monthlyTtotalSells, monthlyCancelProduct});
         } catch (error) {
             console.log(error.message);
+            res.redirect('/admin_404')
         }
     },
     adminLogin: (req, res) => {
@@ -208,6 +221,7 @@ module.exports = {
             }
         } catch (error) {
             console.log(error.message);
+            res.redirect('/admin_404')
         }
     },
     adminLoginPost: async (req, res) => {
@@ -217,6 +231,7 @@ module.exports = {
             if (email) {
                 if (email.adminPass === adminData.adminPass) {
                     req.session.adminLogged = true;
+                    req.session.admin = email
                     res.redirect("/admin_panel");
                 } else {
                     res.render("admin/adminlogin", {
@@ -230,6 +245,7 @@ module.exports = {
             }
         } catch (error) {
             console.log(error.message);
+            res.redirect('/admin_404')
         }
     },
     adminLogout: (req, res) => {
@@ -238,6 +254,7 @@ module.exports = {
             res.redirect("/admin_panel/admin_login");
         } catch (error) {
             console.log(error.message);
+            res.redirect('/admin_404')
         }
     },
 
@@ -249,6 +266,7 @@ module.exports = {
             res.render("admin/products", { product });
         } catch (error) {
             console.log(error.message);
+            res.redirect('/admin_404')
         }
     },
     adminAddProduct: async (req, res) => {
@@ -257,6 +275,7 @@ module.exports = {
             res.render("admin/addproduct", { category });
         } catch (error) {
             console.log(error.message);
+            res.redirect('/admin_404')
         }
     },
     adminAddProductPost: async (req, res) => {
@@ -279,6 +298,7 @@ module.exports = {
             res.redirect("/admin_panel/admin_product");
         } catch (error) {
             console.log(error.message);
+            res.redirect('/admin_404')
         }
     },
     adminEditProduct: async (req, res) => {
@@ -289,6 +309,7 @@ module.exports = {
             res.render("admin/editproduct", { productEdit, category });
         } catch (error) {
             console.log(error.message);
+            res.redirect('/admin_404')
         }
     },
     adminEditProductPost: async (req, res) => {
@@ -344,6 +365,7 @@ module.exports = {
             res.redirect("/admin_panel/admin_product");
         } catch (error) {
             console.log(error.message);
+            res.redirect('/admin_404')
         }
     },
     adminDeleteProduct: async (req, res) => {
@@ -361,6 +383,7 @@ module.exports = {
             await Product.deleteOne(productDelete);
         } catch (error) {
             console.log(error.message);
+            res.redirect('/admin_404')
         }
     },
 
@@ -384,6 +407,7 @@ module.exports = {
             res.render("admin/orders", { order });
         } catch (error) {
             console.log(error.message);
+            res.redirect('/admin_404')
         }
     },
     orderDetails: async (req, res) => {
@@ -394,6 +418,7 @@ module.exports = {
             res.render("admin/viewOrder", { order });
         } catch (error) {
             console.log(error.message);
+            res.redirect('/admin_404')
         }
     },
     statusChange: async (req, res) => {
@@ -429,6 +454,7 @@ module.exports = {
             res.json(true)
         } catch (error) {
             console.log(error.message);
+            res.redirect('/admin_404')
         }
     },
 
@@ -440,6 +466,7 @@ module.exports = {
             res.render("admin/users", { users });
         } catch (error) {
             console.log(error.message);
+            res.redirect('/admin_404')
         }
     },
     adminUserBlock: async (req, res) => {
@@ -448,6 +475,7 @@ module.exports = {
             await User.updateOne({ userEmail: userEmail }, { isBanned: true });
         } catch (error) {
             console.log(error.message);
+            res.redirect('/admin_404')
         }
     },
     adminUserActive: async (req, res) => {
@@ -457,6 +485,7 @@ module.exports = {
             res.redirect("/admin_panel/admin_user");
         } catch (error) {
             console.log(error.message);
+            res.redirect('/admin_404')
         }
     },
 
@@ -468,6 +497,7 @@ module.exports = {
             res.render("admin/category", { categories });
         } catch (error) {
             console.log(error.message);
+            res.redirect('/admin_404')
         }
     },
     addCategory: async (req, res) => {
@@ -490,6 +520,7 @@ module.exports = {
 
         } catch (error) {
             console.log(error.message);
+            res.redirect('/admin_404')
         }
     },
     editCategory: async (req, res) => {
@@ -532,6 +563,7 @@ module.exports = {
 
         } catch (error) {
             console.log(error.message);
+            res.redirect('/admin_404')
         }
     },
     deleteCategory: async (req, res) => {
@@ -556,6 +588,7 @@ module.exports = {
             }
         } catch (error) {
             console.log(error.message);
+            res.redirect('/admin_404')
         }
     },
     deleteSubCategory: async (req, res) => {
@@ -575,6 +608,7 @@ module.exports = {
             );
         } catch (error) {
             console.log(error.message);
+            res.redirect('/admin_404')
         }
     },
 
@@ -597,6 +631,7 @@ module.exports = {
             res.render("admin/coupons",{coupon});
         } catch (error) {
             console.log(error.message);
+            res.redirect('/admin_404')
         }
     },
     addCoupon: async (req, res) => {
@@ -605,6 +640,7 @@ module.exports = {
             res.redirect('/admin_panel/admin_coupon')
         } catch (error) {
             console.log(error.message);
+            res.redirect('/admin_404')
         }
     },
     deleteCoupon: async (req, res) => {
@@ -613,6 +649,7 @@ module.exports = {
             await Coupon.deleteOne({_id:id})
         } catch (error) {
             console.log(error.message);
+            res.redirect('/admin_404')
         }
     },
 };

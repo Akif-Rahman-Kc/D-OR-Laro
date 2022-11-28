@@ -17,15 +17,19 @@ let instance = new Razorpay({
 });
 
 module.exports = {
+    user404:(req, res) => {
+        res.render("user/404");
+    },
     userRegister: (req, res) => {
         try {
             if (req.session.userLogged) {
                 res.redirect("/");
             } else {
-                res.render("user/register")``;
+                res.render("user/register");
             }
         } catch (error) {
             console.log(error);
+            res.redirect('/404')
         }
     },
     userRegisterPost: async (req, res) => {
@@ -47,10 +51,12 @@ module.exports = {
                     res.redirect('/otp')
                 } catch (error) {
                     console.log(error.message);
+                    res.redirect('/404')
                 }
             }
         } catch (error) {
             console.log(error.message);
+            res.redirect('/404')
         }
     },
     userLogin: (req, res) => {
@@ -62,6 +68,7 @@ module.exports = {
             }
         } catch (error) {
             console.log(error.message);
+            res.redirect('/404')
         }
     },
     userLoginPost: async (req, res) => {
@@ -84,6 +91,7 @@ module.exports = {
             }
         } catch (error) {
             console.log(error.message);
+            res.redirect('/404')
         }
     },
     forgotPass: (req, res) => {
@@ -91,6 +99,7 @@ module.exports = {
             res.render("user/forgot");
         } catch (error) {
             console.log(error.message);
+            res.redirect('/404')
         }
     },
     forgotPassPost: async (req, res) => {
@@ -122,6 +131,7 @@ module.exports = {
             }
         } catch (error) {
             console.log(error.message);
+            res.redirect('/404')
         }
     },
     userLogout: (req, res) => {
@@ -131,6 +141,7 @@ module.exports = {
             res.redirect("/");
         } catch (error) {
             console.log(error.message);
+            res.redirect('/404')
         }
     },
     OTP: (req, res) => {
@@ -138,6 +149,7 @@ module.exports = {
             res.render("user/otp");
         } catch (error) {
             console.log(error.message);
+            res.redirect('/404')
         }
     },
     verifyOtp: async (req, res) => {
@@ -161,6 +173,7 @@ module.exports = {
             }
         } catch (error) {
             console.log(error.message);
+            res.redirect('/404')
         }
     },
 
@@ -208,6 +221,7 @@ module.exports = {
             res.render("user/index", { products, categories });
         } catch (error) {
             console.log(error.message);
+            res.redirect('/404')
         }
     },
     userShops: async (req, res) => {
@@ -247,6 +261,7 @@ module.exports = {
             res.render("user/shop", { products, categories, subCat });
         } catch (error) {
             console.log(error.message);
+            res.redirect('/404')
         }
     },
     filterCategory: async (req, res) => {
@@ -274,6 +289,7 @@ module.exports = {
             res.render("user/shop", { products, categories, subCat });
         } catch (error) {
             console.log(error.message);
+            res.redirect('/404')
         }
     },
     filtering: async (req, res) => {
@@ -322,6 +338,7 @@ module.exports = {
             res.render("user/shop", { categories, subCat });
         } catch (error) {
             console.log(error.message);
+            res.redirect('/404')
         }
     },
     userDetails: async (req, res) => {
@@ -349,6 +366,7 @@ module.exports = {
             res.render("user/details", { product });
         } catch (error) {
             console.log(error.message);
+            res.redirect('/404')
         }
     },
 
@@ -435,6 +453,7 @@ module.exports = {
             res.render("user/cart", { empty ,user });
         } catch (error) {
             console.log(error.message);
+            res.redirect('/404')
         }
     },
     addCart: async (req, res) => {
@@ -501,6 +520,7 @@ module.exports = {
             }
         } catch (error) {
             console.log(error.message);
+            res.redirect('/404')
         }
     },
     cartQuantity: async (req, res) => {
@@ -574,6 +594,7 @@ module.exports = {
             }
         } catch (error) {
             console.log(error.message);
+            res.redirect('/404')
         }
     },
     deleteCart: async (req, res) => {
@@ -636,6 +657,7 @@ module.exports = {
 
         } catch (error) {
             console.log(error.message);
+            res.redirect('/404')
         }
     },
 
@@ -662,6 +684,7 @@ module.exports = {
             res.render("user/coupon", { coupon, empty });
         } catch (error) {
             console.log(error.message);
+            res.redirect('/404')
         }
     },
     couponVerify: async (req, res) => {
@@ -751,6 +774,7 @@ module.exports = {
             }
         } catch (error) {
             console.log(error.message);
+            res.redirect('/404')
         }
     },
 
@@ -787,6 +811,7 @@ module.exports = {
             }
         } catch (error) {
             console.log(error.message);
+            res.redirect('/404')
         }
     },
     checkoutAddressAdd: async (req, res) => {
@@ -813,6 +838,7 @@ module.exports = {
             res.redirect("/checkout");
         } catch (error) {
             console.log(error.message);
+            res.redirect('/404')
         }
     },
     userOrdering: async (req, res) => {
@@ -892,6 +918,7 @@ module.exports = {
             }
         } catch (error) {
             console.log(error.message);
+            res.redirect('/404')
         }
     },
     verifyPayment: async (req, res) => {
@@ -930,6 +957,7 @@ module.exports = {
             }
         } catch (error) {
             console.log(error.message);
+            res.redirect('/404')
         }
     },
     orderSuccess: async (req, res) => {
@@ -944,6 +972,7 @@ module.exports = {
             res.render("user/order-success", { userOrder,date });
         } catch (error) {
             console.log(error.message);
+            res.redirect('/404')
         }
     },
     userOrders: async (req, res) => {
@@ -985,6 +1014,7 @@ module.exports = {
             res.render("user/order", { order, orderCount });
         } catch (error) {
             console.log(error.message);
+            res.redirect('/404')
         }
     },
 
@@ -997,6 +1027,7 @@ module.exports = {
             res.render("user/profile", { user });
         } catch (error) {
             console.log(error.message);
+            res.redirect('/404')
         }
     },
     userProfileEdit: async (req, res) => {
@@ -1018,7 +1049,6 @@ module.exports = {
                         },
                     }
                 );
-                console.log("aaaaaa");
                 res.redirect("/user_profile");
             } else {
                 const oldUser = await User.findOne({ userEmail: updateUser.userEmail });
@@ -1047,6 +1077,7 @@ module.exports = {
             
         } catch (error) {
             console.log(error.message);
+            res.redirect('/404')
         }
     },
     userAddress: async (req, res) => {
@@ -1060,6 +1091,7 @@ module.exports = {
             res.render("user/address", { user, addressNull });
         } catch (error) {
             console.log(error.message);
+            res.redirect('/404')
         }
     },
     userAddressAdd: async (req, res) => {
@@ -1071,7 +1103,6 @@ module.exports = {
                 {
                     $push: {
                         Address: {
-                            // address_id: user._id+len+userAddress.mobileNo,
                             firstName: userAddress.firstName,
                             lastName: userAddress.lastName,
                             mobileNo: userAddress.mobileNo,
@@ -1087,6 +1118,7 @@ module.exports = {
             res.redirect("/user_address");
         } catch (error) {
             console.log(error.message);
+            res.redirect('/404')
         }
     },
     userAddressEdit: async (req, res) => {
@@ -1110,6 +1142,7 @@ module.exports = {
             res.redirect("/user_address");
         } catch (error) {
             console.log(error.message);
+            res.redirect('/404')
         }
     },
     userAddressDelete: async (req, res) => {
@@ -1122,6 +1155,7 @@ module.exports = {
             res.redirect("/user_address");
         } catch (error) {
             console.log(error.message);
+            res.redirect('/404')
         }
     },
 
@@ -1138,6 +1172,7 @@ module.exports = {
             res.render("user/wishlist", { user, empty });
         } catch (error) {
             console.log(error.message);
+            res.redirect('/404')
         }
     },
     addWishlist: async (req, res) => {
@@ -1181,6 +1216,7 @@ module.exports = {
             }
         } catch (error) {
             console.log(error.message);
+            res.redirect('/404')
         }
     },
     deleteWishlist: async (req, res) => {
@@ -1195,6 +1231,7 @@ module.exports = {
             res.json(true);
         } catch (error) {
             console.log(error.message);
+            res.redirect('/404')
         }
     },
 };

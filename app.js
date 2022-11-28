@@ -22,8 +22,8 @@ hbs.registerPartials(partialPath)
 const layoutPath = path.join(__dirname, 'views/layout');
 hbs.registerPartials(layoutPath)
 const oneDay = 1000 * 60 * 60 * 24;
-app.use(session({ secret: "dorlaro",cookie: { maxAge: oneDay },resave: true,saveUninitialized: true }));
-app.use( bodyParser.urlencoded({ extended: true }) );
+app.use(session({ secret: "dorlaro", cookie: { maxAge: oneDay }, resave: true, saveUninitialized: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // cache clear
 
@@ -41,9 +41,22 @@ app.use(dbconnection)
 app.use('/', userRouter);
 app.use('/admin_panel', adminRouter);
 
-app.use(function(req, res, next) {
-    next(createError(404));
-  });
+app.use(function (req, res, next) {
+  next(createError(404));
+});
+
+app.use(function (err, req, res, next) {
+
+  // respond with html page
+  if (req.accepts('html')) {
+    if (req.session.admin) {
+      res.render('admin/admin404');
+    } else {
+      res.render('user/404');
+    }
+    
+  }
+});
 
 app.listen(3000)
 
