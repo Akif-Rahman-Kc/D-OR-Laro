@@ -58,6 +58,7 @@ router.post('/user_order', userController.userOrdering);
 router.post('/verify_payment', userController.verifyPayment);
 router.get('/order_success',userAuth.sessionUser, userController.orderSuccess);
 router.get('/orders', userAuth.sessionUser,userController.userOrders);
+router.get('/order_cancelled', userAuth.sessionUser,userController.orderCancel);
 
 // User Details
 

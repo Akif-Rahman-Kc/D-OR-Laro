@@ -1017,6 +1017,18 @@ module.exports = {
             res.redirect('/404')
         }
     },
+    orderCancel: async (req, res) => {
+        try {
+            const userId = req.session.user;
+            const user = await User.findById(userId);
+            const {id} = req.query
+            console.log(id);
+            res.redirect('/orders')
+        } catch (error) {
+            console.log(error.message);
+            res.redirect('/404')
+        }
+    },
 
     /////////////////////////////////////////////////////////////////////////
 

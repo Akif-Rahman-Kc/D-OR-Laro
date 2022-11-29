@@ -221,14 +221,6 @@ module.exports = {
             //sales report
 
             const sort = req.query;
-            let todayDate = new Date();
-            let oneWeekAgo = new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000);
-            let oneMonthAgo = new Date(
-                new Date().getTime() - 30 * 24 * 60 * 60 * 1000
-            );
-            let oneYearAgo = new Date(
-                new Date().getTime() - 12 * 30 * 24 * 60 * 60 * 1000
-            );
             if (sort.no == 1) {
                 console.log("11111");
                 const today = moment().startOf("day");
@@ -239,6 +231,10 @@ module.exports = {
                         $lte: moment(today).endOf("day").toDate(),
                     },
                 });
+                for (let i = 0; i < totalSells.length; i++) {
+                    const testDate = totalSells[i].createdAt;
+                    totalSells[i].date = moment(testDate).format("DD MMMM , YYYY");
+                }
                 console.log(totalSells);
                 res.locals.totalSells = totalSells
             } else if (sort.no == 2) {
@@ -251,6 +247,10 @@ module.exports = {
                         $lte: moment(month).endOf('month').toDate()
                     }
                 })
+                for (let i = 0; i < totalSells.length; i++) {
+                    const testDate = totalSells[i].createdAt;
+                    totalSells[i].date = moment(testDate).format("DD MMMM , YYYY");
+                }
                 console.log(totalSells);
                 res.locals.totalSells = totalSells
             } else if (sort.no == 3) {
@@ -263,11 +263,19 @@ module.exports = {
                         $lte: moment(year).endOf('year').toDate()
                     }
                 })
+                for (let i = 0; i < totalSells.length; i++) {
+                    const testDate = totalSells[i].createdAt;
+                    totalSells[i].date = moment(testDate).format("DD MMMM , YYYY");
+                }
                 console.log(totalSells);
                 res.locals.totalSells = totalSells
             } else {
                 console.log("00000");
                 const totalSells = await Order.find({ orderStatus: "Delivered" });
+                for (let i = 0; i < totalSells.length; i++) {
+                    const testDate = totalSells[i].createdAt;
+                    totalSells[i].date = moment(testDate).format("DD MMMM , YYYY");
+                }
                 res.locals.totalSells = totalSells
             }
 

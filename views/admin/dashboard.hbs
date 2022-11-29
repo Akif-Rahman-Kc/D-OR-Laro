@@ -87,46 +87,60 @@
                 <h5 class="font-weight-bold text-center bg-light">SALES REPORT</h5>
                 <div class="col-lg-7">
                     <div class="col-lg-3 p-0 ml-auto">
-                <a class="btn shadow-none d-flex align-items-center justify-content-between bg-secondary text-white w-100"
-                    data-toggle="collapse" href="#navbar-vertical" style="height: 2.5rem; padding: 0 30px;">
-                    <h6 class="m-0">Sort</h6>
-                    <i class="fa fa-angle-down text-dark"></i>
-                </a>
-                <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0 bg-light"
-                    id="navbar-vertical" style="width: calc(100%); z-index: 1;">
-                    <div class="navbar-nav w-100 overflow-hidden" style="height: auto;background-color: gainsboro;">
-                        <a href="/admin_panel?no=1" class="nav-item nav-link">Today Sales Report</a>
-                        <a href="/admin_panel?no=2" class="nav-item nav-link">Monthly Sales Report</a>
-                        <a href="/admin_panel?no=3" class="nav-item nav-link">Yearly Sales Report</a>
-                        <a href="/admin_panel" class="nav-item nav-link">Total Sales Report</a>
+                        <a class="btn shadow-none d-flex align-items-center justify-content-between bg-secondary text-white w-100"
+                            data-toggle="collapse" href="#navbar-vertical" style="height: 2.5rem; padding: 0 30px;">
+                            <h6 class="m-0">Sort</h6>
+                            <i class="fa fa-angle-down text-dark"></i>
+                        </a>
+                        <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0 bg-light"
+                            id="navbar-vertical" style="width: calc(100%); z-index: 1;">
+                            <div class="navbar-nav w-100 overflow-hidden"
+                                style="height: auto;background-color: gainsboro;">
+                                <a href="/admin_panel?no=1" class="nav-item nav-link">Today Sales Report</a>
+                                <a href="/admin_panel?no=2" class="nav-item nav-link">Monthly Sales Report</a>
+                                <a href="/admin_panel?no=3" class="nav-item nav-link">Yearly Sales Report</a>
+                                <a href="/admin_panel" class="nav-item nav-link">Total Sales Report</a>
+                            </div>
+                        </nav>
                     </div>
-                </nav>
-            </div>
                 </div>
-                
-                <table id="example" class="display nowrap" style="width:100%">
+
+                <table id="example" class="display nowrap table-bordered text-center" style="width:100%">
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Locality</th>
-                            <th>City</th>
+                            <th>Order Id</th>
+                            <th>Customer</th>
+                            <th>Place</th>
                             <th>Phone No</th>
-                            <th>Amount</th>
                             <th>Status</th>
+                            <th>Date</th>
+                            <th>Amount</th>
                         </tr>
                     </thead>
                     <tbody>
                         {{#each totalSells}}
                         <tr>
+                            <td>{{this._id}}</td>
                             <td>{{this.Address.firstName}}</td>
-                            <td>{{this.Address.locality}}</td>
-                            <td>{{this.Address.city}}</td>
+                            <td>{{this.Address.locality}},{{this.Address.city}}</td>
                             <td>{{this.Address.mobileNo}}</td>
-                            <td>${{this.totalLast}}</td>
                             <td>{{this.orderStatus}}</td>
+                            <td>{{this.date}}</td>
+                            <td>${{this.totalLast}}</td>
                         </tr>
                         {{/each}}
                     </tbody>
+                    {{!-- <tfoot>
+                        <tr>
+                            <th class="text-center">TOTAL</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th class="text-center">$90000</th>
+                        </tr>
+                    </tfoot> --}}
                 </table>
             </div>
         </div>
