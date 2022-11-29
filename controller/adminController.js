@@ -4,235 +4,282 @@ const Category = require("../models/categorySchema");
 const Order = require("../models/orderSchema");
 const Product = require("../models/productSchema");
 const Coupon = require("../models/couponSchema");
-const moment = require('moment')
+const moment = require("moment");
 const fs = require("fs");
 const { now } = require("mongoose");
 
 module.exports = {
-    admin404:(req, res) => {
+    admin404: (req, res) => {
         res.render("admin/admin404");
     },
     adminHome: async (req, res) => {
         try {
-            const order = await Order.find().sort({createdAt: -1,}).lean();
+            const order = await Order.find().sort({ createdAt: -1 }).lean();
             console.log(order);
             for (let i = 0; i < order.length; i++) {
-                if (order[i].orderStatus == 'Pending') {
-                    order[i].pending = true
+                if (order[i].orderStatus == "Pending") {
+                    order[i].pending = true;
                 }
-                const testDate = order[i].createdAt
-                order[i].testDate = moment(testDate).format('DD MMMM , YYYY')
+                const testDate = order[i].createdAt;
+                order[i].testDate = moment(testDate).format("DD MMMM , YYYY");
             }
 
             let monthlyTtotalIncome = await Order.aggregate([
-                    {
-                        $match : {
-                            'orderStatus' : "Delivered",
-                        }
+                {
+                    $match: {
+                        orderStatus: "Delivered",
                     },
-                    {
-                        $project : {
-                            'totalLast' : true,
-                            'createdAt' : true
-                        }
+                },
+                {
+                    $project: {
+                        totalLast: true,
+                        createdAt: true,
                     },
-                    {
-                        $group : {
-                            _id : { '$month' : '$createdAt'},
-                            totalIncome : {$sum : "$totalLast"}
-                        }
+                },
+                {
+                    $group: {
+                        _id: { $month: "$createdAt" },
+                        totalIncome: { $sum: "$totalLast" },
                     },
-                    {
-                        $sort : {
-                            _id : 1
-                        }
+                },
+                {
+                    $sort: {
+                        _id: 1,
                     },
-                ])
-                const month = ['jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
-                monthlyTtotalIncome = month.map( (el, ind) =>{
-                    const found = monthlyTtotalIncome.find(elm => elm._id === ind+1)
-                    return found ? found.totalIncome : 0;
+                },
+            ]);
+            const month = [
+                "jan",
+                "Feb",
+                "Mar",
+                "Apr",
+                "May",
+                "Jun",
+                "Jul",
+                "Aug",
+                "Sep",
+                "Oct",
+                "Nov",
+                "Dec",
+            ];
+            monthlyTtotalIncome = month.map((el, ind) => {
+                const found = monthlyTtotalIncome.find((elm) => elm._id === ind + 1);
+                return found ? found.totalIncome : 0;
+            });
+            console.log(monthlyTtotalIncome);
+
+            let testDate = new Date();
+            let date = moment(testDate).format("MM");
+            date = parseInt(date) - 1;
+            let totalIncomeAtMonth = monthlyTtotalIncome[date];
+            totalIncomeAtMonth = Math.round(totalIncomeAtMonth);
+            res.locals.totalIncomeAtMonth = totalIncomeAtMonth;
+
+            monthlyTtotalIncome = JSON.stringify(monthlyTtotalIncome);
+
+            let todayTtotalIncome = await Order.aggregate([
+                {
+                    $match: {
+                        orderStatus: "Delivered",
+                    },
+                },
+                {
+                    $project: {
+                        totalLast: true,
+                        createdAt: true,
+                    },
+                },
+                {
+                    $group: {
+                        _id: { $dayOfMonth: "$createdAt" },
+                        totalIncome: { $sum: "$totalLast" },
+                    },
+                },
+                {
+                    $sort: {
+                        _id: 1,
+                    },
+                },
+            ]);
+            const day = [
+                1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
+            ];
+            todayTtotalIncome = day.map((el, ind) => {
+                const found = todayTtotalIncome.find((elm) => elm._id === ind + 1);
+                return found ? found.totalIncome : 0;
+            });
+            console.log(todayTtotalIncome);
+
+            let dayDate = moment(testDate).format("DD");
+            dayDate = parseInt(dayDate) - 1;
+            console.log(dayDate);
+            let totalIncomeAtDay = todayTtotalIncome[dayDate];
+            totalIncomeAtDay = Math.round(totalIncomeAtDay);
+            res.locals.totalIncomeAtDay = totalIncomeAtDay;
+
+            let yrarlyTtotalIncome = await Order.aggregate([
+                {
+                    $match: {
+                        orderStatus: "Delivered",
+                    },
+                },
+                {
+                    $project: {
+                        totalLast: true,
+                        createdAt: true,
+                    },
+                },
+                {
+                    $group: {
+                        _id: { $year: "$createdAt" },
+                        totalIncome: { $sum: "$totalLast" },
+                    },
+                },
+                {
+                    $sort: {
+                        _id: -1,
+                    },
+                },
+            ]);
+
+            if (yrarlyTtotalIncome == []) {
+                yrarlyTtotalIncome = 0;
+            } else {
+                yrarlyTtotalIncome = yrarlyTtotalIncome[0].totalIncome;
+            }
+
+            yrarlyTtotalIncome = Math.round(yrarlyTtotalIncome);
+            res.locals.yrarlyTtotalIncome = yrarlyTtotalIncome;
+
+            let monthlyTtotalSells = await Order.aggregate([
+                {
+                    $match: {
+                        orderStatus: "Delivered",
+                    },
+                },
+                {
+                    $unwind: "$items",
+                },
+                {
+                    $project: {
+                        createdAt: true,
+                    },
+                },
+                {
+                    $group: {
+                        _id: { $month: "$createdAt" },
+                        totalSells: { $sum: 1 },
+                    },
+                },
+                {
+                    $sort: {
+                        _id: 1,
+                    },
+                },
+            ]);
+            monthlyTtotalSells = month.map((el, ind) => {
+                const found = monthlyTtotalSells.find((elm) => elm._id === ind + 1);
+                return found ? found.totalSells : 0;
+            });
+            console.log(monthlyTtotalSells);
+            monthlyTtotalSells = JSON.stringify(monthlyTtotalSells);
+
+            let monthlyCancelProduct = await Order.aggregate([
+                {
+                    $match: {
+                        orderStatus: "Cancelled",
+                    },
+                },
+                {
+                    $unwind: "$items",
+                },
+                {
+                    $project: {
+                        createdAt: true,
+                    },
+                },
+                {
+                    $group: {
+                        _id: { $month: "$createdAt" },
+                        totalCancel: { $sum: 1 },
+                    },
+                },
+                {
+                    $sort: {
+                        _id: 1,
+                    },
+                },
+            ]);
+            monthlyCancelProduct = month.map((el, ind) => {
+                const found = monthlyCancelProduct.find((elm) => elm._id === ind + 1);
+                return found ? found.totalCancel : 0;
+            });
+            console.log(monthlyCancelProduct);
+            monthlyCancelProduct = JSON.stringify(monthlyCancelProduct);
+
+            //sales report
+
+            const sort = req.query;
+            let todayDate = new Date();
+            let oneWeekAgo = new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000);
+            let oneMonthAgo = new Date(
+                new Date().getTime() - 30 * 24 * 60 * 60 * 1000
+            );
+            let oneYearAgo = new Date(
+                new Date().getTime() - 12 * 30 * 24 * 60 * 60 * 1000
+            );
+            if (sort.no == 1) {
+                console.log("11111");
+                const today = moment().startOf("day");
+                const totalSells = await Order.find({
+                    orderStatus: 'Delivered',
+                    createdAt: {
+                        $gte: today.toDate(),
+                        $lte: moment(today).endOf("day").toDate(),
+                    },
+                });
+                console.log(totalSells);
+                res.locals.totalSells = totalSells
+            } else if (sort.no == 2) {
+                console.log("22222");
+                const month = moment().startOf('month')
+                const totalSells = await Order.find({
+                    orderStatus: 'Delivered',
+                    createdAt: {
+                        $gte: month.toDate(),
+                        $lte: moment(month).endOf('month').toDate()
+                    }
                 })
-                console.log(monthlyTtotalIncome);
-
-                let testDate = new Date()
-                let date = moment(testDate).format('MM')
-                date = parseInt(date) - 1
-                let totalIncomeAtMonth = monthlyTtotalIncome[date]
-                totalIncomeAtMonth = Math.round(totalIncomeAtMonth)
-                res.locals.totalIncomeAtMonth = totalIncomeAtMonth
-
-                monthlyTtotalIncome = JSON.stringify(monthlyTtotalIncome)
-
-                let todayTtotalIncome = await Order.aggregate([
-                    {
-                        $match : {
-                            'orderStatus' : "Delivered",
-                        }
-                    },
-                    {
-                        $project : {
-                            'totalLast' : true,
-                            'createdAt' : true
-                        }
-                    },
-                    {
-                        $group : {
-                            _id : { '$dayOfMonth' : '$createdAt'},
-                            totalIncome : {$sum : "$totalLast"}
-                        }
-                    },
-                    {
-                        $sort : {
-                            _id : 1
-                        }
-                    },
-                ])
-                const day = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]
-                todayTtotalIncome = day.map( (el, ind) =>{
-                    const found = todayTtotalIncome.find(elm => elm._id === ind+1)
-                    return found ? found.totalIncome : 0;
+                console.log(totalSells);
+                res.locals.totalSells = totalSells
+            } else if (sort.no == 3) {
+                console.log("33333");
+                const year = moment().startOf('year')
+                const totalSells = await Order.find({
+                    orderStatus: 'Delivered',
+                    createdAt: {
+                        $gte: year.toDate(),
+                        $lte: moment(year).endOf('year').toDate()
+                    }
                 })
-                console.log(todayTtotalIncome);
+                console.log(totalSells);
+                res.locals.totalSells = totalSells
+            } else {
+                console.log("00000");
+                const totalSells = await Order.find({ orderStatus: "Delivered" });
+                res.locals.totalSells = totalSells
+            }
 
-                let dayDate = moment(testDate).format('DD')
-                dayDate = parseInt(dayDate) - 1
-                console.log(dayDate);
-                let totalIncomeAtDay = todayTtotalIncome[dayDate]
-                totalIncomeAtDay = Math.round(totalIncomeAtDay)
-                res.locals.totalIncomeAtDay = totalIncomeAtDay
-
-                let yrarlyTtotalIncome = await Order.aggregate([
-                    {
-                        $match : {
-                            'orderStatus' : "Delivered",
-                        }
-                    },
-                    {
-                        $project : {
-                            'totalLast' : true,
-                            'createdAt' : true
-                        }
-                    },
-                    {
-                        $group : {
-                            _id : { '$year' : '$createdAt'},
-                            totalIncome : {$sum : "$totalLast"}
-                        }
-                    },
-                    {
-                        $sort : {
-                            _id : -1
-                        }
-                    },
-                ])
-
-               
-
-                if (yrarlyTtotalIncome == []) {
-                    yrarlyTtotalIncome = 0
-                } else {
-                    yrarlyTtotalIncome = yrarlyTtotalIncome[0].totalIncome
-                }
-                
-                yrarlyTtotalIncome = Math.round(yrarlyTtotalIncome)
-                res.locals.yrarlyTtotalIncome = yrarlyTtotalIncome
-
-                let monthlyTtotalSells = await Order.aggregate([
-                    {
-                        $match : {
-                            'orderStatus' : "Delivered",
-                        }
-                    },
-                    {
-                        $unwind : '$items'
-                    },
-                    {
-                        $project : {
-                            'createdAt' : true
-                        }
-                    },
-                    {
-                        $group : {
-                            _id : { '$month' : '$createdAt'},
-                            totalSells : {$sum : 1 }
-                        }
-                    },
-                    {
-                        $sort : {
-                            _id : 1
-                        }
-                    },
-                ])
-                monthlyTtotalSells = month.map( (el, ind) =>{
-                    const found = monthlyTtotalSells.find(elm => elm._id === ind+1)
-                    return found ? found.totalSells : 0;
-                })
-                console.log(monthlyTtotalSells);
-                monthlyTtotalSells = JSON.stringify(monthlyTtotalSells)
-
-                let monthlyCancelProduct = await Order.aggregate([
-                    {
-                        $match : {
-                            'orderStatus' : "Cancelled",
-                        }
-                    },
-                    {
-                        $unwind : '$items'
-                    },
-                    {
-                        $project : {
-                            'createdAt' : true
-                        }
-                    },
-                    {
-                        $group : {
-                            _id : { '$month' : '$createdAt'},
-                            totalCancel : {$sum : 1 }
-                        }
-                    },
-                    {
-                        $sort : {
-                            _id : 1
-                        }
-                    },
-                ])
-                monthlyCancelProduct = month.map( (el, ind) =>{
-                    const found = monthlyCancelProduct.find(elm => elm._id === ind+1)
-                    return found ? found.totalCancel : 0;
-                })
-                console.log(monthlyCancelProduct);
-                monthlyCancelProduct = JSON.stringify(monthlyCancelProduct)
-
-                //sales report
-
-                const sort = req.query
-                let totalSells = await Order.find({orderStatus:'Delivered'}) ;
-                let todayDate = new Date();
-                let oneWeekAgo = new Date(new Date().getTime()-(7*24*60*60*1000));
-                let oneMonthAgo = new Date(new Date().getTime()-(30*24*60*60*1000));
-                let oneYearAgo = new Date(new Date().getTime()-(12*30*24*60*60*1000));
-                if(sort.no == 1){
-                    console.log("11111");
-                    totalSells=await Order.find({orderStatus:'Delivered' , createdAt : { $eq : todayDate }})
-                }else if(sort.no == 2){
-                    console.log("22222");
-                    totalSells=await Order.find({orderStatus:'Delivered' , createdAt : { $gte : oneWeekAgo }})
-                }else if(sort.no == 3){
-                    console.log("33333");
-                    totalSells=await Order.find({orderStatus:'Delivered' , createdAt : { $gte : oneMonthAgo }})
-                }else if(sort.no == 4){
-                    console.log("44444");
-                    totalSells=await Order.find({orderStatus:'Delivered' , createdAt : { $gte : oneYearAgo }})
-                }else{
-                    console.log("00000");
-                    totalSells = await Order.find({orderStatus:'Delivered'}) ;
-                }
-                
-            res.render("admin/dashboard",{order, monthlyTtotalIncome , monthlyTtotalSells, monthlyCancelProduct, totalSells});
+            res.render("admin/dashboard", {
+                order,
+                monthlyTtotalIncome,
+                monthlyTtotalSells,
+                monthlyCancelProduct
+            });
         } catch (error) {
             console.log(error.message);
-            res.redirect('/admin_404')
+            res.redirect("/admin_404");
         }
     },
     adminLogin: (req, res) => {
@@ -244,7 +291,7 @@ module.exports = {
             }
         } catch (error) {
             console.log(error.message);
-            res.redirect('/admin_404')
+            res.redirect("/admin_404");
         }
     },
     adminLoginPost: async (req, res) => {
@@ -254,7 +301,7 @@ module.exports = {
             if (email) {
                 if (email.adminPass === adminData.adminPass) {
                     req.session.adminLogged = true;
-                    req.session.admin = email
+                    req.session.admin = email;
                     res.redirect("/admin_panel");
                 } else {
                     res.render("admin/adminlogin", {
@@ -268,7 +315,7 @@ module.exports = {
             }
         } catch (error) {
             console.log(error.message);
-            res.redirect('/admin_404')
+            res.redirect("/admin_404");
         }
     },
     adminLogout: (req, res) => {
@@ -277,7 +324,7 @@ module.exports = {
             res.redirect("/admin_panel/admin_login");
         } catch (error) {
             console.log(error.message);
-            res.redirect('/admin_404')
+            res.redirect("/admin_404");
         }
     },
 
@@ -289,7 +336,7 @@ module.exports = {
             res.render("admin/products", { product });
         } catch (error) {
             console.log(error.message);
-            res.redirect('/admin_404')
+            res.redirect("/admin_404");
         }
     },
     adminAddProduct: async (req, res) => {
@@ -298,7 +345,7 @@ module.exports = {
             res.render("admin/addproduct", { category });
         } catch (error) {
             console.log(error.message);
-            res.redirect('/admin_404')
+            res.redirect("/admin_404");
         }
     },
     adminAddProductPost: async (req, res) => {
@@ -321,7 +368,7 @@ module.exports = {
             res.redirect("/admin_panel/admin_product");
         } catch (error) {
             console.log(error.message);
-            res.redirect('/admin_404')
+            res.redirect("/admin_404");
         }
     },
     adminEditProduct: async (req, res) => {
@@ -332,14 +379,18 @@ module.exports = {
             res.render("admin/editproduct", { productEdit, category });
         } catch (error) {
             console.log(error.message);
-            res.redirect('/admin_404')
+            res.redirect("/admin_404");
         }
     },
     adminEditProductPost: async (req, res) => {
         try {
             const { _id } = req.query;
             const productEdit = await Product.findById(_id);
-            if (req.body.images == "" || req.body.PSize == "" || req.body.PColor == "") {
+            if (
+                req.body.images == "" ||
+                req.body.PSize == "" ||
+                req.body.PColor == ""
+            ) {
                 await Product.updateOne(
                     { _id: _id },
                     {
@@ -352,7 +403,7 @@ module.exports = {
                             POldPrice: req.body.POldPrice,
                             PBrand: req.body.PBrand,
                             PStock: req.body.PStock,
-                            PDiscount: req.body.PDiscount
+                            PDiscount: req.body.PDiscount,
                         },
                     }
                 );
@@ -361,7 +412,7 @@ module.exports = {
                 const len = img.length;
                 for (let i = 0; i < len; i++) {
                     const imgPath = img[i];
-                    fs.unlink('./public/images/' + imgPath, function () {
+                    fs.unlink("./public/images/" + imgPath, function () {
                         console.log("Removed");
                     });
                 }
@@ -388,7 +439,7 @@ module.exports = {
             res.redirect("/admin_panel/admin_product");
         } catch (error) {
             console.log(error.message);
-            res.redirect('/admin_404')
+            res.redirect("/admin_404");
         }
     },
     adminDeleteProduct: async (req, res) => {
@@ -399,14 +450,14 @@ module.exports = {
             const len = img.length;
             for (let i = 0; i < len; i++) {
                 const imgPath = img[i];
-                fs.unlink('./public/images/' + imgPath, function () {
+                fs.unlink("./public/images/" + imgPath, function () {
                     console.log("Removed");
                 });
             }
             await Product.deleteOne(productDelete);
         } catch (error) {
             console.log(error.message);
-            res.redirect('/admin_404')
+            res.redirect("/admin_404");
         }
     },
 
@@ -414,15 +465,15 @@ module.exports = {
 
     adminOrder: async (req, res) => {
         try {
-            const pendingOrder = await Order.find().sort({createdAt: -1,}).lean();
+            const pendingOrder = await Order.find().sort({ createdAt: -1 }).lean();
             let order = [];
-            let count = 0
+            let count = 0;
             for (let i = 0; i < pendingOrder.length; i++) {
-                if (pendingOrder[i].orderStatus != 'Pending') {
-                    order[i] = pendingOrder[i]
-                    const testDate = pendingOrder[i].createdAt
-                    order[i].testDate = moment(testDate).format('DD MMMM , YYYY')
-                    order[i].no = count = count + 1
+                if (pendingOrder[i].orderStatus != "Pending") {
+                    order[i] = pendingOrder[i];
+                    const testDate = pendingOrder[i].createdAt;
+                    order[i].testDate = moment(testDate).format("DD MMMM , YYYY");
+                    order[i].no = count = count + 1;
                 }
             }
             console.log(order);
@@ -430,54 +481,54 @@ module.exports = {
             res.render("admin/orders", { order });
         } catch (error) {
             console.log(error.message);
-            res.redirect('/admin_404')
+            res.redirect("/admin_404");
         }
     },
     orderDetails: async (req, res) => {
         try {
-            const { id } = req.query
+            const { id } = req.query;
             console.log(id);
-            const order = await Order.findById(id)
+            const order = await Order.findById(id);
             res.render("admin/viewOrder", { order });
         } catch (error) {
             console.log(error.message);
-            res.redirect('/admin_404')
+            res.redirect("/admin_404");
         }
     },
     statusChange: async (req, res) => {
         try {
-            const statusBody = req.body
-            const order = await Order.findById(statusBody.orderId)
+            const statusBody = req.body;
+            const order = await Order.findById(statusBody.orderId);
             console.log(statusBody);
             console.log(statusBody.status);
-            if (order.paymentMethod == 'Cash on Delivery') {
-                if (statusBody.status == 'Delivered') {
+            if (order.paymentMethod == "Cash on Delivery") {
+                if (statusBody.status == "Delivered") {
                     await Order.findByIdAndUpdate(statusBody.orderId, {
                         $set: {
                             orderStatus: statusBody.status,
-                            paymentStatus: 'Paid'
-                        }
-                    })
+                            paymentStatus: "Paid",
+                        },
+                    });
                 } else {
                     await Order.findByIdAndUpdate(statusBody.orderId, {
                         $set: {
                             orderStatus: statusBody.status,
-                            paymentStatus: 'Unpaid'
-                        }
-                    })
+                            paymentStatus: "Unpaid",
+                        },
+                    });
                 }
             } else {
                 await Order.findByIdAndUpdate(statusBody.orderId, {
                     $set: {
-                        orderStatus: statusBody.status
-                    }
-                })
+                        orderStatus: statusBody.status,
+                    },
+                });
             }
 
-            res.json(true)
+            res.json(true);
         } catch (error) {
             console.log(error.message);
-            res.redirect('/admin_404')
+            res.redirect("/admin_404");
         }
     },
 
@@ -489,7 +540,7 @@ module.exports = {
             res.render("admin/users", { users });
         } catch (error) {
             console.log(error.message);
-            res.redirect('/admin_404')
+            res.redirect("/admin_404");
         }
     },
     adminUserBlock: async (req, res) => {
@@ -498,7 +549,7 @@ module.exports = {
             await User.updateOne({ userEmail: userEmail }, { isBanned: true });
         } catch (error) {
             console.log(error.message);
-            res.redirect('/admin_404')
+            res.redirect("/admin_404");
         }
     },
     adminUserActive: async (req, res) => {
@@ -508,7 +559,7 @@ module.exports = {
             res.redirect("/admin_panel/admin_user");
         } catch (error) {
             console.log(error.message);
-            res.redirect('/admin_404')
+            res.redirect("/admin_404");
         }
     },
 
@@ -520,13 +571,13 @@ module.exports = {
             res.render("admin/category", { categories });
         } catch (error) {
             console.log(error.message);
-            res.redirect('/admin_404')
+            res.redirect("/admin_404");
         }
     },
     addCategory: async (req, res) => {
         try {
             console.log(req.body);
-            const existCat = await Category.findOne({ Category: req.body.Category })
+            const existCat = await Category.findOne({ Category: req.body.Category });
             console.log(existCat);
             if (existCat) {
                 const categories = await Category.find();
@@ -535,15 +586,14 @@ module.exports = {
                 const category = {
                     Category: req.body.Category,
                     imgCategory: req.body.images,
-                    subCategory: req.body.subCategory
-                }
+                    subCategory: req.body.subCategory,
+                };
                 await Category.create(category);
                 res.redirect("/admin_panel/admin_category");
             }
-
         } catch (error) {
             console.log(error.message);
-            res.redirect('/admin_404')
+            res.redirect("/admin_404");
         }
     },
     editCategory: async (req, res) => {
@@ -552,13 +602,13 @@ module.exports = {
             const newCategory = req.body;
             const categoryEdit = await Category.findById(_id);
             const subCat = newCategory.subCategory.split(",");
-            if (req.body.images == '') {
+            if (req.body.images == "") {
                 await Category.updateOne(
                     { _id: _id },
                     {
                         $set: {
                             Category: newCategory.Category,
-                            subCategory: subCat
+                            subCategory: subCat,
                         },
                     }
                 );
@@ -567,7 +617,7 @@ module.exports = {
                 const len = image.length;
                 for (let i = 0; i < len; i++) {
                     const imagePath = image[i];
-                    fs.unlink('./public/images/' + imagePath, function () {
+                    fs.unlink("./public/images/" + imagePath, function () {
                         console.log("Removed");
                     });
                 }
@@ -577,23 +627,22 @@ module.exports = {
                         $set: {
                             Category: newCategory.Category,
                             imgCategory: newCategory.images,
-                            subCategory: subCat
+                            subCategory: subCat,
                         },
                     }
                 );
             }
             res.redirect("/admin_panel/admin_category");
-
         } catch (error) {
             console.log(error.message);
-            res.redirect('/admin_404')
+            res.redirect("/admin_404");
         }
     },
     deleteCategory: async (req, res) => {
         try {
             const { _id } = req.query;
             const catDelete = await Category.findById({ _id: _id });
-            const products = await Product.findOne({ PCategory: catDelete.Category })
+            const products = await Product.findOne({ PCategory: catDelete.Category });
             console.log(products);
             if (products) {
                 const categories = await Category.find();
@@ -603,7 +652,7 @@ module.exports = {
                 const len = img.length;
                 for (let i = 0; i < len; i++) {
                     const imgPath = img[i];
-                    fs.unlink('./public/images/' + imgPath, function () {
+                    fs.unlink("./public/images/" + imgPath, function () {
                         console.log("Removed");
                     });
                 }
@@ -611,7 +660,7 @@ module.exports = {
             }
         } catch (error) {
             console.log(error.message);
-            res.redirect('/admin_404')
+            res.redirect("/admin_404");
         }
     },
     deleteSubCategory: async (req, res) => {
@@ -631,7 +680,7 @@ module.exports = {
             );
         } catch (error) {
             console.log(error.message);
-            res.redirect('/admin_404')
+            res.redirect("/admin_404");
         }
     },
 
@@ -639,40 +688,39 @@ module.exports = {
 
     adminCoupon: async (req, res) => {
         try {
-            const coupon = await Coupon.find()
-            let date = new Date()
+            const coupon = await Coupon.find();
+            let date = new Date();
             for (let i = 0; i < coupon.length; i++) {
                 if (date > coupon[i].expiryDate) {
-                    const id = coupon[i]._id
-                    await Coupon.deleteOne({_id:id})
+                    const id = coupon[i]._id;
+                    await Coupon.deleteOne({ _id: id });
                 } else {
-                    const testDate = coupon[i].expiryDate
-                    coupon[i].date = moment(testDate).format('DD MMMM , YYYY')
+                    const testDate = coupon[i].expiryDate;
+                    coupon[i].date = moment(testDate).format("DD MMMM , YYYY");
                 }
-                
             }
-            res.render("admin/coupons",{coupon});
+            res.render("admin/coupons", { coupon });
         } catch (error) {
             console.log(error.message);
-            res.redirect('/admin_404')
+            res.redirect("/admin_404");
         }
     },
     addCoupon: async (req, res) => {
         try {
-            await Coupon.create(req.body)
-            res.redirect('/admin_panel/admin_coupon')
+            await Coupon.create(req.body);
+            res.redirect("/admin_panel/admin_coupon");
         } catch (error) {
             console.log(error.message);
-            res.redirect('/admin_404')
+            res.redirect("/admin_404");
         }
     },
     deleteCoupon: async (req, res) => {
         try {
-            const {id} = req.query
-            await Coupon.deleteOne({_id:id})
+            const { id } = req.query;
+            await Coupon.deleteOne({ _id: id });
         } catch (error) {
             console.log(error.message);
-            res.redirect('/admin_404')
+            res.redirect("/admin_404");
         }
     },
 };
