@@ -5,7 +5,7 @@ let SID
 module.exports = {
     otpSend : (phoneNumber)=>{
         client.verify.v2.services
-        .create({friendlyName: 'D OR Laro OTP Verification'})
+        .create({friendlyName: 'D OR Laro OTP Verification Code'})
         .then(service =>{
             SID=service.sid;
             client.verify.v2.services(service.sid)

@@ -99,7 +99,6 @@ module.exports = {
                 dayDate = parseInt(dayDate) - 1
                 console.log(dayDate);
                 let totalIncomeAtDay = todayTtotalIncome[dayDate]
-                console.log(totalIncomeAtDay,"aaahhhh");
                 totalIncomeAtDay = Math.round(totalIncomeAtDay)
                 res.locals.totalIncomeAtDay = totalIncomeAtDay
 
@@ -204,9 +203,33 @@ module.exports = {
                 })
                 console.log(monthlyCancelProduct);
                 monthlyCancelProduct = JSON.stringify(monthlyCancelProduct)
-                
 
-            res.render("admin/dashboard",{order, monthlyTtotalIncome , monthlyTtotalSells, monthlyCancelProduct});
+                //sales report
+
+                const sort = req.query
+                let totalSells = await Order.find({orderStatus:'Delivered'}) ;
+                let todayDate = new Date();
+                let oneWeekAgo = new Date(new Date().getTime()-(7*24*60*60*1000));
+                let oneMonthAgo = new Date(new Date().getTime()-(30*24*60*60*1000));
+                let oneYearAgo = new Date(new Date().getTime()-(12*30*24*60*60*1000));
+                if(sort.no == 1){
+                    console.log("11111");
+                    totalSells=await Order.find({orderStatus:'Delivered' , createdAt : { $eq : todayDate }})
+                }else if(sort.no == 2){
+                    console.log("22222");
+                    totalSells=await Order.find({orderStatus:'Delivered' , createdAt : { $gte : oneWeekAgo }})
+                }else if(sort.no == 3){
+                    console.log("33333");
+                    totalSells=await Order.find({orderStatus:'Delivered' , createdAt : { $gte : oneMonthAgo }})
+                }else if(sort.no == 4){
+                    console.log("44444");
+                    totalSells=await Order.find({orderStatus:'Delivered' , createdAt : { $gte : oneYearAgo }})
+                }else{
+                    console.log("00000");
+                    totalSells = await Order.find({orderStatus:'Delivered'}) ;
+                }
+                
+            res.render("admin/dashboard",{order, monthlyTtotalIncome , monthlyTtotalSells, monthlyCancelProduct, totalSells});
         } catch (error) {
             console.log(error.message);
             res.redirect('/admin_404')
