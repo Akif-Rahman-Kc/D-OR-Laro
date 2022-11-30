@@ -181,7 +181,11 @@
                                                         </tbody>
                                                     </table>
                                                     <div>
-                                                        <a href="/order_cancelled?id={{this._id}}" class="btn btn-danger mb-3 font-weight-bold" style="border-radius: 5px;">Order Cancel</a>
+                                                        {{#if this.Cancelled}}
+                                                            <p class="font-weight-bold text-danger">Order Cancelled</p>
+                                                        {{else}}
+                                                            <a href="/order_cancelled?id={{this._id}}" class="btn btn-danger mb-3 font-weight-bold" style="border-radius: 5px;">Order Cancel</a>
+                                                        {{/if}}
                                                     </div>
                                                 </div>
                                             </div>

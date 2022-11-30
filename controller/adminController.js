@@ -17,8 +17,8 @@ module.exports = {
             const order = await Order.find().sort({ createdAt: -1 }).lean();
             console.log(order);
             for (let i = 0; i < order.length; i++) {
-                if (order[i].orderStatus == "Pending") {
-                    order[i].pending = true;
+                if (order[i].orderStatus == "Pending" || order[i].orderStatus == "Cancelled") {
+                    order[i].cancel = true;
                 }
                 const testDate = order[i].createdAt;
                 order[i].testDate = moment(testDate).format("DD MMMM , YYYY");
@@ -48,6 +48,7 @@ module.exports = {
                     },
                 },
             ]);
+            console.log(monthlyTtotalIncome,"edaaaaaaaaaa");
             const month = [
                 "jan",
                 "Feb",
@@ -219,7 +220,6 @@ module.exports = {
             monthlyCancelProduct = JSON.stringify(monthlyCancelProduct);
 
             //sales report
-
             const sort = req.query;
             if (sort.no == 1) {
                 console.log("11111");
@@ -236,6 +236,10 @@ module.exports = {
                     totalSells[i].date = moment(testDate).format("DD MMMM , YYYY");
                 }
                 console.log(totalSells);
+                const total = totalSells.reduce(
+                    (acc, cur) => (acc + cur.totalLast),0,
+                  );
+                res.locals.total = total
                 res.locals.totalSells = totalSells
             } else if (sort.no == 2) {
                 console.log("22222");
@@ -252,6 +256,10 @@ module.exports = {
                     totalSells[i].date = moment(testDate).format("DD MMMM , YYYY");
                 }
                 console.log(totalSells);
+                const total = totalSells.reduce(
+                    (acc, cur) => (acc + cur.totalLast),0,
+                  );
+                res.locals.total = total
                 res.locals.totalSells = totalSells
             } else if (sort.no == 3) {
                 console.log("33333");
@@ -268,6 +276,10 @@ module.exports = {
                     totalSells[i].date = moment(testDate).format("DD MMMM , YYYY");
                 }
                 console.log(totalSells);
+                const total = totalSells.reduce(
+                    (acc, cur) => (acc + cur.totalLast),0,
+                  );
+                res.locals.total = total
                 res.locals.totalSells = totalSells
             } else {
                 console.log("00000");
@@ -276,6 +288,10 @@ module.exports = {
                     const testDate = totalSells[i].createdAt;
                     totalSells[i].date = moment(testDate).format("DD MMMM , YYYY");
                 }
+                const total = totalSells.reduce(
+                    (acc, cur) => (acc + cur.totalLast),0,
+                  );
+                res.locals.total = total
                 res.locals.totalSells = totalSells
             }
 
@@ -484,7 +500,13 @@ module.exports = {
                     order[i].no = count = count + 1;
                 }
             }
-            console.log(order);
+
+            for (let i = 0; i < order.length; i++) {
+                if (order[i].orderStatus == "Cancelled") {
+                    order[i].Cancelled = true
+                }
+            }
+            console.log(order,"aaaaaaa");
 
             res.render("admin/orders", { order });
         } catch (error) {

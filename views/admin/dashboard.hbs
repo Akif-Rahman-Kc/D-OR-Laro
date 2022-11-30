@@ -65,7 +65,7 @@
                                     <td><b>{{this.Address.firstName}} {{this.Address.lastName}}</b></td>
                                     <td><b>{{this.Address.locality}}, {{this.Address.city}}</b></td>
                                     <td>{{this.testDate}}</td>
-                                    {{#if this.pending}}
+                                    {{#if this.cancel}}
                                     <td>
                                         <div class="tm-status-circle cancelled">
                                         </div>{{this.orderStatus}}
@@ -129,18 +129,16 @@
                             <td>${{this.totalLast}}</td>
                         </tr>
                         {{/each}}
-                    </tbody>
-                    {{!-- <tfoot>
                         <tr>
-                            <th class="text-center">TOTAL</th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th class="text-center">$90000</th>
+                            <td class="font-weight-bold">TOTAL</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="font-weight-bold">${{total}}</td>
                         </tr>
-                    </tfoot> --}}
+                    </tbody>
                 </table>
             </div>
         </div>

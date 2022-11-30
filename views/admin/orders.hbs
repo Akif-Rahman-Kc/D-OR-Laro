@@ -31,8 +31,12 @@
           <td>{{this.totalLast}}/-</td>
           <td>{{this.testDate}}</td>
           <td>{{this.paymentMethod}}</td>
+          {{#if this.Cancelled}}
+          <td class="text-success">Return Payment</td>
+            <td style="font-size: 1rem;" class="text-danger font-weight-bold">{{this.orderStatus}}</td>
+          {{else}}
           <td class="text-success">{{this.paymentStatus}}</td>
-          <td>
+            <td>
             <select id="OStatus{{@index}}" style="width: 7.5rem;" onchange="statusOrder('{{this._id}}','{{@index}}')"
               class="custom-select font-weight-bold bg-transparent text-success border-0 tm-select-accounts"
               name="orderStatus">
@@ -43,6 +47,8 @@
               <option class="text-dark font-weight-bold" value="Delivered">Delivered</option>
             </select>
           </td>
+          {{/if}}
+          
         </tr>
         {{/each}}
       </tbody>

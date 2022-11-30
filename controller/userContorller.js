@@ -1005,6 +1005,8 @@ module.exports = {
                         order[i].Processed = true
                         order[i].Shipped = true
                         order[i].Delivered = true
+                    } else if (order[i].orderStatus == "Cancelled") {
+                        order[i].Cancelled = true
                     }
                 }
             }
@@ -1019,9 +1021,13 @@ module.exports = {
     },
     orderCancel: async (req, res) => {
         try {
-            const userId = req.session.user;
-            const user = await User.findById(userId);
             const {id} = req.query
+            console.log(id);
+            await Order.updateOne({_id:id},{
+                $set:{
+                    orderStatus:'Cancelled'
+                }
+            })
             console.log(id);
             res.redirect('/orders')
         } catch (error) {
