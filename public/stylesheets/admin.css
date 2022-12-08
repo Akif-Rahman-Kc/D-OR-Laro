@@ -12662,3 +12662,12 @@ a.text-dark:hover {
   width:300px !important;
   font-size: 12px !important;
 }
+
+div.dataTables_wrapper div.dataTables_length select {
+  width: 100%;
+  display: inline-block;
+}
+
+div.dataTables_wrapper div.dataTables_info{
+  display: none;
+}

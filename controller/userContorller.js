@@ -160,7 +160,9 @@ module.exports = {
             otp = otp.split(",").join('')
             console.log(otp);
             const userDetails = req.session.userDetails
-            const number = parseInt(userDetails.userPhoneNo)
+            const phoneNo = userDetails.userPhoneNo
+            const number = parseInt(phoneNo)
+            console.log(number);
             let otpStatus = await otpCheck.otpVerify(number, otp)
             if (otpStatus.valid) {
                 userDetails.userPass = await bcrypt.hash(userDetails.userPass, 10);

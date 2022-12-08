@@ -1,6 +1,12 @@
 {{> layout}}
 
 <body>
+
+    <div class="loader">
+        <img src="/images/loader.gif" alt="Loading...">
+    </div>
+
+
     {{#if alerts}}
     <p id="alertMsg" hidden>a</p>
     {{/if}}
@@ -80,50 +86,64 @@
 
 
     <!-- Categories Start -->
-    <div class="container-fluid pt-5">
-        <div class="row px-xl-5 pb-3">
+    <div class="container-fluid">
+        <div class="row" style="justify-content: center;">
             {{#each categories}}
-            <div class="col-lg-3 col-md-6 pb-1">
-                <div class="cat-item d-flex flex-column border mb-4" style="padding: 2rem;">
-                    <a href="/shops" class="cat-img position-relative overflow-hidden mb-3">
-                        <img class="img-fluid" src="/images/{{this.imgCategory.[0]}}" alt="">
-                    </a>
-                    <h5 class="font-weight-semi-bold m-0">{{this.Category}}</h5>
+            <div class="main-container">
+                <div class="poster-container">
+                    <a href="/shops"><img src="/images/{{this.imgCategory.[0]}}" class="poster" /></a>
+                </div>
+                <div class="ticket-container">
+                    <div class="ticket__content">
+                        <h4 class="ticket__nike-title">{{this.Category}}</h4>
+                    </div>
                 </div>
             </div>
             {{/each}}
         </div>
+
     </div>
     <!-- Categories End -->
 
     <!-- Products Start -->
-    <div class="container-fluid pt-5">
-        <div class="text-center mb-4">
+    <div class="container-fluid pt-5 mt-5">
+        <div class="text-center mb-4 mt-5">
             <h2 class="section-title px-5"><span class="px-2">Latest Products</span></h2>
         </div>
         <div class="row px-xl-5 pb-3">
             {{#each products}}
-            <div class="col-lg-2 col-md-2 col-sm-3 pb-1">
-                <div class="card product-item border-0 mb-4">
+            <div class="col-lg-3 col-md-3 col-sm-4  pb-1">
+                <div class="card product-item border mb-4">
                     {{#if this.fav}}
-                    <div class="d-flex bg-light border">
-                        <a style="font-size: 1rem;" onclick="addToWishlist('{{this._id}}')"
-                            class="btn btn-sm text-danger font-weight-bold ml-auto"><i id="{{this._id}}" class="fas fa-heart"></i></i></a>
+                    <div class="d-flex bg-light">
+                        <a style="font-size: 1.5rem;" onclick="addToWishlist('{{this._id}}')"
+                            class="btn btn-sm text-danger font-weight-bold ml-auto"><i id="{{this._id}}"
+                                class="fas fa-heart"></i></i></a>
                     </div>
                     {{else}}
-                    <div class="d-flex bg-light border">
-                        <a style="font-size: 1rem;" onclick="addToWishlist('{{this._id}}')"
-                            class="btn btn-sm text-danger font-weight-bold ml-auto"><i id="{{this._id}}" class="far fa-heart"></i></a>
+                    <div class="d-flex bg-light">
+                        <a style="font-size: 1.5rem;" onclick="addToWishlist('{{this._id}}')"
+                            class="btn btn-sm text-danger font-weight-bold ml-auto"><i id="{{this._id}}"
+                                class="far fa-heart"></i></a>
                     </div>
                     {{/if}}
-                    
+
                     <a href="/shops/details?_id={{this._id}}"
-                        class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                        class="card-header product-img position-relative overflow-hidden bg-transparent p-0">
                         <img class="img-fluid w-100" src="/images/{{this.PImage.[0]}}" alt="">
                     </a>
                     <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                         <h6 class="text-truncate mb-3">{{this.PName}}</h6>
-                        <div class="d-flex justify-content-center">
+                        <div class=" text-yellow-500 mb-3">
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="far fa-star text-warning"></i>
+                            <i class="far fa-star text-warning"></i>
+                        </div>
+                        <span class="p-2 bg-success text-white font-weight-bold" style="border-radius: 3rem;">In
+                            Stock</span>
+                        <div class="d-flex justify-content-center mt-3">
                             <h6>${{this.PPrice}}</h6>
                             <h6 class="text-muted ml-2"><del>${{this.POldPrice}}</del></h6>
                         </div>
@@ -190,14 +210,22 @@
     {{> userfooter}}
 
     <script>
+        window.addEventListener("load", function () {
+            const loader = document.querySelector(".loader")
+            console.log(loader);
+            loader.className += " hidden";
+        })
+    </script>
+
+    <script>
         let alerts = document.getElementById("alertMsg").innerHTML
-        if(alerts == "a"){
+        if (alerts == "a") {
             Swal.fire({
-                    icon: 'warning',
-                    title: 'Your Account is Banned',
-                    text: 'Your Account is Banned not Purchased the Product!',
-                    customClass: 'swal-wide',
-                })
+                icon: 'warning',
+                title: 'Your Account is Banned',
+                text: 'Your Account is Banned not Purchased the Product!',
+                customClass: 'swal-wide',
+            })
         }
     </script>
 

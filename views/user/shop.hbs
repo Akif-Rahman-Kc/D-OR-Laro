@@ -90,7 +90,9 @@
         <div class="row px-xl-5 mt-md-5 mt-sm-5">
             <!-- Shop Sidebar Start -->
             <div class="col-lg-3 col-md-12 d-lg-block d-md-flex">
-                <a href="/shops" style="margin-top: -4rem;" class="btn btn-sm btn-primary border-0 font-weight-bold ml-3"><i class="fas fa-trash-alt"></i> Clear</a>
+                <a href="/shops" style="margin-top: -4rem;"
+                    class="btn btn-sm btn-primary border-0 font-weight-bold ml-3"><i class="fas fa-trash-alt"></i>
+                    Clear</a>
                 <!-- Subcategory Start -->
                 <div class="col-lg-12 col-md-4 border-right border-bottom mb-4 pb-4">
                     <h5 class="font-weight-semi-bold mb-4">Filter by Sub Categories</h5>
@@ -209,28 +211,38 @@
                     </div>
                     {{#if products}}
                     {{#each products}}
-                    <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
-                        <div class="card product-item border-0 mb-4">
+                    <div class="col-lg-4 col-md-4 col-sm-6 pb-1">
+                        <div class="card product-item border mb-4">
                             {{#if this.fav}}
-                            <div class="d-flex bg-light border">
-                                <a style="font-size: 1rem;" onclick="addToWishlist('{{this._id}}')"
-                                    class="btn btn-sm text-danger font-weight-bold ml-auto"><i id="{{this._id}}" class="fas fa-heart"></i></a>
+                            <div class="d-flex bg-light">
+                                <a style="font-size: 1.5rem;" onclick="addToWishlist('{{this._id}}')"
+                                    class="btn btn-sm text-danger font-weight-bold ml-auto"><i id="{{this._id}}"
+                                        class="fas fa-heart"></i></a>
                             </div>
                             {{else}}
-                            <div class="d-flex bg-light border">
-                                <a style="font-size: 1rem;" onclick="addToWishlist('{{this._id}}')"
-                                    class="btn btn-sm text-danger font-weight-bold ml-auto"><i id="{{this._id}}" class="far fa-heart"></i></a>
+                            <div class="d-flex bg-light">
+                                <a style="font-size: 1.5rem;" onclick="addToWishlist('{{this._id}}')"
+                                    class="btn btn-sm text-danger font-weight-bold ml-auto"><i id="{{this._id}}"
+                                        class="far fa-heart"></i></a>
                             </div>
                             {{/if}}
                             <a href="/shops/details?_id={{this._id}}"
-                                class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                                class="card-header product-img position-relative overflow-hidden bg-transparent p-0">
                                 <img class="img-fluid w-100" src="/images/{{this.PImage.[0]}}" alt="">
                             </a>
-                            <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                                <h6 class="text-truncate mb-3">{{this.PName}}</h6>
-                                <div class="d-flex justify-content-center">
-                                    <h6>${{this.PPrice}}</h6>
-                                    <h6 class="text-muted ml-2"><del>${{this.POldPrice}}</del></h6>
+                            <div class="card-body text-center p-0 pt-4 pb-3">
+                                <h6 class="text-truncate mb-2">{{this.PName}}</h6>
+                                <div class=" text-yellow-500 mb-3">
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="far fa-star text-warning"></i>
+                                    <i class="far fa-star text-warning"></i>
+                                </div>
+                                <span class="p-2 bg-success text-white font-weight-bold mt-2 mb-2" style="border-radius: 3rem;">In Stock</span>
+                                <div class="d-flex justify-content-center mt-3">
+                                    <h5 class="font-weight-bold">${{this.PPrice}}</h5>
+                                    <h5 class="text-muted ml-2"><del>${{this.POldPrice}}</del></h5>
                                 </div>
                             </div>
                         </div>

@@ -2367,6 +2367,7 @@
     color: #212529;
     background-color: #65b800;
     border-color: #65b800;
+    border-radius: 5px;
   }
   
   .btn-primary:hover {
@@ -2404,6 +2405,7 @@
     color: #212529;
     background-color: #EDF1FF;
     border-color: #EDF1FF;
+    border-radius: 5px
   }
   
   .btn-secondary:hover {
@@ -2441,6 +2443,7 @@
     color: #fff;
     background-color: #28a745;
     border-color: #28a745;
+    border-radius: 5px
   }
   
   .btn-success:hover {
@@ -2478,6 +2481,7 @@
     color: #fff;
     background-color: #17a2b8;
     border-color: #17a2b8;
+    border-radius: 5px
   }
   
   .btn-info:hover {
@@ -2515,6 +2519,7 @@
     color: #212529;
     background-color: #ffc107;
     border-color: #ffc107;
+    border-radius: 5px
   }
   
   .btn-warning:hover {
@@ -2552,6 +2557,7 @@
     color: #fff;
     background-color: #dc3545;
     border-color: #dc3545;
+    border-radius: 5px
   }
   
   .btn-danger:hover {
@@ -2589,6 +2595,7 @@
     color: #212529;
     background-color: #FFFFFF;
     border-color: #FFFFFF;
+    border-radius: 5px
   }
   
   .btn-light:hover {
@@ -2626,6 +2633,7 @@
     color: #fff;
     background-color: #1C1C1C;
     border-color: #1C1C1C;
+    border-radius: 5px
   }
   
   .btn-dark:hover {
@@ -2939,19 +2947,20 @@
     padding: 0.5rem 1rem;
     font-size: 1.25rem;
     line-height: 1.5;
-    border-radius: 0;
+    border-radius: 5px
   }
   
   .btn-sm, .btn-group-sm > .btn {
     padding: 0.25rem 0.5rem;
     font-size: 0.875rem;
     line-height: 1.5;
-    border-radius: 0;
+    border-radius: 5px
   }
   
   .btn-block {
     display: block;
     width: 100%;
+    border-radius: 5px
   }
   
   .btn-block + .btn-block {
@@ -9282,7 +9291,7 @@
   }
   
   .text-primary {
-    color: #0000ff80 !important;
+    color: black !important;
   }
   
   a.text-primary:hover, a.text-primary:focus {
@@ -9607,7 +9616,7 @@
   }
   
   .bg-light-green{
-    background-color: #B6DC86;
+    background-color: #5fc166;
   }
 
   .cart-wrap {
@@ -9755,18 +9764,161 @@
     width:300px !important;
     font-size: 12px !important;
 }
+ 
+  .loader{
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+  }
 
-  .coup-div{ 
-    box-shadow: 3px 7px 10px -7px;
-    border-radius: 2rem;
-}
-  
-  @keyframes action {
-    0% {
-      transform: translateY(0);
-    }
+  .loader img{
+    width: 30%;
+  }
+
+  .loader.hidden {
+    animation: fadeOut 2s;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes fadeOut {
     100% {
-      transform: translateY(-15px);
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+
+  .hero-container {
+    margin: auto;
+    display: flex;
+  }
+  
+  .main-container {
+    width: 270px;
+    height: 540px;
+    position: relative;
+    margin: 0 20px;
+  }
+  
+  .poster-container {
+    width: 230px;
+    position: absolute;
+    top: 100px;
+    left: 20px;
+    z-index: 1;
+  }
+  
+  .poster {
+    width: 100%;
+    box-shadow: 0 5px 20px 3px rgba(0, 0, 0, 0.6);
+  }
+  
+  
+  .ticket-container {
+    background: #fff;
+    width: 230px;
+    height: 270px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 10px;
+    position: absolute;
+    top: 100px;
+    margin-left: 20px;
+    box-shadow: 0 5px 20px 3px rgb(0 0 0 / 60%);
+    opacity: 0;
+  }
+  
+  .main-container:hover .ticket-container {
+    opacity: 1;
+    animation: bounceIn 0.6s linear;
+  }
+  
+  @keyframes bounceIn {
+    0%,
+    20%,
+    40%,
+    60%,
+    80%,
+    to {
+      -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+      animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
+    0% {
+      opacity: 0;
+      -webkit-transform: scale3d(0.3, 0.3, 0.3);
+      transform: scale3d(0.3, 0.3, 0.3);
+    }
+    20% {
+      -webkit-transform: scale3d(1.03, 1.03, 1.03);
+      transform: scale3d(1.03, 1.03, 1.03);
+    }
+    40% {
+      -webkit-transform: scale3d(0.9, 0.9, 0.9);
+      transform: scale3d(0.9, 0.9, 0.9);
+    }
+    60% {
+      opacity: 1;
+      -webkit-transform: scale3d(1.01, 1.01, 1.01);
+      transform: scale3d(1.01, 1.01, 1.01);
+    }
+    80% {
+      -webkit-transform: scale3d(0.97, 0.97, 0.97);
+      transform: scale3d(0.97, 0.97, 0.97);
+    }
+    to {
+      opacity: 1;
+      -webkit-transform: scaleX(1);
+      transform: scaleX(1);
     }
   }
   
+  
+  
+  .ticket__content {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+  }
+  
+  .ticket__nike-title {
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+  
+  .ticket__nike-slogan {
+    color: #999;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+  }
+  
+  .ticket__current-price {
+    color: #7E0306;
+    font-size: 1.4rem;
+    font-weight: bold;
+  }
+  
+  .ticket__old-price {
+    color: #999;
+    text-decoration: line-through;
+    margin-bottom: 10px;
+  }
+  
+  .ticket__buy-btn {
+    cursor: pointer;
+    width: 100%;
+    background: #981D26;
+    color: white;
+    padding: 15px 0;
+    font-size: 1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    border: 0;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
