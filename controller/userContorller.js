@@ -347,6 +347,10 @@ module.exports = {
         try {
             const Userid = req.session.user;
             const user = await User.findById(Userid);
+            const proId = req.query;
+            const product = await Product.findById(proId);
+            console.log(product);
+            let products;
             if (user) {
                 let cartCount = 0;
                 let wishlistCount = 0;
@@ -359,13 +363,27 @@ module.exports = {
                     wishlistCount = user.Wishlist.length;
                     res.locals.cartCount = cartCount;
                     res.locals.wishlistCount = wishlistCount;
+
+                    products = await Product.find({PCategory:product.PCategory})
+                        .lean()
+                        .sort({ createdAt: -1 })
+                        .limit(10);
+
+                    for (let i = 0; i < products.length; i++) {
+                        for (let j = 0; j < user.Wishlist.length; j++) {
+                            if (user.Wishlist[j].item_id == products[i]._id) {
+                                products[i].fav = true;
+                            }
+                        }
+                    }
                 }
+            }else{
+                products = await Product.find({PCategory:product.PCategory})
+                        .lean()
+                        .sort({ createdAt: -1 })
+                        .limit(10);
             }
-            const proId = req.query;
-            console.log(proId);
-            const product = await Product.findById(proId);
-            console.log(product);
-            res.render("user/details", { product });
+            res.render("user/details", { product, products });
         } catch (error) {
             console.log(error.message);
             res.redirect('/404')
@@ -528,7 +546,7 @@ module.exports = {
     cartQuantity: async (req, res) => {
         try {
             const { _id, count, quantity, Price } = req.body;
-            console.log(_id, count, quantity);
+            console.log(count,"------", quantity);
             let cartCount = parseInt(count);
             let cartQuantity = parseInt(quantity);
             if (cartCount == -1 && cartQuantity == 1) {

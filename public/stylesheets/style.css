@@ -9781,7 +9781,7 @@
   }
 
   .loader.hidden {
-    animation: fadeOut 2s;
+    animation: fadeOut 1.5s;
     animation-fill-mode: forwards;
   }
 
@@ -9799,7 +9799,7 @@
   
   .main-container {
     width: 270px;
-    height: 540px;
+    height: 400px;
     position: relative;
     margin: 0 20px;
   }
@@ -9921,4 +9921,9 @@
     border: 0;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
+  }
+
+  .x-scroll{
+    overflow-x: scroll;
+    overflow-y: hidden;
   }
