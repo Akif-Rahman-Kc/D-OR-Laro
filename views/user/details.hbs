@@ -12,7 +12,7 @@
         rel="stylesheet">
 
     {{!-- ajax --}}
-    
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="/javascripts/ajax.js"></script>
 
@@ -40,32 +40,32 @@
                 <div class="">
                     <!-- Gallery -->
                     <div class="details-left-slider">
-						<ul id="etalage">
-							<li>
-								<a href="optionallink.html">
-									<img class="etalage_thumb_image" src="/images/{{product.PImage.[0]}}" />
-									<img class="etalage_source_image" src="/images/{{product.PImage.[0]}}" />
-								</a>
-							</li>
-							<li>
-								<img class="etalage_thumb_image" src="/images/{{product.PImage.[1]}}" />
-								<img class="etalage_source_image" src="/images/{{product.PImage.[1]}}" />
-							</li>
-							<li>
-								<img class="etalage_thumb_image" src="/images/{{product.PImage.[2]}}" />
-								<img class="etalage_source_image" src="/images/{{product.PImage.[2]}}" />
-							</li>
-							<li>
-								<img class="etalage_thumb_image" src="/images/{{product.PImage.[3]}}" />
-								<img class="etalage_source_image" src="/images/{{product.PImage.[3]}}" />
-							</li>
-						</ul>
-					</div>
+                        <ul id="etalage">
+                            <li>
+                                <a href="optionallink.html">
+                                    <img class="etalage_thumb_image" src="/images/{{product.PImage.[0]}}" />
+                                    <img class="etalage_source_image" src="/images/{{product.PImage.[0]}}" />
+                                </a>
+                            </li>
+                            <li>
+                                <img class="etalage_thumb_image" src="/images/{{product.PImage.[1]}}" />
+                                <img class="etalage_source_image" src="/images/{{product.PImage.[1]}}" />
+                            </li>
+                            <li>
+                                <img class="etalage_thumb_image" src="/images/{{product.PImage.[2]}}" />
+                                <img class="etalage_source_image" src="/images/{{product.PImage.[2]}}" />
+                            </li>
+                            <li>
+                                <img class="etalage_thumb_image" src="/images/{{product.PImage.[3]}}" />
+                                <img class="etalage_source_image" src="/images/{{product.PImage.[3]}}" />
+                            </li>
+                        </ul>
+                    </div>
                     <!-- Gallery -->
                 </div>
             </div>
 
-            <div class="col-lg-7 pb-5" style="margin-top: 8rem;">
+            <div class="col-lg-7 pb-5" style="margin-top: 5rem;">
                 <h3 class="font-weight-semi-bold">{{product.PName}}</h3>
                 <div class="d-flex mb-3">
                     <div class="text-warning mr-2">
@@ -79,14 +79,22 @@
                 </div>
                 <h3 class="font-weight-semi-bold mb-4">${{product.PPrice}}</h3>
                 <p class="mb-4">{{product.PDes}}</p>
-                <form action="" method="post" id="cart-product">
+                {{#if OutOfStock}}
+                <span class="p-2 bg-danger text-white font-weight-bold" style="border-radius: 3rem;">Out
+                    Of
+                    Stock</span>
+                {{else}}
+                <span class="p-2 bg-success text-white font-weight-bold" style="border-radius: 3rem;">In
+                    Stock</span>
+                {{/if}}
+                <form action="" method="post" id="cart-product" class="mt-4">
                     <div class="d-flex mb-3">
                         <p class="text-dark font-weight-medium mb-0 mr-3">Sizes:</p>
                         <div class="d-flex">
                             {{#each product.PSize}}
                             <div class="form-check">
-                                <input style="width: 0.9rem;height: 0.9rem;" checked value="{{this}}" class="form-check-input" type="radio"
-                                    name="PSize" id="flexRadioDefault1">
+                                <input style="width: 0.9rem;height: 0.9rem;" checked value="{{this}}"
+                                    class="form-check-input" type="radio" name="PSize" id="flexRadioDefault1">
                                 <label class="form-check-label mr-5" for="flexRadioDefault1">
                                     {{this}}
                                 </label>
@@ -99,8 +107,8 @@
                         <div class="d-flex">
                             {{#each product.PColor}}
                             <div class="form-check">
-                                <input style="width: 0.9rem;height: 0.9rem;" checked value="{{this}}" class="form-check-input" type="radio"
-                                    name="PColor" id="flexRadioDefault1">
+                                <input style="width: 0.9rem;height: 0.9rem;" checked value="{{this}}"
+                                    class="form-check-input" type="radio" name="PColor" id="flexRadioDefault1">
                                 <label class="form-check-label mr-5" for="flexRadioDefault1">
                                     {{this}}
                                 </label>
@@ -115,7 +123,8 @@
                                     <i class="fa fa-minus"></i>
                                 </a>
                             </div>
-                            <input style="height: auto;" type="text" onkeydown="return false;" name="quantity" class="form-control bg-secondary text-center" value="1">
+                            <input style="height: auto;" type="text" onkeydown="return false;" name="quantity"
+                                class="form-control bg-secondary text-center" value="1">
                             <div class="input-group-btn">
                                 <a class="btn btn-primary btn-plus">
                                     <i class="fa fa-plus"></i>
@@ -123,12 +132,23 @@
                             </div>
                         </div>
                         <input type="text" name="_id" value="{{product._id}}" hidden>
-                        <a onclick="addToCart()" class="btn btn-primary px-3"><i
-                                class="fa fa-shopping-cart mr-1"></i> Add To Cart</a>
+                        {{#if OutOfStock}}
+                            <button onclick="addToCart()" disabled class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i>
+                            Add To Cart</button>
+                        {{else}}
+                            <a onclick="addToCart()" class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i>
+                            Add To Cart</a>
+                        {{/if}}
                     </div>
-                    <button style="background-color: #ff6a00f0;" class="btn btn-lg btn-primary w-50 mt-4 text-white">
+                    {{#if OutOfStock}}
+                            <button disabled style="background-color: #ff6a00f0;" class="btn btn-lg btn-primary w-50 mt-4 text-white">
                         BuyNow
                     </button>
+                        {{else}}
+                            <button style="background-color: #ff6a00f0;" class="btn btn-lg btn-primary w-50 mt-4 text-white">
+                        BuyNow
+                    </button>
+                        {{/if}}
                 </form>
             </div>
         </div>
@@ -254,25 +274,25 @@
     <script src="/javascripts/jquery.etalage.min.js"></script>
 
     <script>
-						jQuery(document).ready(function($){
-			
-							$('#etalage').etalage({
-								thumb_image_width: 400,
-								thumb_image_height: 400,
-								source_image_width: 1000,
-								source_image_height: 1000,
-								show_hint: true,
-								click_callback: function(image_anchor, instance_id){
-									alert('Callback example:\nYou clicked on an image with the anchor: "'+image_anchor+'"\n(in Etalage instance: "'+instance_id+'")');
-								}
-							});
-							// This is for the dropdown list example:
-							$('.dropdownlist').change(function(){
-								etalage_show( $(this).find('option:selected').attr('class') );
-							});
+        jQuery(document).ready(function ($) {
 
-					});
-				</script>
+            $('#etalage').etalage({
+                thumb_image_width: 400,
+                thumb_image_height: 400,
+                source_image_width: 1000,
+                source_image_height: 1000,
+                show_hint: true,
+                click_callback: function (image_anchor, instance_id) {
+                    alert('Callback example:\nYou clicked on an image with the anchor: "' + image_anchor + '"\n(in Etalage instance: "' + instance_id + '")');
+                }
+            });
+            // This is for the dropdown list example:
+            $('.dropdownlist').change(function () {
+                etalage_show($(this).find('option:selected').attr('class'));
+            });
+
+        });
+    </script>
 
 </body>
 

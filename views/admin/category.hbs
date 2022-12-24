@@ -15,11 +15,14 @@
     <h5>CATEGORY</h5>
   </div>
   <!-- Category start -->
-  <div class="container-fluid">
+  <div class="container-fluid d-flex">
     <button class="w-25 m-3 btn btn-success block-btn font-weight-bold" data-bs-toggle="modal"
       data-bs-target="#category">
       ADD CATEGORY
     </button>
+    {{#if proExistError}}
+      <h6 class="p-4 text-danger font-weight-bold">{{proExistError}}!</h6>
+    {{/if}}
   </div>
   <div class="modal fade" id="category" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">

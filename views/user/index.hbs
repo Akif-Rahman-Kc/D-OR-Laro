@@ -141,8 +141,13 @@
                             <i class="far fa-star text-warning"></i>
                             <i class="far fa-star text-warning"></i>
                         </div>
-                        <span class="p-2 bg-success text-white font-weight-bold" style="border-radius: 3rem;">In
+                        {{#if this.OutOfStock}}
+                            <span class="p-2 bg-danger text-white font-weight-bold" style="border-radius: 3rem;">Out Of
                             Stock</span>
+                        {{else}}
+                            <span class="p-2 bg-success text-white font-weight-bold" style="border-radius: 3rem;">In
+                            Stock</span>
+                        {{/if}}
                         <div class="d-flex justify-content-center mt-3">
                             <h6>${{this.PPrice}}</h6>
                             <h6 class="text-muted ml-2"><del>${{this.POldPrice}}</del></h6>

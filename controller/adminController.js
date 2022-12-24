@@ -410,26 +410,7 @@ module.exports = {
         try {
             const { _id } = req.query;
             const productEdit = await Product.findById(_id);
-            if (
-                req.body.images == ""
-            ) {
-                await Product.updateOne(
-                    { _id: _id },
-                    {
-                        $set: {
-                            PName: req.body.PName,
-                            PDes: req.body.PDes,
-                            PCategory: req.body.PCategory,
-                            PSubCategory: req.body.PSubCategory,
-                            PPrice: req.body.PPrice,
-                            POldPrice: req.body.POldPrice,
-                            PBrand: req.body.PBrand,
-                            PStock: req.body.PStock,
-                            PDiscount: req.body.PDiscount,
-                        },
-                    }
-                );
-            } else {
+            if (req.body.images != '') {
                 const img = productEdit.PImage;
                 const len = img.length;
                 for (let i = 0; i < len; i++) {
@@ -442,22 +423,48 @@ module.exports = {
                     { _id: _id },
                     {
                         $set: {
-                            PName: req.body.PName,
-                            PDes: req.body.PDes,
-                            PCategory: req.body.PCategory,
-                            PSubCategory: req.body.PSubCategory,
-                            PPrice: req.body.PPrice,
-                            POldPrice: req.body.POldPrice,
-                            PImage: req.body.images,
-                            PBrand: req.body.PBrand,
-                            PStock: req.body.PStock,
-                            PDiscount: req.body.PDiscount,
-                            PSize: req.body.PSize,
-                            PColor: req.body.PColor,
-                        },
+                            PImage: req.body.images
+                        }
+                    }
+                );
+            } 
+            if (req.body.PColor) {
+
+                await Product.updateOne(
+                    { _id: _id },
+                    {
+                        $set: {
+                            PColor: req.body.PColor
+                        }
                     }
                 );
             }
+            if (req.body.PSize) {
+                await Product.updateOne(
+                    { _id: _id },
+                    {
+                        $set: {
+                            PSize: req.body.PSize
+                        }
+                    }
+                );
+            }
+            await Product.updateOne(
+                { _id: _id },
+                {
+                    $set: {
+                        PName: req.body.PName,
+                        PDes: req.body.PDes,
+                        PCategory: req.body.PCategory,
+                        PSubCategory: req.body.PSubCategory,
+                        PPrice: req.body.PPrice,
+                        POldPrice: req.body.POldPrice,
+                        PBrand: req.body.PBrand,
+                        PStock: req.body.PStock,
+                        PDiscount: req.body.PDiscount
+                    }
+                }
+            );
             res.redirect("/admin_panel/admin_product");
         } catch (error) {
             console.log(error.message);
@@ -496,15 +503,11 @@ module.exports = {
                     const testDate = pendingOrder[i].createdAt;
                     order[i].testDate = moment(testDate).format("DD MMMM , YYYY");
                     order[i].no = count = count + 1;
+                    if (order[i].orderStatus == 'Cancelled') {
+                        order[i].Cancelled = true
+                    }
                 }
             }
-
-            for (let i = 0; i < order.length; i++) {
-                if (order[i].orderStatus == "Cancelled") {
-                    order[i].Cancelled = true
-                }
-            }
-            console.log(order,"aaaaaaa");
 
             res.render("admin/orders", { order });
         } catch (error) {
@@ -609,7 +612,7 @@ module.exports = {
             console.log(existCat);
             if (existCat) {
                 const categories = await Category.find();
-                res.render("admin/category", { categories, existCat });
+                res.render("admin/category", { categories, existCat,proExistError:"This Category Already Added" });
             } else {
                 const category = {
                     Category: req.body.Category,
@@ -674,7 +677,7 @@ module.exports = {
             console.log(products);
             if (products) {
                 const categories = await Category.find();
-                res.render("admin/category", { categories, products });
+                res.render("admin/category", { categories, products ,proExistError:"Product Available in this Category"});
             } else {
                 const img = catDelete.imgCategory;
                 const len = img.length;

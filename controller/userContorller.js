@@ -220,6 +220,15 @@ module.exports = {
             }
             const categories = await Category.find();
 
+            products.forEach(product => {
+                let stock = parseInt(product.PStock)
+                console.log(stock);
+                if (stock < 5) {
+                    console.log("aaa");
+                    product.OutOfStock = true
+                }
+            });
+
             res.render("user/index", { products, categories });
         } catch (error) {
             console.log(error.message);
@@ -260,6 +269,16 @@ module.exports = {
             const subCat = await Category.find();
             let subCatNull = true;
             res.locals.subCatNull = subCatNull;
+
+            products.forEach(product => {
+                let stock = parseInt(product.PStock)
+                console.log(stock);
+                if (stock < 5) {
+                    console.log("aaa");
+                    product.OutOfStock = true
+                }
+            });
+
             res.render("user/shop", { products, categories, subCat });
         } catch (error) {
             console.log(error.message);
@@ -383,6 +402,14 @@ module.exports = {
                         .sort({ createdAt: -1 })
                         .limit(10);
             }
+
+            
+                let stock = parseInt(product.PStock)
+                console.log(stock);
+                if (stock < 5) {
+                    res.locals.OutOfStock = true
+                }
+
             res.render("user/details", { product, products });
         } catch (error) {
             console.log(error.message);
