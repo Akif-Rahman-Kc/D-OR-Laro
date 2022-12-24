@@ -5,7 +5,6 @@ const path = require('path');
 const logger = require('morgan');
 const bodyParser = require('body-parser')
 const session = require('express-session');
-const flash = require('express-flash')
 const dbconnection = require('./models/dbConnection');
 const dotenv = require('dotenv')
 dotenv.config();

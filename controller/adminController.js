@@ -411,9 +411,7 @@ module.exports = {
             const { _id } = req.query;
             const productEdit = await Product.findById(_id);
             if (
-                req.body.images == "" ||
-                req.body.PSize == "" ||
-                req.body.PColor == ""
+                req.body.images == ""
             ) {
                 await Product.updateOne(
                     { _id: _id },

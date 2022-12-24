@@ -543,22 +543,100 @@ module.exports = {
             res.redirect('/404')
         }
     },
-    cartQuantity: async (req, res) => {
+    cartPlus: async (req, res) => {
         try {
-            const { _id, count, quantity, Price } = req.body;
-            console.log(count,"------", quantity);
-            let cartCount = parseInt(count);
+            const { _id, quantity } = req.body;
+            console.log(quantity);
+            let userId = req.session.user;
             let cartQuantity = parseInt(quantity);
-            if (cartCount == -1 && cartQuantity == 1) {
-                res.json(false);
+            let product = await User.findOne({_id: userId})
+                product = product.Cart.filter((obj)=>{
+                    if (obj.item_id == _id) {
+                        return obj
+                    }
+                })
+            const stock = product[0].PStock - 5
+            if (cartQuantity < stock) {
+                const user = await User.findById(userId);
+                await User.updateOne(
+                    { _id: userId, "Cart.item_id": _id },
+                    {
+                        $inc: {
+                            "Cart.$.quantity": 1,
+                        },
+                    }
+                );
+                const countTotal = product[0].PPrice * product[0].quantity
+                const countDiscount = product[0].PDiscount * product[0].quantity
+                const total = await User.aggregate([
+                    {
+                        $match: {
+                            _id: mongoose.Types.ObjectId(userId),
+                        },
+                    },
+                    {
+                        $unwind: {
+                            path: "$Cart",
+                        },
+                    },
+                    {
+                        $group: {
+                            _id: null,
+                            total: {
+                                $sum: { $multiply: ["$Cart.quantity", "$Cart.PPrice"] },
+                            },
+                            discount: {
+                                $sum: { $multiply: ["$Cart.quantity", "$Cart.PDiscount"] },
+                            },
+                        },
+                    },
+                ]);
+                totalAmount = total[0].total;
+                discountPrice = total[0].discount;
+                const totalLast = totalAmount - discountPrice;
+                const couponDiscount = 0
+                await User.updateOne(
+                    { _id: userId },
+                    {
+                        $set: {
+                            cartTotals: {
+                                subTotal: totalAmount,
+                                discount: discountPrice,
+                                couponDiscount:0,
+                                total: totalLast
+                            }
+                        },
+                    }
+                );
+                let CartDetail;
+                const Cart = user.Cart.forEach((obj)=>{
+                    if (obj.item_id == _id) {
+                        CartDetail = obj
+                    }
+                })
+                const Quantity = CartDetail.quantity + 1
+                res.json({ totalAmount, totalLast, discountPrice , couponDiscount , countTotal , countDiscount , Quantity});
             } else {
+                res.json(false);
+            }
+        } catch (error) {
+            console.log(error.message);
+            res.redirect('/404')
+        }
+    },
+    cartMinus: async (req, res) => {
+        try {
+            const { _id, quantity } = req.body;
+            console.log(quantity);
+            let cartQuantity = parseInt(quantity);
+            if (cartQuantity > 1) {
                 const userId = req.session.user;
                 const user = await User.findById(userId);
                 await User.updateOne(
                     { _id: userId, "Cart.item_id": _id },
                     {
                         $inc: {
-                            "Cart.$.quantity": cartCount,
+                            "Cart.$.quantity": -1,
                         },
                     }
                 );
@@ -610,7 +688,29 @@ module.exports = {
                         },
                     }
                 );
-                res.json({ totalAmount, totalLast, discountPrice , couponDiscount , countTotal , countDiscount});
+                let CartDetail;
+                const Cart = user.Cart.forEach((obj)=>{
+                    if (obj.item_id == _id) {
+                        CartDetail = obj
+                    }
+                })
+                const Quantity = CartDetail.quantity - 1
+                console.log(quantity,"===");
+                console.log(Quantity,"-------");
+                if (Quantity < 1) {
+                    const userId = req.session.user;
+                    await User.updateOne(
+                    { _id: userId },
+                    {
+                        $pull: { Cart: { item_id: _id } },
+                    }
+                )
+                res.json({false:true});
+                } else {
+                    res.json({true:{totalAmount, totalLast, discountPrice , couponDiscount , countTotal , countDiscount , Quantity}});
+                }
+            } else {
+                res.json(false);
             }
         } catch (error) {
             console.log(error.message);
@@ -622,14 +722,13 @@ module.exports = {
             const { _id } = req.body;
             const userId = req.session.user;
             const user = await User.findById(userId)
-            const aa = await User.updateOne(
+            await User.updateOne(
                 { _id: userId },
                 {
                     $pull: { Cart: { item_id: _id } },
                 }
             )
             if (user.Cart.length == 1) {
-                console.log("cart illa");
                 res.json(false)
             } else {
                 const total = await User.aggregate([

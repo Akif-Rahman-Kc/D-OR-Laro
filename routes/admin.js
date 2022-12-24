@@ -23,8 +23,8 @@ router.get('/', adminAuth.sessionAdmin,adminController.adminHome);
 router.get('/admin_product', adminAuth.sessionAdmin,adminController.adminProduct);
 router.get('/admin_add_product', adminAuth.sessionAdmin,adminController.adminAddProduct);
 router.post('/admin_add_product', adminAuth.sessionAdmin,multiplefileupload.uploadImages,multiplefileupload.resizeImages,adminController.adminAddProductPost);
-router.get('/admin_edit_product', adminAuth.sessionAdmin,multiplefileupload.uploadImages,multiplefileupload.resizeImages,adminController.adminEditProduct);
-router.post('/admin_edit_product', adminAuth.sessionAdmin,adminController.adminEditProductPost);
+router.get('/admin_edit_product', adminAuth.sessionAdmin,adminController.adminEditProduct);
+router.post('/admin_edit_product', adminAuth.sessionAdmin,multiplefileupload.uploadImages,multiplefileupload.resizeImages,adminController.adminEditProductPost);
 router.get('/admin_delete_product', adminAuth.sessionAdmin,adminController.adminDeleteProduct);
 
 // Order Management

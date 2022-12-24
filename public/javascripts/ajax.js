@@ -87,21 +87,18 @@ function addToWishlist(_id) {
     })
 }
 
-function counting(proId, price, Cartcount) {
+function plus(proId) {
     let quantity = parseInt(document.getElementById(proId).innerHTML)
-    Cartcount = parseInt(Cartcount)
     $.ajax({
-        url: '/cart_quantity',
+        url: '/cart_plus',
         data: {
             _id: proId,
-            count: Cartcount,
-            quantity: quantity,
-            Price: price
+            quantity: quantity
         },
         method: 'post',
         success: (response) => {
             if (response) {
-                document.getElementById(proId).innerHTML = quantity + Cartcount
+                document.getElementById(proId).innerHTML = response.Quantity
                 document.getElementById('total').innerHTML = response.totalAmount
                 document.getElementById('discount').innerHTML = response.discountPrice
                 document.getElementById('coupon-discount').innerHTML = response.couponDiscount
@@ -109,6 +106,45 @@ function counting(proId, price, Cartcount) {
                 document.getElementById(`countDiscount${proId}`).innerHTML = response.countDiscount
                 document.getElementById(`countTotal${proId}`).innerHTML = response.countTotal
                 document.getElementById(`countTotalSummery${proId}`).innerHTML = response.countTotal
+            }else{
+                Swal.fire(
+                    'Out Of Stock',
+                    'This product stock is empty',
+                    'warning'
+                  )
+            }
+        }
+    })
+}
+
+function minus(proId) {
+    let quantity = parseInt(document.getElementById(proId).innerHTML)
+    console.log(quantity);
+    $.ajax({
+        url: '/cart_minus',
+        data: {
+            _id: proId,
+            quantity: quantity
+        },
+        method: 'post',
+        success: (response) => {
+            if (response.true) {
+                document.getElementById(proId).innerHTML = response.true.Quantity
+                document.getElementById('total').innerHTML = response.true.totalAmount
+                document.getElementById('discount').innerHTML = response.true.discountPrice
+                document.getElementById('coupon-discount').innerHTML = response.true.couponDiscount
+                document.getElementById('lastPrice').innerHTML = response.true.totalLast
+                document.getElementById(`countDiscount${proId}`).innerHTML = response.true.countDiscount
+                document.getElementById(`countTotal${proId}`).innerHTML = response.true.countTotal
+                document.getElementById(`countTotalSummery${proId}`).innerHTML = response.true.countTotal
+            }else if(response.false){
+                Swal.fire(
+                    'Deleted',
+                    'Minimum Cart Quantity is 1',
+                    'warning'
+                  ).then((result)=>{
+                    location.reload()
+                  })
             }
         }
     })

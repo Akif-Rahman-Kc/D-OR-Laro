@@ -35,7 +35,8 @@ router.get('/shops/details', userController.userDetails);
 
 router.get('/cart', userAuth.sessionUser,userController.userCart);
 router.post('/add_to_cart', userController.addCart);
-router.post('/cart_quantity', userController.cartQuantity);
+router.post('/cart_plus', userController.cartPlus);
+router.post('/cart_minus', userController.cartMinus);
 router.post('/cart/delete', userController.deleteCart);
 
 // Coupon
