@@ -30,6 +30,7 @@ router.get('/shops', userController.userShops);
 router.get('/shops/filter_category', userController.filterCategory);
 router.post('/shops/filter_sub_category', userController.filtering);
 router.get('/shops/details', userController.userDetails);
+router.post('/reviews', userController.userReviews);
 
 // Cart
 

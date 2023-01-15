@@ -63,6 +63,13 @@ const productSchema = new schema({
         required: true,
         trim: true
       },
+    PReview:{
+        type: Array
+      },
+    PRating:{
+        type: Number,
+        default: 3
+      },
 },{ timestamps: true });
 
 

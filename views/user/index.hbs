@@ -134,12 +134,16 @@
                     </a>
                     <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                         <h6 class="text-truncate mb-3">{{this.PName}}</h6>
-                        <div class=" text-yellow-500 mb-3">
-                            <i class="fas fa-star text-warning"></i>
-                            <i class="fas fa-star text-warning"></i>
-                            <i class="fas fa-star text-warning"></i>
-                            <i class="far fa-star text-warning"></i>
-                            <i class="far fa-star text-warning"></i>
+                        <div class="d-flex text-yellow-500 mb-3 justify-content-center">
+                            <select name="ratingStar" class="js-rating" aria-label="Rating"
+                            data-rating="{{this.PRating}}">
+                            <option value="0"></option>
+                            <option value="1"></option>
+                            <option value="2"></option>
+                            <option value="3"></option>
+                            <option value="4"></option>
+                            <option value="5"></option>
+                            </select>
                         </div>
                         {{#if this.OutOfStock}}
                             <span class="p-2 bg-danger text-white font-weight-bold" style="border-radius: 3rem;">Out Of
@@ -177,7 +181,7 @@
         </div>
         <div class="container">
             <div class="row">
-                <div class="col-lg-1 col-md-2 border ml-3 mt-3">
+                <div class="col-lg-1 col-md-2 col-sm-2 border ml-3 mt-3">
                     <img class="img-fluid" src="/images/brand-nike.png" alt="">
                 </div>
                 <div class="col-lg-1 col-md-2 border ml-3 mt-3">
@@ -233,5 +237,7 @@
             })
         }
     </script>
+
+    <script src="/javascripts/rating.js"></script>
 
 </body>

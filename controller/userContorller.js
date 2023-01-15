@@ -409,10 +409,44 @@ module.exports = {
                 if (stock < 5) {
                     res.locals.OutOfStock = true
                 }
-
-            res.render("user/details", { product, products });
+            let totalReviews = product.PReview.length
+            res.render("user/details", { product, products, totalReviews });
         } catch (error) {
             console.log(error.message);
+            res.redirect('/404')
+        }
+    },
+    userReviews: async (req, res) => {
+        try {
+            console.log(req.body);
+            console.log(req.query);
+            const review = req.body
+            await Product.updateOne({_id:req.query.id},{
+                $push:{
+                    PReview:{
+                        ratingStar:review.ratingStar,
+                        reviewMessage:review.reviewMessage,
+                        name:review.name,
+                        date:new Date().toDateString()
+
+                    }
+                }
+            })
+            const product = await Product.findOne({_id:req.query.id})
+            let totalReviews = product.PReview.length
+            let totalStar = 0;
+            product.PReview.forEach(obj => {
+                totalStar = (parseInt(obj.ratingStar) + totalStar)
+            });
+            totalStar = totalStar/totalReviews
+            console.log("Rating = ",totalStar);
+            await Product.updateOne({_id:req.query.id},{
+                $set:{
+                    PRating:totalStar
+                }
+            })
+            res.redirect(`/shops/details?_id=${req.query.id}`)
+        } catch (error) {
             res.redirect('/404')
         }
     },
@@ -1039,7 +1073,6 @@ module.exports = {
                 deliveryDate:date
             };
             const orderId = await Order.create(userOrder);
-
             if (orderBody.payment == "Cash on Delivery") {
                 await User.updateOne(
                     { _id: userId },

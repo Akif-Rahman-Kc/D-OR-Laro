@@ -1,4 +1,3 @@
-const otp = require('twilio')
 const client =require("twilio")(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN)
 
 let SID
@@ -17,7 +16,7 @@ module.exports = {
         ); 
     },
     otpVerify : async(phoneNumber, otpNumber)=>{
-        let validation
+        let validationz
         await client.verify.v2.services(SID)
             .verificationChecks
             .create({to: '+91'+phoneNumber, code: otpNumber})
