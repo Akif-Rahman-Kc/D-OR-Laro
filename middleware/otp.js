@@ -16,7 +16,7 @@ module.exports = {
         ); 
     },
     otpVerify : async(phoneNumber, otpNumber)=>{
-        let validationz
+        let validation
         await client.verify.v2.services(SID)
             .verificationChecks
             .create({to: '+91'+phoneNumber, code: otpNumber})
