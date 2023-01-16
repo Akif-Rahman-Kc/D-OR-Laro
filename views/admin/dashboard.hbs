@@ -18,15 +18,15 @@
             <div class="row mt-3 mb-3 ml-1 text-center text-white justify-content-center">
                 <div class="col-lg-3 tm-bg-primary-dark mr-5 mt-2 mb-2 p-4">
                     <h5>Today Income</h5>
-                    <h1>${{totalIncomeAtDay}}</h1>
+                    <h1>₹{{totalIncomeAtDay}}</h1>
                 </div>
                 <div class="col-lg-3 tm-bg-primary-dark mr-5 mt-2 mb-2  p-4">
                     <h5>Monthly Income</h5>
-                    <h1>${{totalIncomeAtMonth}}</h1>
+                    <h1>₹{{totalIncomeAtMonth}}</h1>
                 </div>
                 <div class="col-lg-3 tm-bg-primary-dark mr-5 mt-2 mb-2  p-4">
                     <h5>Yearley Income</h5>
-                    <h1>${{yrarlyTtotalIncome}}</h1>
+                    <h1>₹{{yrarlyTtotalIncome}}</h1>
                 </div>
             </div>
             <div class="row tm-content-row mt-3">
@@ -126,7 +126,7 @@
                             <td>{{this.Address.mobileNo}}</td>
                             <td>{{this.orderStatus}}</td>
                             <td>{{this.date}}</td>
-                            <td>${{this.totalLast}}</td>
+                            <td>₹{{this.totalLast}}</td>
                         </tr>
                         {{/each}}
                         <tr>
@@ -136,7 +136,7 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td class="font-weight-bold">${{total}}</td>
+                            <td class="font-weight-bold">₹{{total}}</td>
                         </tr>
                     </tbody>
                 </table>

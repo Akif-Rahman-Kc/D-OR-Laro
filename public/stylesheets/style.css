@@ -4380,6 +4380,7 @@
     background-clip: border-box;
     border: 1px solid rgba(0, 0, 0, 0.125);
     box-shadow: 10px 10px 8px -8px;
+    border-radius: 8px;
   }
   
   .card > hr {

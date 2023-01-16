@@ -155,21 +155,21 @@
                         {{#each user.Cart}}
                         <div class="d-flex justify-content-between">
                             <p>{{this.PName}}</p>
-                            <p>${{this.countTotal}}</p>
+                            <p>₹{{this.countTotal}}</p>
                         </div>
                         {{/each}}
                         <hr class="mt-0">
                         <div class="d-flex justify-content-between mb-3 pt-1">
                             <h6 class="font-weight-medium">Subtotal</h6>
-                            <h6 style="font-size: 1.1rem;" class="font-weight-bold">${{totalAmount}}</h6>
+                            <h6 style="font-size: 1.1rem;" class="font-weight-bold">₹{{totalAmount}}</h6>
                         </div>
                         <div class="d-flex justify-content-between">
                             <h6 class="font-weight-medium">Discount</h6>
-                            <h6 class="font-weight-medium text-danger">-${{discountPrice}}</h6>
+                            <h6 class="font-weight-medium text-danger">-₹{{discountPrice}}</h6>
                         </div>
                         <div class="d-flex justify-content-between">
                             <h6 class="font-weight-medium">Coupon Discount</h6>
-                            <h6 class="font-weight-medium text-success">-${{couponDiscount}}</h6>
+                            <h6 class="font-weight-medium text-success">-₹{{couponDiscount}}</h6>
                         </div>
                         <div class="d-flex justify-content-between">
                             <h6 class="font-weight-medium">Delivery</h6>
@@ -179,7 +179,7 @@
                     <div class="card-footer border-secondary bg-transparent">
                         <div class="d-flex justify-content-between mt-2">
                             <h5 class="font-weight-bold">Total</h5>
-                            <h5 class="font-weight-bold">${{totalLast}}</h5>
+                            <h5 class="font-weight-bold">₹{{totalLast}}</h5>
                         </div>
                     </div>
                 </div>

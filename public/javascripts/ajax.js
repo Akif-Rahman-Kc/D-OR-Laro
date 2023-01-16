@@ -240,3 +240,54 @@ function removeWishlist(proId) {
         }
     })
 }
+
+async function sendData(e) {
+    const resultOl = $('#search-result');
+    $.ajax({
+      method: 'POST',
+      url: '/search',
+      data: {
+        payload: e.value,
+      },
+      success:(response)=>{
+        if (response.status === 'success') {
+            if (response.search < 1) {
+                resultOl.empty();
+                resultOl.append(`<li class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="ms-2 me-auto">
+                Sorry, Nothing found.
+                </div>
+                
+            </li>`);
+                $(document).mouseup(function (ev) {
+                if (!resultOl.is(ev.target) && resultOl.has(ev.target).length === 0) {
+                    resultOl.empty();
+                }
+                });
+            } else {
+                const markup = response.search.reduce(
+                (acc, cur) =>
+                    acc +
+                    `<li class="list-group-item d-flex justify-content-between align-items-start rounded">
+                <div class="ms-2 me-auto">
+                <img style="width:30px" src="/images/${cur.PImage[0]}" alt="">
+                <a href="/shops/details?_id=${cur._id}" class="text-dark">${cur.PName}</a>
+                </div>
+                <span class="text-dark">₹${cur.PPrice}</span>
+            </li>`,
+                ``
+                );
+                resultOl.empty();
+                resultOl.append(markup);
+                $(document).mouseup(function (ev) {
+                if (!resultOl.is(ev.target) && resultOl.has(ev.target).length === 0) {
+                    resultOl.empty();
+                }
+                });
+            }
+            }
+      }
+    });
+    
+  }
+  

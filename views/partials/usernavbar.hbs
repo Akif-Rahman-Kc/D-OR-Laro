@@ -7,10 +7,10 @@
                     <img style="width: 55%;" src="/images/logo.png" alt="">
                 </a>
             </div>
-            <div class="col-lg-6 col-6 text-left">
-                <form action="">
+            <div class="col-lg-6 col-6 text-left p-0">
+                <form id="search-product">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for products">
+                        <input type="text" class="form-control" placeholder="Search for products" onkeyup="sendData(this)">
                         <div class="input-group-append">
                             <span class="input-group-text bg-white text-primary">
                                 <i class="fa fa-search"></i>
@@ -18,6 +18,9 @@
                         </div>
                     </div>
                 </form>
+                <section class="search-result" id="search-result" style="z-index: 2;position: absolute;width: -webkit-fill-available;">
+                    <ol id="search-result" class="list-group list-group-numbered"></ol>
+                </section>
             </div>
             <div class="col-lg-3 col-6 text-right">
                 <a href="/user_profile" class="btn">
@@ -47,6 +50,7 @@
                         <div class="navbar-nav mr-auto py-0">
                             <a href="/" class="nav-item nav-link font-weight-bold ml-4">HOME</a>
                             <a href="/shops" class="nav-item nav-link font-weight-bold ml-4">SHOPS</a>
+                            <a href="/contact" class="nav-item nav-link font-weight-bold ml-4">CONTACT</a>
                         </div>
                         <div class="navbar-nav ml-auto py-0">
                             {{#if user}}

@@ -31,6 +31,11 @@ router.get('/shops/filter_category', userController.filterCategory);
 router.post('/shops/filter_sub_category', userController.filtering);
 router.get('/shops/details', userController.userDetails);
 router.post('/reviews', userController.userReviews);
+router.post('/search', userController.userSearch);
+
+//Contact
+
+router.get('/contact', userController.contact);
 
 // Cart
 

@@ -67,7 +67,7 @@ module.exports = {
                 const found = monthlyTtotalIncome.find((elm) => elm._id === ind + 1);
                 return found ? found.totalIncome : 0;
             });
-            console.log(monthlyTtotalIncome);
+            console.log(monthlyTtotalIncome,"aaaaaaaaaaaaa");
 
             let testDate = new Date();
             let date = moment(testDate).format("MM");
@@ -110,7 +110,7 @@ module.exports = {
                 const found = todayTtotalIncome.find((elm) => elm._id === ind + 1);
                 return found ? found.totalIncome : 0;
             });
-            console.log(todayTtotalIncome);
+            console.log(todayTtotalIncome,"=========");
 
             let dayDate = moment(testDate).format("DD");
             dayDate = parseInt(dayDate) - 1;
@@ -144,7 +144,7 @@ module.exports = {
                 },
             ]);
 
-            if (yrarlyTtotalIncome == []) {
+            if (yrarlyTtotalIncome == '') {
                 yrarlyTtotalIncome = 0;
             } else {
                 yrarlyTtotalIncome = yrarlyTtotalIncome[0].totalIncome;

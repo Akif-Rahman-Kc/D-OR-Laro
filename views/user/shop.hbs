@@ -10,10 +10,10 @@
                     <img style="width: 30%;" src="/images/logo.png" alt="">
                 </a>
             </div>
-            <div class="col-lg-6 col-6 text-left">
-                <form action="">
+            <div class="col-lg-6 col-6 text-left p-0">
+                <form id="search-product">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for products">
+                        <input type="text" class="form-control" placeholder="Search for products" onkeyup="sendData(this)">
                         <div class="input-group-append">
                             <span class="input-group-text bg-white text-primary">
                                 <i class="fa fa-search"></i>
@@ -21,6 +21,9 @@
                         </div>
                     </div>
                 </form>
+                <section class="search-result" id="search-result" style="z-index: 2;position: absolute;width: -webkit-fill-available;">
+                    <ol id="search-result" class="list-group list-group-numbered"></ol>
+                </section>
             </div>
             <div class="col-lg-3 col-6 text-right">
                 <a href="/user_profile" class="btn">
@@ -188,26 +191,12 @@
             <!-- Shop Product Start -->
             <div class="col-lg-9 col-md-12">
                 <div class="row pb-3">
-                    <div class="col-12 pb-1">
+                    <div class="col-12 pb-5">
                         {{#if subCatNull}}
                         <h1 class="text-center font-weight-bold">All Products</h1>
                         {{else}}
                         <h1 class="text-center font-weight-bold">{{subCat.Category}}</h1>
                         {{/if}}
-                    </div>
-                    <div class="col-12 pb-1">
-                        <div class="d-flex align-items-center justify-content-between mb-4">
-                            <form action="">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Search by name">
-                                    <div class="input-group-append">
-                                        <span class="input-group-text bg-transparent text-primary">
-                                            <i class="fa fa-search"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
                     </div>
                     {{#if products}}
                     {{#each products}}
@@ -252,8 +241,8 @@
                                     Stock</span>
                                 {{/if}}
                                 <div class="d-flex justify-content-center mt-3">
-                                    <h5 class="font-weight-bold">${{this.PPrice}}</h5>
-                                    <h5 class="text-muted ml-2"><del>${{this.POldPrice}}</del></h5>
+                                    <h5 class="font-weight-bold">₹{{this.PPrice}}</h5>
+                                    <h5 class="text-muted ml-2"><del>₹{{this.POldPrice}}</del></h5>
                                 </div>
                             </div>
                         </div>

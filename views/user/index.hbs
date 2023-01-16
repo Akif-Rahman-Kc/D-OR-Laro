@@ -17,7 +17,7 @@
         <div class="row border-top px-xl-5">
             <div class="col-lg-9">
                 <div id="header-carousel" class="carousel slide" data-ride="carousel">
-                    <div class="carousel-inner">
+                    <div class="carousel-inner" style="border-radius: 30px;">
                         <div class="carousel-item active" style="height: 485px;">
                             <img class="img-fluid" src="/images/carousal-1.jpg" alt="Image">
                             <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
@@ -91,9 +91,9 @@
             {{#each categories}}
             <div class="main-container">
                 <div class="poster-container">
-                    <a href="/shops"><img src="/images/{{this.imgCategory.[0]}}" class="poster" /></a>
+                    <a href="/shops"><img style="border-radius: 30px;" src="/images/{{this.imgCategory.[0]}}" class="poster" /></a>
                 </div>
-                <div class="ticket-container">
+                <div class="ticket-container" style="border-radius: 30px;">
                     <div class="ticket__content">
                         <h4 class="ticket__nike-title">{{this.Category}}</h4>
                     </div>
@@ -153,8 +153,8 @@
                             Stock</span>
                         {{/if}}
                         <div class="d-flex justify-content-center mt-3">
-                            <h6>${{this.PPrice}}</h6>
-                            <h6 class="text-muted ml-2"><del>${{this.POldPrice}}</del></h6>
+                            <h6>₹{{this.PPrice}}</h6>
+                            <h6 class="text-muted ml-2"><del>₹{{this.POldPrice}}</del></h6>
                         </div>
                     </div>
                 </div>

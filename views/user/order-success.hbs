@@ -60,7 +60,7 @@
            <td style="width:20%;text-align:center;"> {{this.PSize}}</td>
            <td style="width:20%;text-align:center;"> {{this.PColor}}</td>
            <td style="width:20%;10px;text-align: center;">{{this.quantity}}</td>
-           <td style="width:30%; ;font-weight: bold;">${{this.countTotal}}</td>
+           <td style="width:30%; ;font-weight: bold;">₹{{this.countTotal}}</td>
          </tr>
          {{/each}}
        </tbody>
@@ -69,19 +69,19 @@
        <tbody>
         <tr>
           <td></td>
-          <td style="text-align:right;font-size:20px;">${{userOrder.totalAmount}}</td>
+          <td style="text-align:right;font-size:20px;">₹{{userOrder.totalAmount}}</td>
         </tr>
         <tr>
           <td></td>
-          <td class="text-danger" style="text-align:right;font-size:18px;">-${{userOrder.discountPrice}}</td>
+          <td class="text-danger" style="text-align:right;font-size:18px;">-₹{{userOrder.discountPrice}}</td>
         </tr>
         <tr>
           <td></td>
-          <td class="text-success" style="text-align:right;font-size:18px;">-${{userOrder.couponDiscount}}</td>
+          <td class="text-success" style="text-align:right;font-size:18px;">-₹{{userOrder.couponDiscount}}</td>
         </tr>
          <tr class="p-3 text-dark">
            <td style="font-size:23px;" class="font-weight-bold">Total</td>
-           <td style="font-size:23px;text-align:right;" class="font-weight-bold">${{userOrder.totalLast}}</td>
+           <td style="font-size:23px;text-align:right;" class="font-weight-bold">₹{{userOrder.totalLast}}</td>
          </tr>
        </tfoot>
      </table>
