@@ -8,11 +8,9 @@ module.exports = {
         .then(service =>{
             SID=service.sid;
             client.verify.v2.services(service.sid)
-            .verifications
-            .create({to: '+91'+phoneNumber, channel: 'sms'})
+            .verifications.create({to: '+91' + phoneNumber, channel: 'sms'})
             .then(verification => console.log(verification.status))
         }
-           
         ); 
     },
     otpVerify : async(phoneNumber, otpNumber)=>{

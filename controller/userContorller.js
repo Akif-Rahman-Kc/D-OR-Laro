@@ -42,20 +42,15 @@ module.exports = {
           errorMeassage: "This email already existed !",
         });
       } else {
-        try {
           const userDetails = req.body;
           req.session.userDetails = userDetails;
           const number = parseInt(userDetails.userPhoneNo);
           console.log(number);
           otpCheck.otpSend(number);
           res.redirect("/otp");
-        } catch (error) {
-          console.log(error.message);
-          res.redirect("/404");
-        }
       }
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
       res.redirect("/404");
     }
   },
@@ -174,7 +169,7 @@ module.exports = {
         res.render("user/otp", { otpErr: "Incorrect OTP" });
       }
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
       res.redirect("/404");
     }
   },
