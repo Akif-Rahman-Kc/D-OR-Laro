@@ -10,6 +10,7 @@ const bcrypt = require("bcrypt");
 const { findById, startSession } = require("../models/adminSchema");
 const mongoose = require("mongoose");
 const Razorpay = require("razorpay");
+const { log } = require("console");
 
 let instance = new Razorpay({
   key_id: "rzp_test_1Pl9Fu2TCeC5Vk",
@@ -28,7 +29,6 @@ module.exports = {
         res.render("user/register");
       }
     } catch (error) {
-      console.log(error);
       res.redirect("/404");
     }
   },
@@ -45,12 +45,10 @@ module.exports = {
           const userDetails = req.body;
           req.session.userDetails = userDetails;
           const number = parseInt(userDetails.userPhoneNo);
-          console.log(number);
           otpCheck.otpSend(number);
           res.redirect("/otp");
       }
     } catch (error) {
-      console.log(error);
       res.redirect("/404");
     }
   },
@@ -62,7 +60,6 @@ module.exports = {
         res.render("user/login");
       }
     } catch (error) {
-      console.log(error.message);
       res.redirect("/404");
     }
   },
@@ -85,7 +82,6 @@ module.exports = {
         res.render("user/login", { errorEmail: "This Email is Incorrect !" });
       }
     } catch (error) {
-      console.log(error.message);
       res.redirect("/404");
     }
   },
@@ -93,14 +89,12 @@ module.exports = {
     try {
       res.render("user/forgot");
     } catch (error) {
-      console.log(error.message);
       res.redirect("/404");
     }
   },
   forgotPassPost: async (req, res) => {
     try {
       const newPass = req.body;
-      console.log(newPass);
       const oldUser = await User.findOne({ userEmail: newPass.userEmail });
       if (oldUser) {
         if (newPass.userPass === newPass.userConfPass) {
@@ -125,7 +119,6 @@ module.exports = {
         });
       }
     } catch (error) {
-      console.log(error.message);
       res.redirect("/404");
     }
   },
@@ -135,7 +128,6 @@ module.exports = {
       req.session.user = null;
       res.redirect("/");
     } catch (error) {
-      console.log(error.message);
       res.redirect("/404");
     }
   },
@@ -143,21 +135,17 @@ module.exports = {
     try {
       res.render("user/otp");
     } catch (error) {
-      console.log(error.message);
       res.redirect("/404");
     }
   },
   verifyOtp: async (req, res) => {
     try {
-      console.log(req.body);
       let otp = Object.values(req.body);
       otp = otp.join();
       otp = otp.split(",").join("");
-      console.log(otp);
       const userDetails = req.session.userDetails;
       const phoneNo = userDetails.userPhoneNo;
       const number = parseInt(phoneNo);
-      console.log(number);
       let otpStatus = await otpCheck.otpVerify(number, otp);
       if (otpStatus.valid) {
         userDetails.userPass = await bcrypt.hash(userDetails.userPass, 10);
@@ -169,7 +157,6 @@ module.exports = {
         res.render("user/otp", { otpErr: "Incorrect OTP" });
       }
     } catch (error) {
-      console.log(error);
       res.redirect("/404");
     }
   },
@@ -1295,7 +1282,6 @@ module.exports = {
       const user = await User.findById(userId);
       console.log(user);
       if (user.userEmail == updateUser.userEmail) {
-        console.log("aaa vannu");
         await User.findByIdAndUpdate(
           { _id: userId },
           {
